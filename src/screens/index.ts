@@ -1,2 +1,10 @@
-export { default as ErrorScreen } from "./ErrorScreen";
-export { default as HomeScreen } from "./HomeScreen";
+export { default as ErrorScreen } from './ErrorScreen';
+export { default as HomeScreen } from './HomeScreen';
+export { default as AboutScreen } from './AboutScreen';
+export { default as PropertyScreen } from './PropertyScreen';
+export { default as ServiceScreen } from './ServiceScreen';
+export { default as ContactScreen } from './ContactScreen';
+export { default as RegisterScreen } from './RegisterScreen';
+export { default as LoginScreen } from './LoginScreen';
+export { default as ForgotPasswordScreen } from './ForgotPasswordScreen';
+export { default as ResetPasswordScreen } from './ResetPasswordScreen';

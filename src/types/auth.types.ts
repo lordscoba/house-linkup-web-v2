@@ -10,19 +10,6 @@ export interface LoginInterface {
   password: string;
 }
 
-export interface UserDetailsInterface {
-  _id: string;
-}
-
-export interface UpdateProfileInterface {
-  email: string;
-  phone_number: string;
-  location: string;
-  image: string;
-  id: string;
-  username: string;
-}
-
 export interface forgotPasswordInterface {
   email: string;
 }

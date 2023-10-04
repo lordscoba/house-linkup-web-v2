@@ -4,7 +4,6 @@ import axios from 'axios';
 import {
   LoginInterface,
   RegisterInterface,
-  UpdateProfileInterface,
   forgotPasswordInterface,
   resetPasswordInterface,
 } from '../../../types/auth.types';
@@ -91,76 +90,6 @@ export const loginAction =
     } catch (error: any) {
       dispatch({
         type: LOGIN_FAIL,
-        payload: error?.response && error?.response?.data?.message,
-      });
-    }
-  };
-
-interface UserDetailsInterface {
-  _id: string;
-}
-
-export const userDetailsAction =
-  ({ _id }: UserDetailsInterface) =>
-  async (
-    dispatch: Dispatch,
-    getState: ({ userDetails }: StoreReducerTypes) => void
-  ) => {
-    try {
-      dispatch({ type: USER_DETAILS_REQUEST });
-
-      const { data } = await axios.get(`${SERVER_URL}/user-details/${_id}`);
-
-      dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
-    } catch (error: any) {
-      dispatch({
-        type: USER_DETAILS_FAIL,
-        payload: error?.response && error?.response?.data?.message,
-      });
-    }
-  };
-
-export const updateProfileAction =
-  ({
-    email,
-    image,
-    location,
-    phone_number,
-    username,
-    id,
-  }: UpdateProfileInterface) =>
-  async (
-    dispatch: Dispatch,
-    getState: ({ updateProfile }: StoreReducerTypes) => void
-  ) => {
-    try {
-      dispatch({ type: UPDATE_PROFILE_REQUEST });
-
-      let FD = new FormData();
-
-      FD.append('image', image);
-      FD.append('phone_number', phone_number);
-      FD.append('location', location);
-      FD.append('email', email);
-      FD.append('username', username);
-
-      const config = {
-        headers: {
-          // 'Content-Type': 'application/json',
-          'Content-Type': 'multipart/form-data',
-        },
-      };
-
-      const { data } = await axios.put(
-        `${SERVER_URL}/update-profile/${id}`,
-        FD,
-        config
-      );
-
-      dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data });
-    } catch (error: any) {
-      dispatch({
-        type: UPDATE_PROFILE_FAIL,
         payload: error?.response && error?.response?.data?.message,
       });
     }

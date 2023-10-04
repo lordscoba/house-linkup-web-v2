@@ -25,34 +25,38 @@ export const DashboardSideBar = ({ show, setShow }: Props) => {
               icon_2={dropDown}
               text="Dashboard"
               dropDownText="Dashboard"
-              link="/dashboard"
+              link="/admin/dashboard"
             />
             <TextAndDropDown
               icon={<FaUsers />}
               icon_2={dropDown}
               text="Users"
               dropDownText="Users"
-              link="/dashboard/all-users"
+              link="/admin/dashboard/all-users"
             />
             <TextAndDropDown
               icon={<MdOutlineLocationOn />}
               icon_2={dropDown}
               text="Location"
               dropDownText="Location"
-              link="/dashboard/location"
+              link="/admin/dashboard/location"
             />
           </>
         ) : (
           <>
-            <SideBarIcon text={'Home'} link={'/dashboard'} icon={<MdHome />} />
+            <SideBarIcon
+              text={'Home'}
+              link={'/admin/dashboard'}
+              icon={<MdHome />}
+            />
             <SideBarIcon
               text={'Users'}
-              link={'/dashboard/all-users'}
+              link={'/admin/dashboard/all-users'}
               icon={<FaUsers />}
             />
             <SideBarIcon
               text={'Dashboard'}
-              link={'/dashboard/location'}
+              link={'/admin/dashboard/location'}
               icon={<MdOutlineLocationOn />}
             />
           </>
@@ -66,21 +70,21 @@ export const DashboardSideBar = ({ show, setShow }: Props) => {
               icon_2={dropDown}
               text="Dashboard"
               dropDownText="Dashboard"
-              link="/dashboard"
+              link="/admin/dashboard"
             />
             <TextAndDropDown
               icon={<FaUsers />}
               icon_2={dropDown}
               text="Users"
               dropDownText="Users"
-              link="/dashboard/all-users"
+              link="/admin/dashboard/all-users"
             />
             <TextAndDropDown
               icon={<MdOutlineLocationOn />}
               icon_2={dropDown}
               text="Location"
               dropDownText="Location"
-              link="/dashboard/location"
+              link="/admin/dashboard/location"
             />
           </>
         ) : null}

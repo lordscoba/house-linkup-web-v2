@@ -6,6 +6,18 @@ import {
   updateProfileReducer,
   userDetailsReducer,
 } from './reducers/auth-reducers/auth.reducers';
+import {
+  allUsersReducer,
+  deleteUserReducer,
+} from './reducers/dashboard/user.reducers';
+import {
+  activateUserReducer,
+  blockUserReducer,
+  changeProfilePictureReducer,
+  deActivateuserReducer,
+  demoteUserReducer,
+  promoteUserReducer,
+} from './reducers/user-profile-reducers/userProfile.reducer';
 
 const {
   combineReducers,
@@ -20,18 +32,19 @@ export type StoreReducerTypes = {
   loginUser: ReturnType<typeof loginReducer>;
   userDetails: ReturnType<typeof userDetailsReducer>;
   updateProfile: ReturnType<typeof updateProfileReducer>;
+  changeProfilePicture: ReturnType<typeof changeProfilePictureReducer>;
   resetPassword: ReturnType<typeof resetPasswordReducer>;
   forgotPassword: ReturnType<typeof forgotPasswordReducer>;
-  //USERS
-  // allUsers: ReturnType<typeof allUsersReducer>;
-  // deleteUser: ReturnType<typeof deleteUserReducer>;
+  // DASHBOARD --- USERS
+  allUsers: ReturnType<typeof allUsersReducer>;
+  deleteUser: ReturnType<typeof deleteUserReducer>;
   // getUser: ReturnType<typeof getUserReducer>;
   // dashboard
-  // activateUser: ReturnType<typeof activateUserReducer>;
-  // deActivateUser: ReturnType<typeof deActivateuserReducer>;
-  // blockUser: ReturnType<typeof blockUserReducer>;
-  // promoteUser: ReturnType<typeof promoteUserReducer>;
-  // demoteUser: ReturnType<typeof demoteUserReducer>;
+  activateUser: ReturnType<typeof activateUserReducer>;
+  deActivateUser: ReturnType<typeof deActivateuserReducer>;
+  blockUser: ReturnType<typeof blockUserReducer>;
+  promoteUser: ReturnType<typeof promoteUserReducer>;
+  demoteUser: ReturnType<typeof demoteUserReducer>;
   // LOCATION MANAGEMENT
   // createNewRegion: ReturnType<typeof createRegionReducer>;
   // fetchAllRegion: ReturnType<typeof fetchAllRegionReducer>;
@@ -62,14 +75,16 @@ const reducer: StoreReducerTypes = combineReducers({
   updateProfile: updateProfileReducer,
   resetPassword: resetPasswordReducer,
   forgotPassword: forgotPasswordReducer,
-  // allUsers: allUsersReducer,
-  // deleteUser: deleteUserReducer,
+  changeProfilePicture: changeProfilePictureReducer,
+  // DASHBOARD--- USERS
+  allUsers: allUsersReducer,
+  deleteUser: deleteUserReducer,
   // dashboard
-  // activateUser: activateUserReducer,
-  // deActivateUser: deActivateuserReducer,
-  // blockUser: blockUserReducer,
-  // promoteUser: promoteUserReducer,
-  // demoteUser: demoteUserReducer,
+  activateUser: activateUserReducer,
+  deActivateUser: deActivateuserReducer,
+  blockUser: blockUserReducer,
+  promoteUser: promoteUserReducer,
+  demoteUser: demoteUserReducer,
   // LOCATION MANAGEMENT
   // createNewRegion: createRegionReducer,
   // fetchAllRegion: fetchAllRegionReducer,

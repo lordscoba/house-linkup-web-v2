@@ -11,7 +11,7 @@ import {
   ServiceScreen,
 } from './screens';
 import ErrorScreen from './screens/ErrorScreen';
-import { AdminDashboardScreen } from './screens/admin';
+import { AdminDashboardScreen, UsersScreen } from './screens/admin';
 import { UserDashboardScreen } from './screens/user-dashboard';
 
 const App = createBrowserRouter([
@@ -65,6 +65,11 @@ const App = createBrowserRouter([
   {
     path: '/admin/dashboard',
     element: <AdminDashboardScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/admin/dashboard/all-users',
+    element: <UsersScreen />,
     errorElement: <ErrorScreen />,
   },
   {

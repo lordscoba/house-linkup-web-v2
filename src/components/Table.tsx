@@ -1,50 +1,148 @@
 import React, { ReactNode } from 'react';
+import { EditIcon, RedDeleteIcon } from '../assets/icons';
+import { useNavigate } from 'react-router-dom';
+
+// interface TableProps {
+//   data: any[]; // An array of objects containing table data
+// columns: {
+//   label: string;
+//   key: string;
+//   render?: (item: any) => ReactNode; // Optional custom render function for cells
+// }[]; // Array of column definitions
+// }
+
+// const Table: React.FC<TableProps> = ({ data, columns }) => {
+//   return (
+//     <>
+//       <section className="bg-[#fff] p-[1rem] rounded-lg mt-10 overflow-x-auto overflow-y-auto md:h-auto w-full hide-scrollbar   ">
+//         <div className=" w-full">
+//           <table className=" w-full bg-[#fff] rounded-lg ">
+//             <thead className="bg-[#fff] text-[#333]">
+//               <tr className="flex justify-between border w-full">
+//                 {columns.map((column) => (
+//                   <th
+//                     key={column.key}
+//                     className=" py-2 text-[black]  whitespace-nowrap w-[15rem] border "
+//                   >
+//                     {column.label}
+//                   </th>
+//                 ))}
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {data.map((item, rowIndex) => (
+//                 <tr key={rowIndex} className="flex justify-between  w-full">
+//                   {columns.map((column) => (
+//                     <td
+//                       key={column.key}
+//                       className={`px-4 py-2 text-[black]  whitespace-nowrap  w-[15rem] text-center border`}
+//                     >
+//                       {column.render
+//                         ? column.render(item[column.key])
+//                         : item[column.key]}
+//                     </td>
+//                   ))}
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         </div>
+//       </section>
+//     </>
+//   );
+// };
+
+// export default Table;
 
 interface TableProps {
-  data: any[]; // An array of objects containing table data
+  data: string[];
+  onEditClick: (item: { id: number }) => void;
+  onDeleteClick: (item: { id: number }) => void;
   columns: {
     label: string;
-    key: string;
+
     render?: (item: any) => ReactNode; // Optional custom render function for cells
   }[]; // Array of column definitions
+  link: string;
+  countryId: string;
 }
 
-const Table: React.FC<TableProps> = ({ data, columns }) => {
+const Table: React.FC<TableProps> = ({
+  data,
+  onEditClick,
+  onDeleteClick,
+  columns,
+  link,
+}) => {
+  const navigate = useNavigate();
+  const view = (index: any) => {
+    const item = data[index];
+    navigate(`${link}/${index}`);
+    console.log(index);
+  };
   return (
     <>
       <section className="bg-[#fff] p-[1rem] rounded-lg mt-10 overflow-x-auto overflow-y-auto md:h-auto w-full hide-scrollbar   ">
-        <div className=" w-full">
+        <div className=" w-[1000px] m-auto">
           <table className=" w-full bg-[#fff] rounded-lg ">
-            <thead className="bg-[#fff] text-[#333]">
-              <tr className="flex justify-between border w-full">
-                {columns.map((column) => (
-                  <th
-                    key={column.key}
-                    className="px-4 py-2 text-[black]  whitespace-nowrap"
-                  >
-                    {column.label}
-                  </th>
-                ))}
+            <thead className="bg-[#fff] text-[#333] border-b">
+              <tr className="flex justify-between  w-full">
+                {columns?.length > 0
+                  ? columns?.map((column, i) => (
+                      <th
+                        key={i}
+                        className=" py-2 text-[black]  whitespace-nowrap w-[15rem] border uppercase "
+                      >
+                        {column.label}{' '}
+                      </th>
+                    ))
+                  : null}
               </tr>
             </thead>
             <tbody>
-              {data.map((item, rowIndex) => (
-                <tr
-                  key={rowIndex}
-                  className="flex justify-between border w-full"
-                >
-                  {columns.map((column) => (
-                    <td
-                      key={column.key}
-                      className="px-4 py-2 text-[black]  whitespace-nowrap"
-                    >
-                      {column.render
-                        ? column.render(item[column.key])
-                        : item[column.key]}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+              {data?.length > 0
+                ? data?.map((item: any, index: any) => (
+                    <tr key={index} className="flex justify-between  w-full">
+                      <td
+                        className={`px-4 py-2 text-[black]  whitespace-nowrap w-[15rem] text-center border capitalize font-[500]`}
+                      >
+                        {item}
+                      </td>
+                      <td
+                        onClick={() => view(index)}
+                        className={`px-4 py-2 text-[black] cursor-pointer whitespace-nowrap w-[15rem] text-center border hover:bg-[#D9F4DD] hover:text-[green]`}
+                      >
+                        <button className="  rounded-sm w-full text-lg">
+                          View
+                        </button>
+                      </td>
+                      <td
+                        className={`px-4 py-2 text-[black] cursor-pointer  whitespace-nowrap w-[15rem] text-center border hover:bg-[#D9F4DD] hover:text-[green]`}
+                      >
+                        <button onClick={() => onEditClick(item)}>
+                          {' '}
+                          <img
+                            src={EditIcon}
+                            alt="Edit icon"
+                            className="w-6 h-6 cursor-pointer"
+                          />
+                        </button>
+                      </td>
+                      <td
+                        className={`px-4 py-2 text-[black]  whitespace-nowrap w-[15rem] text-center border`}
+                      >
+                        <button onClick={() => onDeleteClick(item)}>
+                          {' '}
+                          <img
+                            src={RedDeleteIcon}
+                            alt="Red delete icon"
+                            className="w-6 h-6 cursor-pointer "
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                : null}
             </tbody>
           </table>
         </div>

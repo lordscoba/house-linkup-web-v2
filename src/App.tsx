@@ -11,7 +11,12 @@ import {
   ServiceScreen,
 } from './screens';
 import ErrorScreen from './screens/ErrorScreen';
-import { AdminDashboardScreen, UsersScreen } from './screens/admin';
+import {
+  AdminDashboardScreen,
+  LocalGovernmentScreen,
+  LocationScreen,
+  UsersScreen,
+} from './screens/admin';
 import { UserDashboardScreen } from './screens/user-dashboard';
 
 const App = createBrowserRouter([
@@ -72,6 +77,17 @@ const App = createBrowserRouter([
     element: <UsersScreen />,
     errorElement: <ErrorScreen />,
   },
+  {
+    path: '/admin/dashboard/location',
+    element: <LocationScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/admin/dashboard/local-gov/:id/:index',
+    element: <LocalGovernmentScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  // USER DASHBOARD LINKS
   {
     path: '/dashboard/user',
     element: <UserDashboardScreen />,

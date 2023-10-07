@@ -17,11 +17,11 @@ export const DashboardNavbar = ({ setShow }: Props) => {
           onClick={() => navigate('/')}
           src={Logo}
           alt=""
-          className="cursor-pointer object-contain w-16"
+          className="cursor-pointer object-contain lg:w-16 md:w-[14px] w-12"
         />
         <h2
           onClick={() => navigate('/')}
-          className="text-[24px] font-semibold text-[#4BA586] cursor-pointer"
+          className="lg:text-[24px] md:text-[22px] text-[18px] font-semibold text-[#4BA586] cursor-pointer"
         >
           HouseLinkUp
         </h2>

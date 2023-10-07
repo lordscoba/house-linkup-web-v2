@@ -7,6 +7,20 @@ import {
   userDetailsReducer,
 } from './reducers/auth-reducers/auth.reducers';
 import {
+  addLocalGovReducer,
+  addStateReducer,
+  addTownReducer,
+  createRegionReducer,
+  deleteCountryReducer,
+  deleteLocalGovReducer,
+  deleteStateReducer,
+  deleteTownReducer,
+  editLgaReducer,
+  editStateReducer,
+  editTownReducer,
+  fetchAllRegionReducer,
+} from './reducers/dashboard/location.reducers';
+import {
   allUsersReducer,
   deleteUserReducer,
 } from './reducers/dashboard/user.reducers';
@@ -46,18 +60,18 @@ export type StoreReducerTypes = {
   promoteUser: ReturnType<typeof promoteUserReducer>;
   demoteUser: ReturnType<typeof demoteUserReducer>;
   // LOCATION MANAGEMENT
-  // createNewRegion: ReturnType<typeof createRegionReducer>;
-  // fetchAllRegion: ReturnType<typeof fetchAllRegionReducer>;
-  // addState: ReturnType<typeof addStateReducer>;
-  // addLocalGov: ReturnType<typeof addLocalGovReducer>;
-  // addTown: ReturnType<typeof addTownReducer>;
-  // deleteState: ReturnType<typeof deleteStateReducer>;
-  // deleteLocalGov: ReturnType<typeof deleteLocalGovReducer>;
-  // deleteTown: ReturnType<typeof deleteTownReducer>;
-  // deleteCountry: ReturnType<typeof deleteCountryReducer>;
-  // editState: ReturnType<typeof editStateReducer>;
-  // editLocalGov: ReturnType<typeof editLgaReducer>;
-  // editTown: ReturnType<typeof editTownReducer>;
+  createNewRegion: ReturnType<typeof createRegionReducer>;
+  fetchAllRegion: ReturnType<typeof fetchAllRegionReducer>;
+  addState: ReturnType<typeof addStateReducer>;
+  addLocalGov: ReturnType<typeof addLocalGovReducer>;
+  addTown: ReturnType<typeof addTownReducer>;
+  deleteState: ReturnType<typeof deleteStateReducer>;
+  deleteLocalGov: ReturnType<typeof deleteLocalGovReducer>;
+  deleteTown: ReturnType<typeof deleteTownReducer>;
+  deleteCountry: ReturnType<typeof deleteCountryReducer>;
+  editState: ReturnType<typeof editStateReducer>;
+  editLocalGov: ReturnType<typeof editLgaReducer>;
+  editTown: ReturnType<typeof editTownReducer>;
   // users dashboard
   // uploadHouse: ReturnType<typeof uploadHouseReducer>;
   // uploadparlorImage: ReturnType<typeof uploaParlorImageReducer>;
@@ -86,18 +100,18 @@ const reducer: StoreReducerTypes = combineReducers({
   promoteUser: promoteUserReducer,
   demoteUser: demoteUserReducer,
   // LOCATION MANAGEMENT
-  // createNewRegion: createRegionReducer,
-  // fetchAllRegion: fetchAllRegionReducer,
-  // addState: addStateReducer,
-  // addLocalGov: addLocalGovReducer,
-  // addTown: addTownReducer,
-  // deleteState: deleteStateReducer,
-  // deleteLocalGov: deleteLocalGovReducer,
-  // deleteTown: deleteTownReducer,
-  // deleteCountry: deleteCountryReducer,
-  // editState: editStateReducer,
-  // editLocalGov: editLgaReducer,
-  // editTown: editTownReducer,
+  createNewRegion: createRegionReducer,
+  fetchAllRegion: fetchAllRegionReducer,
+  addState: addStateReducer,
+  addLocalGov: addLocalGovReducer,
+  addTown: addTownReducer,
+  deleteState: deleteStateReducer,
+  deleteLocalGov: deleteLocalGovReducer,
+  deleteTown: deleteTownReducer,
+  deleteCountry: deleteCountryReducer,
+  editState: editStateReducer,
+  editLocalGov: editLgaReducer,
+  editTown: editTownReducer,
   // users dashboard
   // uploadHouse: uploadHouseReducer,
   // uploadparlorImage: uploaParlorImageReducer,

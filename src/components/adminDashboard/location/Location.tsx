@@ -32,7 +32,6 @@ const Location = (props: Props) => {
     const d = Region?.serverResponse[0]?.states?.map((x: any) => x?.state);
     const countryID = Region?.serverResponse?._id;
     setArr(d);
-    console.log({ f: Region?.serverResponse?.[0]?._id });
   }, [Region?.serverResponse]);
 
   useEffect(() => {
@@ -82,7 +81,7 @@ const Location = (props: Props) => {
         onDeleteClick={deleteState}
         onEditClick={editState}
         link={`/admin/dashboard/local-gov/${Region?.serverResponse?.[0]?._id}`}
-        countryId={Region?.serverResponse?.[0]?._id}
+        // countryId={Region?.serverResponse?.[0]?._id}
       />
     </div>
   );

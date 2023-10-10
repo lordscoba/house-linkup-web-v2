@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addLocalGovAction,
+  addTownAction,
+} from '../redux/actions/dashboard/location.action';
+import { StoreReducerTypes } from '../redux/store';
 
 type Props = {
   Region: string;
   countryId: string;
-  local_gov_name: string;
+  local_gov_name?: string;
   show: boolean;
   setShow: (a: any) => void;
-  stateId: string;
-  localGovId: string;
-  handleSubmit: () => void;
+  stateId?: string | any;
+  localGovId?: string;
+  location: string;
+  index?: any;
+  screen: string;
+  // handleSubmit: () => void;
 };
 
-const EditLocationModal = ({
+const AddLocationModal = ({
   Region,
   countryId,
   localGovId,
@@ -19,9 +28,51 @@ const EditLocationModal = ({
   setShow,
   show,
   stateId,
-  handleSubmit,
-}: Props) => {
-  const [localGov, setLocalGov] = useState('');
+  location,
+  index,
+  screen,
+}: // handleSubmit,
+Props) => {
+  // const [localGov, setLocalGov] = useState('');
+  const [text, setText] = useState('');
+  const dispatch = useDispatch();
+  const [data, setData] = useState([]);
+  const [country, setCountry] = useState('');
+  const [state, setState] = useState('');
+  const [lga, setLga] = useState('');
+  // const [localGovId, setLocalGovId] = useState('');
+  // const [show, setShow] = useState<boolean>(false);
+
+  // const _Region = useSelector(
+  //   (state: StoreReducerTypes) => state.fetchAllRegion
+  // );
+
+  const handleSubmit = () => {
+    if (!text) return;
+    if (screen == 'LGA') {
+      dispatch(
+        addLocalGovAction({
+          countryId,
+          local_government_name: text,
+          stateId,
+        }) as any
+      );
+      setShow(false);
+    }
+
+    if (screen === 'Town') {
+      dispatch(
+        addTownAction({
+          documentId: countryId,
+          localGovId,
+          stateId,
+          town_name: text,
+        }) as any
+      );
+
+      setShow(false);
+    }
+  };
 
   return (
     <>
@@ -41,15 +92,15 @@ const EditLocationModal = ({
                 </h4>
                 <form className=" w-full my-6">
                   <div>
-                    <label htmlFor="state"> Edit LGA :</label>
+                    <label htmlFor="state"> Edit {location} :</label>
 
                     <input
                       type="text"
                       name="state"
                       id="state"
-                      value={localGov}
-                      onChange={(e: any) => setLocalGov(e.target.value)}
-                      placeholder="Edit State"
+                      value={text}
+                      onChange={(e: any) => setText(e.target.value)}
+                      placeholder={`Add ${location}`}
                       className="py-2 border w-full px-2 my-2"
                     />
                   </div>
@@ -80,4 +131,4 @@ const EditLocationModal = ({
   );
 };
 
-export default EditLocationModal;
+export default AddLocationModal;

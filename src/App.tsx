@@ -15,6 +15,7 @@ import {
   AdminDashboardScreen,
   LocalGovernmentScreen,
   LocationScreen,
+  TownScreen,
   UsersScreen,
 } from './screens/admin';
 import { UserDashboardScreen } from './screens/user-dashboard';
@@ -85,6 +86,11 @@ const App = createBrowserRouter([
   {
     path: '/admin/dashboard/local-gov/:id/:index',
     element: <LocalGovernmentScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/admin/dashboard/town/:id/:index',
+    element: <TownScreen />,
     errorElement: <ErrorScreen />,
   },
   // USER DASHBOARD LINKS

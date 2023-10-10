@@ -2,58 +2,6 @@ import React, { ReactNode } from 'react';
 import { EditIcon, RedDeleteIcon } from '../assets/icons';
 import { useNavigate } from 'react-router-dom';
 
-// interface TableProps {
-//   data: any[]; // An array of objects containing table data
-// columns: {
-//   label: string;
-//   key: string;
-//   render?: (item: any) => ReactNode; // Optional custom render function for cells
-// }[]; // Array of column definitions
-// }
-
-// const Table: React.FC<TableProps> = ({ data, columns }) => {
-//   return (
-//     <>
-//       <section className="bg-[#fff] p-[1rem] rounded-lg mt-10 overflow-x-auto overflow-y-auto md:h-auto w-full hide-scrollbar   ">
-//         <div className=" w-full">
-//           <table className=" w-full bg-[#fff] rounded-lg ">
-//             <thead className="bg-[#fff] text-[#333]">
-//               <tr className="flex justify-between border w-full">
-//                 {columns.map((column) => (
-//                   <th
-//                     key={column.key}
-//                     className=" py-2 text-[black]  whitespace-nowrap w-[15rem] border "
-//                   >
-//                     {column.label}
-//                   </th>
-//                 ))}
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {data.map((item, rowIndex) => (
-//                 <tr key={rowIndex} className="flex justify-between  w-full">
-//                   {columns.map((column) => (
-//                     <td
-//                       key={column.key}
-//                       className={`px-4 py-2 text-[black]  whitespace-nowrap  w-[15rem] text-center border`}
-//                     >
-//                       {column.render
-//                         ? column.render(item[column.key])
-//                         : item[column.key]}
-//                     </td>
-//                   ))}
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         </div>
-//       </section>
-//     </>
-//   );
-// };
-
-// export default Table;
-
 interface TableProps {
   data: string[];
   onEditClick: (item: { id: number }) => void;
@@ -63,8 +11,9 @@ interface TableProps {
 
     render?: (item: any) => ReactNode; // Optional custom render function for cells
   }[]; // Array of column definitions
-  link: string;
-  countryId: string;
+  link?: string;
+  noView?: boolean;
+  // countryId: string;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -73,25 +22,25 @@ const Table: React.FC<TableProps> = ({
   onDeleteClick,
   columns,
   link,
+  noView,
 }) => {
   const navigate = useNavigate();
   const view = (index: any) => {
     const item = data[index];
     navigate(`${link}/${index}`);
-    console.log(index);
   };
   return (
     <>
       <section className="bg-[#fff] p-[1rem] rounded-lg mt-10 overflow-x-auto overflow-y-auto md:h-auto w-full hide-scrollbar   ">
-        <div className=" w-[1000px] m-auto">
-          <table className=" w-full bg-[#fff] rounded-lg ">
-            <thead className="bg-[#fff] text-[#333] border-b">
-              <tr className="flex justify-between  w-full">
+        <div className=" w-[1200px] m-auto">
+          <table className=" w-full bg-[#fff] rounded-lg border ">
+            <thead className="bg-[#fff] text-[#333] ">
+              <tr className="flex gap-1  w-full">
                 {columns?.length > 0
                   ? columns?.map((column, i) => (
                       <th
                         key={i}
-                        className=" py-2 text-[black]  whitespace-nowrap w-[15rem] border uppercase "
+                        className="flex-1 py-2 text-[black]  whitespace-nowrap w-[15rem] border uppercase "
                       >
                         {column.label}{' '}
                       </th>
@@ -102,22 +51,27 @@ const Table: React.FC<TableProps> = ({
             <tbody>
               {data?.length > 0
                 ? data?.map((item: any, index: any) => (
-                    <tr key={index} className="flex justify-between  w-full">
+                    <tr key={index} className="flex gap-1  w-full">
                       <td
-                        className={`px-4 py-2 text-[black]  whitespace-nowrap w-[15rem] text-center border capitalize font-[500]`}
+                        className={`flex-1 px-4 py-2 text-[black]  whitespace-nowrap w-[15rem] text-center border capitalize font-[500]`}
                       >
                         {item}
                       </td>
+                      {noView ? (
+                        ''
+                      ) : (
+                        <td
+                          onClick={() => view(index)}
+                          className={`flex-1 px-4 py-2 text-[black] cursor-pointer whitespace-nowrap w-[15rem] text-center border hover:bg-[#D9F4DD] hover:text-[green]`}
+                        >
+                          <button className="  rounded-sm w-full text-lg">
+                            View
+                          </button>
+                        </td>
+                      )}
+
                       <td
-                        onClick={() => view(index)}
-                        className={`px-4 py-2 text-[black] cursor-pointer whitespace-nowrap w-[15rem] text-center border hover:bg-[#D9F4DD] hover:text-[green]`}
-                      >
-                        <button className="  rounded-sm w-full text-lg">
-                          View
-                        </button>
-                      </td>
-                      <td
-                        className={`px-4 py-2 text-[black] cursor-pointer  whitespace-nowrap w-[15rem] text-center border hover:bg-[#D9F4DD] hover:text-[green]`}
+                        className={`flex-1 px-4 py-2 text-[black] cursor-pointer  whitespace-nowrap w-[15rem] text-center border hover:bg-[#D9F4DD] hover:text-[green]`}
                       >
                         <button onClick={() => onEditClick(item)}>
                           {' '}
@@ -129,7 +83,7 @@ const Table: React.FC<TableProps> = ({
                         </button>
                       </td>
                       <td
-                        className={`px-4 py-2 text-[black]  whitespace-nowrap w-[15rem] text-center border`}
+                        className={` flex-1 px-4 py-2 text-[black]  whitespace-nowrap w-[15rem] text-center border`}
                       >
                         <button onClick={() => onDeleteClick(item)}>
                           {' '}

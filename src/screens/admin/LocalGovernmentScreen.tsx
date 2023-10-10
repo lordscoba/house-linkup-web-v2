@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { fecthAllRegionsAction } from '../../redux/actions/dashboard/location.action';
+import {
+  deleteLocalGovAction,
+  fecthAllRegionsAction,
+} from '../../redux/actions/dashboard/location.action';
 import { StoreReducerTypes } from '../../redux/store';
 import Table from '../../components/Table';
 import AddLocationModal from '../../modals/AddLocationModal';
 import { DashboardNavbar } from '../../components/adminDashboard/dashboard-navbar';
 import { DashboardSideBar } from '../../components/adminDashboard/dashboard-sidebar';
-import { RESET_GET_ALL_REGION } from '../../redux/constants/dashboard/location.constants';
+import {
+  RESET_DELETE_LOCAL_GOV,
+  RESET_GET_ALL_REGION,
+} from '../../redux/constants/dashboard/location.constants';
 
 type Props = {};
 
@@ -15,6 +21,7 @@ const LocalGovernmentScreen = (props: Props) => {
   const dispatch = useDispatch();
 
   const [data, setData] = useState([]);
+  const [dataObj, setDataObj] = useState([]) as any;
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
   const [state_id, setState_id] = useState('');
@@ -35,8 +42,9 @@ const LocalGovernmentScreen = (props: Props) => {
     (state: StoreReducerTypes) => state.fetchAllRegion
   );
   const lga = useSelector((state: StoreReducerTypes) => state?.addLocalGov);
-
-  const handleDelete = (index: any) => {};
+  const delete_lga = useSelector(
+    (state: StoreReducerTypes) => state?.deleteLocalGov
+  );
 
   const handleUpdate = (index: any) => {};
 
@@ -50,7 +58,7 @@ const LocalGovernmentScreen = (props: Props) => {
   }, []);
   useEffect(() => {
     dispatch(fecthAllRegionsAction() as any);
-  }, [lga]);
+  }, [lga, delete_lga]);
 
   useEffect(() => {
     const array = Region?.serverResponse;
@@ -61,6 +69,7 @@ const LocalGovernmentScreen = (props: Props) => {
     //   (x: any) => JSON.stringify(x?._id) === JSON.stringify(countryId)
     // );
     const find = array[0]?.states[index]?.local_government;
+    const dataOBJ = find?.map((x: any) => x);
     const data = find?.map((x: any) => x?.local_government_name);
     const country = array[0]?.region;
     const state = array[0]?.states[index]?.state;
@@ -69,6 +78,7 @@ const LocalGovernmentScreen = (props: Props) => {
     setCountry(country);
     setState(state);
     setData(data);
+    setDataObj(dataOBJ);
     // console.log({ countryIndex });
   }, [Region]);
 
@@ -100,8 +110,10 @@ const LocalGovernmentScreen = (props: Props) => {
           <Table
             columns={tableHeaders}
             data={data}
-            onDeleteClick={handleDelete}
-            onEditClick={handleUpdate}
+            documentId={location}
+            stateId={state_id}
+            dataDetails={dataObj}
+            screen="lga"
             link={`/admin/dashboard/town/${Region?.serverResponse?.[0]?._id}_${state_id}`}
           />
           <AddLocationModal

@@ -19,6 +19,7 @@ const TownScreen = (props: Props) => {
   const [localGovId, setLocalGovId] = useState('');
   const [show, setShow] = useState<boolean>(false);
   const [showsidebar, setShowSideBar] = useState<boolean>(false);
+  const [dataObj, setDataObj] = useState([]) as any;
 
   const countryId = useLocation()?.pathname?.split('/')[4]?.split('_')[0];
   const stateId = useLocation()?.pathname?.split('/')[4]?.split('_')[1];
@@ -35,6 +36,9 @@ const TownScreen = (props: Props) => {
     (state: StoreReducerTypes) => state.fetchAllRegion
   );
   const addTown = useSelector((state: StoreReducerTypes) => state?.addTown);
+  const delete_town = useSelector(
+    (state: StoreReducerTypes) => state?.deleteTown
+  );
 
   const deleteTown = (index: any) => {};
   const updateTown = () => {};
@@ -43,9 +47,10 @@ const TownScreen = (props: Props) => {
   useEffect(() => {
     dispatch(fecthAllRegionsAction() as any);
   }, []);
+
   useEffect(() => {
     dispatch(fecthAllRegionsAction() as any);
-  }, [addTown]);
+  }, [addTown, delete_town]);
 
   useEffect(() => {
     const array = Region?.serverResponse;
@@ -64,6 +69,7 @@ const TownScreen = (props: Props) => {
       array[0]?.states[stateIndex]?.local_government[index]
         ?.local_government_name;
     const towns = array[0]?.states[stateIndex]?.local_government[index]?.towns;
+
     const townString =
       towns?.length > 0 ? towns?.map((x: any) => x?.town_name) : null;
     setCountry(country);
@@ -71,6 +77,7 @@ const TownScreen = (props: Props) => {
     setData(townString);
     setLga(localGov);
     setLocalGovId(localGovId);
+    setDataObj(towns);
   }, [Region]);
 
   return (
@@ -106,9 +113,12 @@ const TownScreen = (props: Props) => {
           <Table
             columns={tableHeaders}
             data={data}
-            onDeleteClick={deleteTown}
-            onEditClick={updateTown}
+            screen="town"
             noView={true}
+            dataDetails={dataObj}
+            stateId={stateId}
+            documentId={countryId}
+            local_gov_id={localGovId}
           />
           <AddLocationModal
             Region={country}

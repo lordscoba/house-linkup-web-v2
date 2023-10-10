@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addLocalGovAction,
+  addStateAction,
   addTownAction,
 } from '../redux/actions/dashboard/location.action';
 import { StoreReducerTypes } from '../redux/store';
@@ -31,21 +32,9 @@ const AddLocationModal = ({
   location,
   index,
   screen,
-}: // handleSubmit,
-Props) => {
-  // const [localGov, setLocalGov] = useState('');
+}: Props) => {
   const [text, setText] = useState('');
   const dispatch = useDispatch();
-  const [data, setData] = useState([]);
-  const [country, setCountry] = useState('');
-  const [state, setState] = useState('');
-  const [lga, setLga] = useState('');
-  // const [localGovId, setLocalGovId] = useState('');
-  // const [show, setShow] = useState<boolean>(false);
-
-  // const _Region = useSelector(
-  //   (state: StoreReducerTypes) => state.fetchAllRegion
-  // );
 
   const handleSubmit = () => {
     if (!text) return;
@@ -57,7 +46,6 @@ Props) => {
           stateId,
         }) as any
       );
-      setShow(false);
     }
 
     if (screen === 'Town') {
@@ -69,9 +57,12 @@ Props) => {
           town_name: text,
         }) as any
       );
-
-      setShow(false);
     }
+
+    if (screen === 'state') {
+      dispatch(addStateAction({ countryId, state: text }) as any);
+    }
+    setShow(false);
   };
 
   return (

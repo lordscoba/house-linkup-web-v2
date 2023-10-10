@@ -22,8 +22,8 @@ export interface AddTownInterface {
 }
 
 export interface DeleteStateInterface {
-  documentId: string;
-  stateId: string;
+  documentId: string | any;
+  stateId: string | any;
 }
 
 export interface DeleteLocalGovInterface {

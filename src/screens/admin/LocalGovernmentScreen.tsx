@@ -45,6 +45,9 @@ const LocalGovernmentScreen = (props: Props) => {
   const delete_lga = useSelector(
     (state: StoreReducerTypes) => state?.deleteLocalGov
   );
+  const edit_lga = useSelector(
+    (state: StoreReducerTypes) => state?.editLocalGov
+  );
 
   const handleUpdate = (index: any) => {};
 
@@ -58,7 +61,7 @@ const LocalGovernmentScreen = (props: Props) => {
   }, []);
   useEffect(() => {
     dispatch(fecthAllRegionsAction() as any);
-  }, [lga, delete_lga]);
+  }, [lga, delete_lga, edit_lga]);
 
   useEffect(() => {
     const array = Region?.serverResponse;

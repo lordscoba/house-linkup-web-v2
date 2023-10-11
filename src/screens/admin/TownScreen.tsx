@@ -7,13 +7,14 @@ import Table from '../../components/Table';
 import AddLocationModal from '../../modals/AddLocationModal';
 import { DashboardNavbar } from '../../components/adminDashboard/dashboard-navbar';
 import { DashboardSideBar } from '../../components/adminDashboard/dashboard-sidebar';
+import EditModal from '../../modals/EditModal';
 
 type Props = {};
 
 const TownScreen = (props: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  const [country, setCountry] = useState('');
+  const [country, setCountry] = useState('') as any;
   const [state, setState] = useState('');
   const [lga, setLga] = useState('');
   const [localGovId, setLocalGovId] = useState('');
@@ -40,17 +41,15 @@ const TownScreen = (props: Props) => {
     (state: StoreReducerTypes) => state?.deleteTown
   );
 
-  const deleteTown = (index: any) => {};
-  const updateTown = () => {};
+  const edit_town = useSelector((state: StoreReducerTypes) => state?.editTown);
 
-  const openTownModal = () => {};
   useEffect(() => {
     dispatch(fecthAllRegionsAction() as any);
   }, []);
 
   useEffect(() => {
     dispatch(fecthAllRegionsAction() as any);
-  }, [addTown, delete_town]);
+  }, [addTown, delete_town, edit_town]);
 
   useEffect(() => {
     const array = Region?.serverResponse;
@@ -102,7 +101,7 @@ const TownScreen = (props: Props) => {
             {' '}
             LGA : {lga}
           </h4>
-          <div onClick={openTownModal} className=" w-[12rem]  ml-auto my-4 ">
+          <div className=" w-[12rem]  ml-auto my-4 ">
             <button
               onClick={() => setShow(true)}
               className="w-full border md:px-8 md:py-1 px-2 py-2 bg-[#6726A8] text-[#fff] rounded-lg text-[.8rem] md:text-[1rem] pr-4"
@@ -119,6 +118,7 @@ const TownScreen = (props: Props) => {
             stateId={stateId}
             documentId={countryId}
             local_gov_id={localGovId}
+            country={country}
           />
           <AddLocationModal
             Region={country}

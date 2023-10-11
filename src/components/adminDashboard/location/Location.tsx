@@ -22,6 +22,9 @@ const Location = (props: Props) => {
   const delete_state = useSelector(
     (state: StoreReducerTypes) => state?.deleteState
   );
+  const edit_state = useSelector(
+    (state: StoreReducerTypes) => state?.editState
+  );
 
   const tableHeaders = [
     { label: 'States' },
@@ -33,8 +36,6 @@ const Location = (props: Props) => {
   const addState = () => {
     setShow(true);
   };
-
-  const handleCountryDelete = () => {};
 
   useEffect(() => {
     const d = Region?.serverResponse[0]?.states?.map((x: any) => x?.state);
@@ -51,7 +52,7 @@ const Location = (props: Props) => {
 
   useEffect(() => {
     dispatch(fecthAllRegionsAction() as any);
-  }, [add_state, delete_state]);
+  }, [add_state, delete_state, edit_state]);
 
   return (
     <div className="p-3 md:p-5 flex flex-col gap-5">

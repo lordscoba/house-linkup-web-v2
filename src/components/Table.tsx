@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { deleteLocalGovAction } from '../redux/actions/dashboard/location.action';
 import { RESET_DELETE_LOCAL_GOV } from '../redux/constants/dashboard/location.constants';
 import DeleteModal from '../modals/DeleteModal';
+import EditModal from '../modals/EditModal';
 
 // interface DynamicInterface {
 //   [key: string]: number; // Property names are strings, and values are numbers
@@ -19,10 +20,11 @@ interface TableProps {
   link?: string;
   noView?: boolean;
   dataDetails?: string[];
-  documentId?: string;
+  documentId?: string | any;
   stateId?: string;
   screen: string;
   local_gov_id?: string;
+  country?: any;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -35,6 +37,7 @@ const Table: React.FC<TableProps> = ({
   stateId,
   screen,
   local_gov_id,
+  country,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -44,8 +47,9 @@ const Table: React.FC<TableProps> = ({
   const [state_id, setState_id] = useState('') as any;
   const [text, setText] = useState('');
   const [screenName, setScreenName] = useState('');
-
   const [townId, setTownId] = useState('');
+
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
   const view = (index: any) => {
     const item = data[index];
@@ -90,7 +94,41 @@ const Table: React.FC<TableProps> = ({
     setShowDelete(true);
   };
 
-  const onEditClick = (index: any) => {};
+  const onEditClick = (index: any) => {
+    if (screen === 'lga') {
+      setText('LGA');
+      setScreenName('lga');
+      const findState: any = dataDetails?.find(
+        (x: any) => x?.local_government_name === index
+      );
+      const _id = findState?._id;
+      setLga_id(_id);
+      setName(index);
+      setState_id(stateId);
+    }
+
+    if (screen === 'town') {
+      setText('Town');
+      setScreenName('town');
+      const findTown: any = dataDetails?.find(
+        (x: any) => x?.town_name === index
+      );
+      const townId = findTown?._id;
+      setName(index);
+      setTownId(townId);
+      setLga_id(local_gov_id);
+      setState_id(stateId);
+    }
+    if (screen === 'state') {
+      setText('State');
+      setScreenName('state');
+      setName(index);
+      const state: any = dataDetails?.find((x: any) => x?.state === index);
+      const id = state?._id;
+      setState_id(id);
+    }
+    setShowEditModal(true);
+  };
   return (
     <>
       <section className="bg-[#fff] p-[1rem] rounded-lg mt-10 overflow-x-auto overflow-y-auto md:h-auto w-full hide-scrollbar   ">
@@ -133,9 +171,10 @@ const Table: React.FC<TableProps> = ({
                       )}
 
                       <td
+                        onClick={() => onEditClick(item)}
                         className={`flex-1 px-4 py-2 text-[black] cursor-pointer  whitespace-nowrap w-[15rem] text-center border hover:bg-[#D9F4DD] hover:text-[green]`}
                       >
-                        <button onClick={() => onEditClick(item)}>
+                        <button>
                           {' '}
                           <img
                             src={EditIcon}
@@ -145,9 +184,10 @@ const Table: React.FC<TableProps> = ({
                         </button>
                       </td>
                       <td
+                        onClick={() => onDeleteClick(item)}
                         className={` flex-1 px-4 py-2 text-[black]  whitespace-nowrap w-[15rem] text-center border`}
                       >
-                        <button onClick={() => onDeleteClick(item)}>
+                        <button>
                           {' '}
                           <img
                             src={RedDeleteIcon}
@@ -176,6 +216,20 @@ const Table: React.FC<TableProps> = ({
         localGovId={lga_id}
         townId={townId}
         screen={screenName}
+      />
+      <EditModal
+        Region={country}
+        countryId={documentId}
+        location={text}
+        screen={screenName}
+        setShow={setShowEditModal}
+        show={showEditModal}
+        town_name={name}
+        state_name={name}
+        local_gov_name={name}
+        localGovId={lga_id}
+        stateId={state_id}
+        townId={townId}
       />
     </>
   );

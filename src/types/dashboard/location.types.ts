@@ -52,14 +52,14 @@ export interface EditStateInterface {
 export interface EditLgaInterface {
   documentId: string | any;
   stateId: string | any;
-  localGovId: string;
+  localGovId: string | any;
   local_gov_name: string | any;
 }
 
 export interface EditTownInterface {
   documentId: string | any;
   stateId: string | any;
-  localGovId: string;
-  townId: string;
+  localGovId: string | any;
+  townId: string | any;
   town_name: string | any;
 }

@@ -132,16 +132,18 @@ const UploadForm = ({ setData }: Props) => {
     const lga = Region?.serverResponse[0]?.states?.map(
       (x: any) => x?.local_government
     );
-    const lgaArr = [].concat(...lga);
-    const mapLga = lgaArr?.map((x: any) => x?.local_government_name);
+    if (lga) {
+      const lgaArr = [].concat(...lga);
+      const mapLga = lgaArr?.map((x: any) => x?.local_government_name);
 
-    const towns = lgaArr?.map((t: any) => t?.towns);
-    const townsArray = [].concat(...towns);
-    const mapTowns = townsArray?.map((dist: any) => dist?.town_name);
+      const towns = lgaArr?.map((t: any) => t?.towns);
+      const townsArray = [].concat(...towns);
+      const mapTowns = townsArray?.map((dist: any) => dist?.town_name);
+      setTownArry(mapTowns);
+      setLgaArry(mapLga);
+      // console.log({ mapLga });
+    }
 
-    setTownArry(mapTowns);
-    setLgaArry(mapLga);
-    console.log({ mapLga });
     setStateArry(state);
   }, [Region]);
   return (

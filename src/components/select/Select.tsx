@@ -1,29 +1,4 @@
-// import React, { ChangeEvent } from 'react';
-
-// interface SelectProps {
-//   options: string[];
-//   value: string;
-//   onChange: (selectedValue: string) => void;
-// }
-
-// const Select: React.FC<SelectProps> = ({ options, value, onChange }) => {
-//   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-//     onChange(event.target.value);
-//   };
-
-//   return (
-//     <select value={value} onChange={handleChange}>
-//       {options.map((option, index) => (
-//         <option key={index} value={option} >
-//           {option}
-//         </option>
-//       ))}
-//     </select>
-//   );
-// };
-
-// export default Select;
-
+import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowDown } from '../../assets/icons';
 

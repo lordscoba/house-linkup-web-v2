@@ -5,7 +5,7 @@ import Application from '../../components/user-dashboad/Application';
 
 type Props = {};
 
-const ApplicationScreen = (props: Props) => {
+const UserApplicationScreen = (props: Props) => {
   return (
     <div>
       <UserDashboardNav />
@@ -15,4 +15,4 @@ const ApplicationScreen = (props: Props) => {
   );
 };
 
-export default ApplicationScreen;
+export default UserApplicationScreen;

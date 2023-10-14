@@ -1,18 +1,18 @@
 import React from 'react';
 import UserDashboardNav from '../../components/user-dashboad/UserDashboardNav';
 import { Footer } from '../../components/layout';
-import { UserDashboard } from '../../components/user-dashboad';
+import Application from '../../components/user-dashboad/Application';
 
 type Props = {};
 
-const UserDashboardScreen = (props: Props) => {
+const ApplicationScreen = (props: Props) => {
   return (
     <div>
       <UserDashboardNav />
-      <UserDashboard />
+      <Application />
       <Footer />
     </div>
   );
 };
 
-export default UserDashboardScreen;
+export default ApplicationScreen;

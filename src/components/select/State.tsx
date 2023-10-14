@@ -1,19 +1,20 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { StoreReducerTypes } from '../../redux/store';
+import { ArrowDown } from '../../assets/icons';
 import {
   AdminDashboardInterface,
   RegionArray,
   StateInterface,
-} from '../types/select';
-import { ArrowDown } from '../assets/icons';
-import { StoreReducerTypes } from '../redux/store';
-import { fecthAllRegionsAction } from '../redux/actions/dashboard/location.action';
+} from '../../types/select';
+import { fecthAllRegionsAction } from '../../redux/actions/dashboard/location.action';
 
 type Props = {
   location: string;
+  stateValue?: string;
 };
 
-const State = ({ location }: Props) => {
+const State = ({ location, stateValue }: Props) => {
   const dispatch = useDispatch();
   const [state, setState] = useState<RegionArray>([]);
   const [selected, setSelected] = useState<string>('');
@@ -33,6 +34,10 @@ const State = ({ location }: Props) => {
     dispatch(fecthAllRegionsAction() as any);
   }, []);
 
+  useEffect(() => {
+    stateValue = selected;
+  }, [selected]);
+
   return (
     <div className="w-full ">
       {state?.length > 0
@@ -40,18 +45,12 @@ const State = ({ location }: Props) => {
             return (
               <div className="">
                 <label
-                  htmlFor={`location`}
+                  htmlFor={`${location}`}
                   className="mb-2 text-[17px] font-[600]"
                 >
                   {location}
                 </label>
-                <div
-                  className={`${
-                    location === 'Location'
-                      ? 'border-none'
-                      : 'border rounded-md'
-                  } px-4 py-2 `}
-                >
+                <div className="border px-4 py-2 rounded-md">
                   <p
                     className="w-full  border-none outline-none flex justify-between items-center text-[#443e3e] text-[14px]"
                     onClick={() => setShowDropDown((prev) => !prev)}
@@ -60,7 +59,7 @@ const State = ({ location }: Props) => {
                       type="text"
                       value={selected}
                       onChange={(e) => e.target.value}
-                      placeholder="Select location "
+                      placeholder={`Select ${location}`}
                       className="border-none outline-none"
                     />
 

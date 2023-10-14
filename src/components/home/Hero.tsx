@@ -5,6 +5,8 @@ import Advantages from './Advantages';
 import HowHouseLinkupWorks from './HowHouseLinkupWorks';
 import Reviews from './Reviews';
 import VideoAndSearch from '../layout/VideoAndSearch';
+import TownsSelect from '../select/TownsSelect';
+import HouseTypes from '../HouseTypes';
 
 const Hero = () => {
   return (
@@ -76,8 +78,11 @@ const HeroCard = () => {
         <div className="w-[241px] xl:min-w-[151px]">
           <State location="Location" />
         </div>
+        {/* <HouseType /> */}
 
-        <HouseType />
+        <div className="h-8">
+          <HouseTypes heading="House Type" height={8} />
+        </div>
         <PriceRange />
 
         <button
@@ -91,132 +96,132 @@ const HeroCard = () => {
   );
 };
 
-const HouseType = () => {
-  const [selected, setSelected] = useState<string>('');
-  const [showDropDown, setShowDropDown] = useState<Boolean>(false);
+// export const HouseType = () => {
+//   const [selected, setSelected] = useState<string>('');
+//   const [showDropDown, setShowDropDown] = useState<Boolean>(false);
 
-  const handleClick = (e: string) => {
-    setSelected(e);
-    setShowDropDown(false);
-  };
+//   const handleClick = (e: string) => {
+//     setSelected(e);
+//     setShowDropDown(false);
+//   };
 
-  return (
-    <div className="mb-4 ">
-      <section>
-        <p>House Type</p>
-        <p
-          className="w-[241px] xl:min-w-[151px] h-8 border-none outline-none flex justify-between items-center text-[#443e3e] text-[14px]"
-          onClick={() => setShowDropDown((prev) => !prev)}
-        >
-          <input
-            type="text"
-            value={selected}
-            onChange={(e) => e.target.value}
-            placeholder="Select house type "
-            className="border-none outline-none"
-          />
+//   return (
+//     <div className="mb-4 ">
+//       <section>
+//         <p>House Type</p>
+//         <p
+//           className="w-[241px] xl:min-w-[151px] h-8 border-none outline-none flex justify-between items-center text-[#443e3e] text-[14px]"
+//           onClick={() => setShowDropDown((prev) => !prev)}
+//         >
+//           <input
+//             type="text"
+//             value={selected}
+//             onChange={(e) => e.target.value}
+//             placeholder="Select house type "
+//             className="border-none outline-none"
+//           />
 
-          <img
-            src={ArrowDown}
-            alt="arrow icon"
-            width={18}
-            height={18}
-            className="text-end ml-auto cursor-pointer"
-          />
-        </p>
+//           <img
+//             src={ArrowDown}
+//             alt="arrow icon"
+//             width={18}
+//             height={18}
+//             className="text-end ml-auto cursor-pointer"
+//           />
+//         </p>
 
-        {showDropDown ? (
-          <div className="  mt-3 h-[8rem] overflow-y-auto pl-2 ">
-            <section className="mb-4">
-              <h4 className="font-semibold  text-[#333] pl-3 uppercase mb-2">
-                Residential Units
-              </h4>
+//         {showDropDown ? (
+//           <div className="  mt-3 h-[8rem] overflow-y-auto pl-2 ">
+//             <section className="mb-4">
+//               <h4 className="font-semibold  text-[#333] pl-3 uppercase mb-2">
+//                 Residential Units
+//               </h4>
 
-              <div
-                // onClick={() => setSelected('Self Con')}
-                onClick={() => handleClick('Self Con')}
-                className="cursor-pointer flex items-center gap-2"
-              >
-                <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
-                <span>Self Con</span>
-              </div>
-              <div
-                // onClick={() => setSelected('Single Room')}
-                onClick={() => handleClick('Single Room')}
-                className="cursor-pointer flex items-center gap-2"
-              >
-                <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
-                <span>Single Room</span>
-              </div>
-              <div
-                // onClick={() => setSelected('1 bedroom flat')}
-                onClick={() => handleClick('1 bedroom flat')}
-                className="cursor-pointer flex items-center gap-2"
-              >
-                <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
-                <span>1 bedroom flat</span>
-              </div>
-              <div
-                // onClick={() => setSelected('2 bedroom flat')}
-                onClick={() => handleClick('2 bedroom flat')}
-                className="cursor-pointer flex items-center gap-2"
-              >
-                <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
-                <span>2 bedroom flat</span>
-              </div>
-              <div
-                // onClick={() => setSelected('3 bedroom flat')}
-                onClick={() => handleClick('3 bedroom flat')}
-                className="cursor-pointer flex items-center gap-2"
-              >
-                <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
-                <span>3 bedroom flat</span>
-              </div>
-              <div
-                // onClick={() => setSelected('Others')}
-                onClick={() => handleClick('Others')}
-                className="cursor-pointer flex items-center gap-2"
-              >
-                <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
-                <span>Others</span>
-              </div>
-            </section>
-            <section>
-              <h4 className="font-semibold  text-[#333] pl-3 uppercase mb-2">
-                Commercials
-              </h4>
+//               <div
+//                 // onClick={() => setSelected('Self Con')}
+//                 onClick={() => handleClick('Self Con')}
+//                 className="cursor-pointer flex items-center gap-2"
+//               >
+//                 <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
+//                 <span>Self Con</span>
+//               </div>
+//               <div
+//                 // onClick={() => setSelected('Single Room')}
+//                 onClick={() => handleClick('Single Room')}
+//                 className="cursor-pointer flex items-center gap-2"
+//               >
+//                 <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
+//                 <span>Single Room</span>
+//               </div>
+//               <div
+//                 // onClick={() => setSelected('1 bedroom flat')}
+//                 onClick={() => handleClick('1 bedroom flat')}
+//                 className="cursor-pointer flex items-center gap-2"
+//               >
+//                 <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
+//                 <span>1 bedroom flat</span>
+//               </div>
+//               <div
+//                 // onClick={() => setSelected('2 bedroom flat')}
+//                 onClick={() => handleClick('2 bedroom flat')}
+//                 className="cursor-pointer flex items-center gap-2"
+//               >
+//                 <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
+//                 <span>2 bedroom flat</span>
+//               </div>
+//               <div
+//                 // onClick={() => setSelected('3 bedroom flat')}
+//                 onClick={() => handleClick('3 bedroom flat')}
+//                 className="cursor-pointer flex items-center gap-2"
+//               >
+//                 <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
+//                 <span>3 bedroom flat</span>
+//               </div>
+//               <div
+//                 // onClick={() => setSelected('Others')}
+//                 onClick={() => handleClick('Others')}
+//                 className="cursor-pointer flex items-center gap-2"
+//               >
+//                 <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
+//                 <span>Others</span>
+//               </div>
+//             </section>
+//             <section>
+//               <h4 className="font-semibold  text-[#333] pl-3 uppercase mb-2">
+//                 Commercials
+//               </h4>
 
-              <div
-                // onClick={() => setSelected('Shop')}
-                onClick={() => handleClick('Shop')}
-                className="cursor-pointer flex items-center gap-2"
-              >
-                <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
-                <span>Shop</span>
-              </div>
-              <div
-                // onClick={() => setSelected('Office')}
-                onClick={() => handleClick('Office')}
-                className="cursor-pointer flex items-center gap-2"
-              >
-                <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
-                <span>Office</span>
-              </div>
-              <div
-                // onClick={() => setSelected('Others')}
-                onClick={() => handleClick('Others')}
-                className="cursor-pointer flex items-center gap-2"
-              >
-                <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
-                <span>Others</span>
-              </div>
-            </section>
-          </div>
-        ) : null}
-      </section>
-    </div>
-  );
-};
+//               <div
+//                 // onClick={() => setSelected('Shop')}
+//                 onClick={() => handleClick('Shop')}
+//                 className="cursor-pointer flex items-center gap-2"
+//               >
+//                 <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
+//                 <span>Shop</span>
+//               </div>
+//               <div
+//                 // onClick={() => setSelected('Office')}
+//                 onClick={() => handleClick('Office')}
+//                 className="cursor-pointer flex items-center gap-2"
+//               >
+//                 <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
+//                 <span>Office</span>
+//               </div>
+//               <div
+//                 // onClick={() => setSelected('Others')}
+//                 onClick={() => handleClick('Others')}
+//                 className="cursor-pointer flex items-center gap-2"
+//               >
+//                 <p className="w-1.5 h-1.5 rounded-full bg-black"></p>
+//                 <span>Others</span>
+//               </div>
+//             </section>
+//           </div>
+//         ) : null}
+//       </section>
+//     </div>
+//   );
+// };
 
 const PriceRange = () => {
   // const [data, setData] = useState<PriceListData>([]);
@@ -231,7 +236,7 @@ const PriceRange = () => {
   return (
     <div className="mb-4 ">
       <section>
-        <p>House Type</p>
+        <p>Price </p>
         <p
           className="w-[241px] xl:min-w-[151px] h-8 border-none outline-none flex justify-between items-center text-[#443e3e] text-[14px]"
           onClick={() => setShowDropDown((prev) => !prev)}

@@ -18,7 +18,10 @@ import {
   TownScreen,
   UsersScreen,
 } from './screens/admin';
-import { UserDashboardScreen } from './screens/user-dashboard';
+import {
+  ApplicationScreen,
+  UserDashboardScreen,
+} from './screens/user-dashboard';
 
 const App = createBrowserRouter([
   {
@@ -97,6 +100,11 @@ const App = createBrowserRouter([
   {
     path: '/dashboard/user',
     element: <UserDashboardScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/dashboard/user/application',
+    element: <ApplicationScreen />,
     errorElement: <ErrorScreen />,
   },
 ]);

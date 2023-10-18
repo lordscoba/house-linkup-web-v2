@@ -7,6 +7,10 @@ import {
   userDetailsReducer,
 } from './reducers/auth-reducers/auth.reducers';
 import {
+  getUserUploadedHouseReducer,
+  uploadHouseReducer,
+} from './reducers/dashboard/house.reducers';
+import {
   addLocalGovReducer,
   addStateReducer,
   addTownReducer,
@@ -73,13 +77,13 @@ export type StoreReducerTypes = {
   editLocalGov: ReturnType<typeof editLgaReducer>;
   editTown: ReturnType<typeof editTownReducer>;
   // users dashboard
-  // uploadHouse: ReturnType<typeof uploadHouseReducer>;
+  uploadHouse: ReturnType<typeof uploadHouseReducer>;
   // uploadparlorImage: ReturnType<typeof uploaParlorImageReducer>;
   // uploadKitchenImage: ReturnType<typeof uploadKitchenImageReducer>;
   // uploadToiletImage: ReturnType<typeof uploadToiletImageReducer>;
   // uploadRoomImage: ReturnType<typeof uploadRoomImageReducer>;
   // uploadBathRoomImage: ReturnType<typeof uploadBathRoomImageReducer>;
-  // getUserUploads: ReturnType<typeof getUserUploadedHouseReducer>;
+  getUserUploads: ReturnType<typeof getUserUploadedHouseReducer>;
 };
 
 const reducer: StoreReducerTypes = combineReducers({
@@ -113,13 +117,13 @@ const reducer: StoreReducerTypes = combineReducers({
   editLocalGov: editLgaReducer,
   editTown: editTownReducer,
   // users dashboard
-  // uploadHouse: uploadHouseReducer,
+  uploadHouse: uploadHouseReducer,
   // uploadparlorImage: uploaParlorImageReducer,
   // uploadKitchenImage: uploadKitchenImageReducer,
   // uploadToiletImage: uploadToiletImageReducer,
   // uploadRoomImage: uploadRoomImageReducer,
   // uploadBathRoomImage: uploadBathRoomImageReducer,
-  // getUserUploads: getUserUploadedHouseReducer,
+  getUserUploads: getUserUploadedHouseReducer,
 });
 
 const initialState: any = {

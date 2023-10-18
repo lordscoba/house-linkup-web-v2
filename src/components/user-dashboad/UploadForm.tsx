@@ -4,6 +4,10 @@ import { StoreReducerTypes } from '../../redux/store';
 import { ArrowDown } from '../../assets/icons';
 import { fecthAllRegionsAction } from '../../redux/actions/dashboard/location.action';
 import SelectWithSearch from '../select/SelectWithSearch';
+import { uploadHouseUserAction } from '../../redux/actions/dashboard/house.action';
+import { UPLOAD_HOUSE_RESET } from '../../redux/constants/dashboard/house.constants';
+import { Loader } from '../loader';
+import Message from '../message/Message';
 
 type Props = {
   setData: Function;
@@ -12,6 +16,7 @@ type Props = {
 const UploadForm = ({ setData }: Props) => {
   const dispatch = useDispatch();
   const [imageArray, setImageArray] = useState([]) as any;
+  const [image, setImage] = useState<string[]>([]) as any;
 
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
@@ -25,9 +30,9 @@ const UploadForm = ({ setData }: Props) => {
   const [fullName, setFullname] = useState('');
   const [email, setEmail] = useState('');
   const [address, setaddress] = useState('');
-  const [posterId, setPosterId] = useState('');
+  // const [posterId, setPosterId] = useState('');
 
-  const [token, setToken] = useState('');
+  // const [token, setToken] = useState('');
 
   const [selectedTown, setSelectedTown] = useState('');
   const [townArray, setTownArry] = useState([]) as any;
@@ -39,6 +44,12 @@ const UploadForm = ({ setData }: Props) => {
 
   const [selectedHomeType, setSelectedHomeType] = useState<string>('');
   const [showDropDown, setShowDropDown] = useState<Boolean>(false);
+
+  const storedData = localStorage.getItem('loginUser')
+    ? JSON.parse(localStorage.getItem('loginUser') as any)
+    : null;
+
+  const token = storedData?.token;
 
   const handleClick = (e: any) => {
     setSelectedHomeType(e);
@@ -58,13 +69,17 @@ const UploadForm = ({ setData }: Props) => {
   const Region = useSelector(
     (state: StoreReducerTypes) => state.fetchAllRegion
   );
+  const uploadHouse = useSelector(
+    (state: StoreReducerTypes) => state?.uploadHouse
+  );
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     const arrays = {
       image: imageArray,
       full_name: fullName,
-      email,
+      poster_email: email,
       address,
       house_type: selectedHomeType,
       state: selectedState,
@@ -84,59 +99,70 @@ const UploadForm = ({ setData }: Props) => {
       behavior: 'smooth',
     });
 
-    // dispatch(
-    //   uploadHouseUserAction({
-    //     address,
-    //     city,
-    //     description,
-    //     email,
-    //     frontImage: image,
-    //     full_Name: fullName,
-    //     house_type,
-    //     local_government,
-    //     poster: posterId,
-    //     price,
-    //     state,
-    //     status,
-    //     totalNum_ofParlor: numOfParlor,
-    //     totalNum_ofKitchen: numOfKitchen,
-    //     totalNum_ofRooms: numOfRooms,
-    //     totalNum_ofToilet: numOfToilet,
-    //     totalNum_ofBathroom: numOfBathRoom,
-    //     token,
-    //   }) as any
-    // );
+    dispatch(
+      uploadHouseUserAction({
+        address,
+        description,
+        email,
+        full_Name: fullName,
+        house_type: selectedHomeType,
+        image,
+        lga: selectedLga,
+        price,
+        state: selectedState,
+        status,
+        token,
+        totalNum_ofParlor: numOfParlor,
+        totalNum_ofKitchen: numOfKitchen,
+        totalNum_ofRooms: numOfRooms,
+        totalNum_ofToilet: numOfToilet,
+        totalNum_ofBathroom: numOfBathRoom,
+        town: selectedTown,
+      }) as any
+    );
 
-    // dispatch({ type: UPLOAD_HOUSE_RESET });
+    console.log({
+      // address,
+      // description,
+      // email,
+      // full_Name: fullName,
+      // house_type: selectedHomeType,
+      image,
+      // lga: selectedLga,
+      // price,
+      // state: selectedState,
+      // status,
+      // token,
+      // totalNum_ofParlor: numOfParlor,
+      // totalNum_ofKitchen: numOfKitchen,
+      // totalNum_ofRooms: numOfRooms,
+      // totalNum_ofToilet: numOfToilet,
+      // totalNum_ofBathroom: numOfBathRoom,
+      // town: selectedTown,
+    });
+
+    dispatch({ type: UPLOAD_HOUSE_RESET });
   };
 
   // USEEFFECT
-
-  useEffect(() => {
-    const storedData = localStorage.getItem('loginUser')
-      ? JSON.parse(localStorage.getItem('loginUser') as any)
-      : null;
-
-    const storedToken = storedData?.token;
-    const id = storedData?.userDoc?._id;
-    setPosterId(id);
-    setToken(storedToken);
-  }, []);
 
   useEffect(() => {
     dispatch(fecthAllRegionsAction() as any);
   }, []);
 
   useEffect(() => {
-    const state = Region?.serverResponse[0]?.states?.map((x: any) => x?.state);
-    const lga = Region?.serverResponse[0]?.states?.map(
-      (x: any) => x?.local_government
-    );
-    if (lga) {
+    const state = Region
+      ? Region?.serverResponse[0]?.states?.map((x: any) => x?.state)
+      : null;
+
+    if (state) {
+      const lga = Region?.serverResponse[0]?.states?.map(
+        (x: any) => x?.local_government
+      );
       const lgaArr = [].concat(...lga);
       const mapLga = lgaArr?.map((x: any) => x?.local_government_name);
 
-      const towns = lgaArr?.map((t: any) => t?.towns);
+      const towns: any = lgaArr?.map((t: any) => t?.towns);
       const townsArray = [].concat(...towns);
       const mapTowns = townsArray?.map((dist: any) => dist?.town_name);
       setTownArry(mapTowns);
@@ -148,6 +174,13 @@ const UploadForm = ({ setData }: Props) => {
   }, [Region]);
   return (
     <section className="w-full max-w-[1130px] py-[23px] m-auto xl:px-0 hide-scrollbar">
+      {uploadHouse?.loading ? <Loader variant="circular" /> : null}
+      {uploadHouse?.success ? (
+        <Message type="success">{uploadHouse?.serverResponse?.message}</Message>
+      ) : null}
+      {uploadHouse?.error ? (
+        <Message type="danger"> {uploadHouse?.serverError}</Message>
+      ) : null}
       <form
         onSubmit={handleFormSubmit}
         className="w-full xl:w-[1130px] m-auto bg-[#fff] rounded-lg lg:px-[63px] px-2  py-[42px]    mb-[5rem] border"
@@ -523,7 +556,7 @@ const UploadForm = ({ setData }: Props) => {
           </section>
           {/* IMAGE UPLOAD */}
 
-          <HouseImages setImageArray={setImageArray} />
+          <HouseImages setImageArray={setImageArray} setImg={setImage} />
 
           <div className="text-center mt-[55px]">
             <button
@@ -543,36 +576,44 @@ export default UploadForm;
 
 interface HouseInterface {
   setImageArray: (a: any) => void;
+  setImg: (a: any) => void;
 }
 
-const HouseImages = ({ setImageArray }: HouseInterface) => {
+const HouseImages = ({ setImageArray, setImg }: HouseInterface) => {
   const [image, setImage] = useState(null) as any;
   const [imageName, setImageName] = useState('');
-  const [isImage, setIsImage] = useState<boolean>(false);
+  const [files, setFiles] = useState<[]>([]) as any;
   const [arr, setArr] = useState([]) as any;
   const fileRef = useRef(null) as any;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event?.target?.files?.[0];
+    const file = event?.target?.files;
+
     setImage(file);
-    if (file && file.type.startsWith('image/')) {
-      const imageURL = URL.createObjectURL(file);
+    if (file) {
+      const imageURL = URL.createObjectURL(file[0]);
       setImage(imageURL);
-      setImageName(file?.name);
+      setImageName(file[0]?.name);
       setArr([...arr, imageURL]);
       setImageArray([...arr, imageURL]);
+      setFiles([...files, file]);
+      setImg([...files, file]);
     }
   };
 
   // HANDLE DROP FUNCTION
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      const imageURL = URL.createObjectURL(file);
+    const file = event.dataTransfer.files;
+    // setImg(file);
+    if (file) {
+      const imageURL = URL.createObjectURL(file[0]);
       setImage(imageURL);
-      setImageName(file?.name);
-      setArr([...arr, imageURL]);
+      setImageName(file[0]?.name);
+      setArr([...arr, file]);
+      setImageArray([...arr, imageURL]);
+      setFiles([...files, file]);
+      setImg([...files, file]);
     }
   };
 
@@ -638,9 +679,10 @@ const HouseImages = ({ setImageArray }: HouseInterface) => {
           <input
             type="file"
             name="image"
+            id="image"
             accept="image/*"
             onChange={handleFileChange}
-            // maxLength={6}
+            multiple
             ref={fileRef}
             className="hidden"
           />

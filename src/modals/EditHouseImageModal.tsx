@@ -1,16 +1,47 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { editHouseImageAction } from '../redux/actions/dashboard/house.action';
+import { StoreReducerTypes } from '../redux/store';
+import { Loader } from '../components/loader';
+import Message from '../components/message/Message';
+import { UPDATE_HOUSE_IMAGE_RESET } from '../redux/constants/dashboard/house.constants';
 
 type Props = {
   show: boolean;
   setShow: (a: any) => void;
   _id: string;
   img_url: string;
+  token: string;
+  houseId: string;
 };
 
-const EditHouseImageModal = ({ show, setShow, _id, img_url }: Props) => {
+const EditHouseImageModal = ({
+  show,
+  setShow,
+  _id,
+  img_url,
+  token,
+  houseId,
+}: Props) => {
+  const dispatch = useDispatch();
   const [image, setImage] = useState('');
+  const [file, setFile] = useState(null) as any;
   const fileRef = useRef(null) as any;
-  const handlEdit = () => {};
+
+  const editHouseImage = useSelector(
+    (state: StoreReducerTypes) => state?.editHouseImage
+  );
+
+  const handlEdit = () => {
+    dispatch(
+      editHouseImageAction({
+        houseId,
+        image: file,
+        imageId: _id,
+        token,
+      }) as any
+    );
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event?.target?.files;
@@ -18,6 +49,7 @@ const EditHouseImageModal = ({ show, setShow, _id, img_url }: Props) => {
     if (file) {
       const imageURL = URL.createObjectURL(file[0]);
       setImage(imageURL);
+      setFile(file[0]);
     }
   };
 
@@ -30,6 +62,26 @@ const EditHouseImageModal = ({ show, setShow, _id, img_url }: Props) => {
   useEffect(() => {
     setImage('');
   }, [NotShow]);
+
+  useEffect(() => {
+    let timeOut: ReturnType<typeof setTimeout>;
+    if (editHouseImage?.success) {
+      setShow(false);
+      timeOut = setTimeout(() => {
+        editHouseImage.serverResponse.message = '';
+        dispatch({ type: UPDATE_HOUSE_IMAGE_RESET });
+      }, 2000);
+    }
+
+    if (editHouseImage?.error) {
+      timeOut = setTimeout(() => {
+        editHouseImage.serverError = '';
+        dispatch({ type: UPDATE_HOUSE_IMAGE_RESET });
+      }, 2000);
+    }
+
+    return () => clearTimeout(timeOut);
+  }, [editHouseImage]);
 
   return (
     <>
@@ -51,10 +103,24 @@ const EditHouseImageModal = ({ show, setShow, _id, img_url }: Props) => {
                 />
 
                 <div className="inline-block w-full relative cursor-pointer text-center  ">
+                  {editHouseImage?.loading ? (
+                    <Loader variant="circular" />
+                  ) : null}
+                  {editHouseImage?.success ? (
+                    <Message type="success">
+                      {editHouseImage?.serverResponse?.message}
+                    </Message>
+                  ) : null}
+
+                  {editHouseImage?.error ? (
+                    <Message type="danger">
+                      {editHouseImage?.serverError}
+                    </Message>
+                  ) : null}
                   <label
                     htmlFor="browse"
                     onClick={handleLabelClick}
-                    className="inline-block py-[10px] px-[20px] cursor-pointer text-[#69B99D] font-[500] text-[1rem]"
+                    className="inline-block py-[10px] px-[20px] cursor-pointer text-[#69B99D] font-[500] text-[1rem] uppercase"
                   >
                     upload
                   </label>

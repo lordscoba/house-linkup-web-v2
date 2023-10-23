@@ -1,13 +1,57 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  deleteHouseAction,
+  deleteHouseImageAction,
+} from '../redux/actions/dashboard/house.action';
+import { StoreReducerTypes } from '../redux/store';
+import { DELETE_HOUSE_IMAGE_RESET } from '../redux/constants/dashboard/house.constants';
+import { Loader } from '../components/loader';
 
 type Props = {
   show: boolean;
   setShow: (a: any) => void;
-  _id: string;
+
+  token: string;
+  houseId: string;
+  imageId: string;
 };
 
-const DeleteHouseImageModal = ({ show, setShow, _id }: Props) => {
-  const handleDelete = () => {};
+const DeleteHouseImageModal = ({
+  show,
+  setShow,
+  houseId,
+  token,
+  imageId,
+}: Props) => {
+  const dispatch = useDispatch();
+  const deleteHouseImage = useSelector(
+    (state: StoreReducerTypes) => state?.deleteHouseImage
+  );
+
+  const handleDelete = () => {
+    dispatch(deleteHouseImageAction({ houseId, token, imageId }) as any);
+  };
+
+  useEffect(() => {
+    let timeOut: ReturnType<typeof setTimeout>;
+    if (deleteHouseImage?.success) {
+      setShow(false);
+      timeOut = setTimeout(() => {
+        deleteHouseImage.serverResponse.message = '';
+        dispatch({ type: DELETE_HOUSE_IMAGE_RESET });
+      }, 2000);
+    }
+
+    if (deleteHouseImage?.error) {
+      timeOut = setTimeout(() => {
+        deleteHouseImage.serverError = '';
+        dispatch({ type: DELETE_HOUSE_IMAGE_RESET });
+      }, 2000);
+    }
+
+    return () => clearTimeout(timeOut);
+  }, [deleteHouseImage]);
 
   return (
     <>
@@ -23,8 +67,9 @@ const DeleteHouseImageModal = ({ show, setShow, _id }: Props) => {
             <section className="flex flex-col items-center justify-center mt-4">
               <p className="py-6 text-center">
                 Are You sure you want to delete this image with
-                <br /> ID :<span className="font-bold">{_id}</span>
+                <br /> ID :<span className="font-bold">{imageId}</span>
               </p>
+              {deleteHouseImage?.loading ? <Loader variant="circular" /> : null}
               <div className="flex gap-3">
                 <button
                   type="button"

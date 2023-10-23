@@ -54,20 +54,18 @@ const SingleHouseDetails = () => {
     (state: StoreReducerTypes) => state?.getUserUploads
   );
 
+  const editHouseImage = useSelector(
+    (state: StoreReducerTypes) => state?.editHouseImage
+  );
+
+  const deleteHouseImage = useSelector(
+    (state: StoreReducerTypes) => state?.deleteHouseImage
+  );
+  const deleteHouse = useSelector(
+    (state: StoreReducerTypes) => state?.deleteHouse
+  );
+
   const id = useLocation()?.pathname?.split('/')[4];
-
-  useEffect(() => {
-    dispatch(getUserUploadedHouseAction({ token }) as any);
-  }, []);
-
-  useEffect(() => {
-    const findData = userUploads?.serverResponse?.mapArray?.find(
-      (x: any) => x?._id === id
-    );
-
-    setHouseData([findData]);
-    console.log({ id: findData?.image });
-  }, [userUploads]);
 
   const getId = (array: [] | any, index: any) => {
     const d = array[index]?._id;
@@ -84,6 +82,23 @@ const SingleHouseDetails = () => {
     getId(array, index);
     setShowDelImageModal(true);
   };
+
+  useEffect(() => {
+    dispatch(getUserUploadedHouseAction({ token }) as any);
+  }, []);
+
+  useEffect(() => {
+    const findData = userUploads?.serverResponse?.mapArray?.find(
+      (x: any) => x?._id === id
+    );
+
+    setHouseData([findData]);
+    // console.log({ id: findData?.image });
+  }, [userUploads]);
+
+  useEffect(() => {
+    dispatch(getUserUploadedHouseAction({ token }) as any);
+  }, [editHouseImage, deleteHouseImage, deleteHouse]);
 
   return (
     <div className="w-full max-w-[1200px] m-auto ">
@@ -161,15 +176,19 @@ const SingleHouseDetails = () => {
                                 ) : null}
                               </div>
                               <DeleteHouseImageModal
-                                _id={imageId}
+                                imageId={imageId}
                                 setShow={setShowDelImageModal}
                                 show={showDelImageModal}
+                                houseId={id}
+                                token={token}
                               />
                               <EditHouseImageModal
                                 _id={imageId}
                                 img_url={imageUrl}
                                 setShow={setShowEditImageModal}
                                 show={showEditImageModal}
+                                token={token}
+                                houseId={id}
                               />
                             </>
                           );
@@ -239,9 +258,13 @@ const SingleHouseDetails = () => {
                   <div className="w-full flex justify-center my-12 px-[22px] gap-2 ">
                     <button
                       type="button"
-                      onClick={() =>
-                        navigate(`/dashboard/user/update/${x?._id}`)
-                      }
+                      onClick={() => {
+                        navigate(`/dashboard/user/update/${x?._id}`);
+                        window.scrollTo({
+                          top: 26,
+                          behavior: 'smooth',
+                        });
+                      }}
                       className="md:w-[12rem] w-[8rem] border rounded-md bg-[#4BA586] text-[#fff] translate-x-0 transform py-2   px-4 transition-transform ease-in-out duration-3000 "
                     >
                       Update
@@ -259,8 +282,10 @@ const SingleHouseDetails = () => {
                 <DeleteModal
                   setShow={setShowDelModal}
                   show={showDelModal}
-                  _id={x?._id}
+                  houseId={x?._id}
                   house_type={x?.house_type}
+                  screen="house_upload"
+                  token={token}
                 />
               </>
             );

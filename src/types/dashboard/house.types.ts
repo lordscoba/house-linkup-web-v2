@@ -26,3 +26,38 @@ export interface UploadImageInterface {
 export interface UserHouseUploadsInterface {
   token: string;
 }
+
+export interface UpdateHouseInterface {
+  address: string;
+  state: string;
+  token: string;
+  local_government: string;
+  town: string;
+  house_type: string;
+  price: string;
+  description: string;
+  totalNum_ofToilet: number;
+  totalNum_ofRooms: number;
+  totalNum_ofKitchen: number;
+  totalNum_ofBathroom: number;
+  totalNum_ofParlor: number;
+  houseId: string;
+}
+
+export interface DeleteHouseInterface {
+  token: string;
+  houseId: string;
+}
+
+export interface UpdateHouseImageInterface {
+  houseId: string;
+  imageId: string;
+  token: string;
+  image: string | any;
+}
+
+export interface DeleteHouseImageInterface {
+  token: string;
+  imageId: string;
+  houseId: string;
+}

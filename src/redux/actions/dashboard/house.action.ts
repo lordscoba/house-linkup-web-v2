@@ -1,9 +1,9 @@
 import { Dispatch } from 'redux';
 import { StoreReducerTypes } from '../../store';
 import {
-  GET_USER_UPLOADED_HOUSE_FAIL,
-  GET_USER_UPLOADED_HOUSE_REQUEST,
-  GET_USER_UPLOADED_HOUSE_SUCCESS,
+  GET_USER_UPLOADED_FAIL,
+  GET_USER_UPLOADED_REQUEST,
+  GET_USER_UPLOADED_SUCCESS,
   UPLOAD_HOUSE_FAIL,
   UPLOAD_HOUSE_REQUEST,
   UPLOAD_HOUSE_SUCCESS,
@@ -24,7 +24,7 @@ export const uploadHouseUserAction =
     image,
     full_Name,
     house_type,
-    lga,
+    local_government,
     price,
     state,
     status,
@@ -45,6 +45,7 @@ export const uploadHouseUserAction =
       const config = {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
         },
       };
 
@@ -63,7 +64,7 @@ export const uploadHouseUserAction =
       FD.append('poster_email', email);
       FD.append(' full_Name', full_Name);
       FD.append('house_type', house_type);
-      FD.append('local_government', lga);
+      FD.append('local_government', local_government);
       //   FD.append('poster', poster);
       FD.append('price', price);
       FD.append('state', state);
@@ -73,7 +74,7 @@ export const uploadHouseUserAction =
       FD.append('totalNum_ofParlor', totalNum_ofParlor);
       FD.append('totalNum_ofRooms', totalNum_ofRooms);
       FD.append('totalNum_ofToilet', totalNum_ofToilet);
-      FD.append('token', token);
+      // FD.append('token', token);
 
       const { data } = await axios.post(
         `${SERVER_URL}/upload-property`,
@@ -93,20 +94,29 @@ export const uploadHouseUserAction =
   };
 
 export const getUserUploadedHouseAction =
-  ({ id }: UserHouseUploadsInterface) =>
+  ({ token }: UserHouseUploadsInterface) =>
   async (
     dispatch: Dispatch,
     getState: ({ getUserUploads }: StoreReducerTypes) => void
   ) => {
     try {
-      dispatch({ type: GET_USER_UPLOADED_HOUSE_REQUEST });
+      dispatch({ type: GET_USER_UPLOADED_REQUEST });
 
-      const { data } = await axios.get(`${SERVER_URL}/all-property/${id}`);
-      dispatch({ type: GET_USER_UPLOADED_HOUSE_SUCCESS, payload: data });
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `${SERVER_URL}/get-user-uploads`,
+        config
+      );
+      dispatch({ type: GET_USER_UPLOADED_SUCCESS, payload: data });
       console.log({ userHouses: data });
     } catch (error: any) {
       dispatch({
-        type: GET_USER_UPLOADED_HOUSE_FAIL,
+        type: GET_USER_UPLOADED_FAIL,
         payload: error?.response && error?.response?.data?.message,
       });
     }

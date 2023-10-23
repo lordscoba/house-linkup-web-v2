@@ -68,3 +68,8 @@ export interface FetchedhouseResponseInterface {
 }
 
 export type FetchedHouseArrayType = Array<FetchedhouseResponseInterface>;
+
+export interface ImageInterface {
+  url: string;
+  _id: string;
+}

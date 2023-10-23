@@ -1,19 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  FetchedHouseArrayType,
-  FetchedhouseResponseInterface,
+  HouseUploadInterface,
+  HouseUploadType,
 } from '../../types/user-dashboard/user_dashboard_nav';
+import { getUserUploadedHouseAction } from '../../redux/actions/dashboard/house.action';
+import { StoreReducerTypes } from '../../redux/store';
+import { LiaGreaterThanSolid, LiaLessThanSolid } from 'react-icons/lia';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {};
 
 const UserDashboard = (props: Props) => {
   const dispatch = useDispatch();
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const [data, setData] = useState<FetchedHouseArrayType>([]);
+  const [data, setData] = useState<HouseUploadType>([]);
   const [posterId, setPosterId] = useState('');
 
   const [sortBy, setSortBy] = useState('Price');
+
+  const storedData = localStorage.getItem('loginUser')
+    ? JSON.parse(localStorage.getItem('loginUser') as any)
+    : null;
+
+  const token = storedData?.token;
+
+  const userUploads = useSelector(
+    (state: StoreReducerTypes) => state?.getUserUploads
+  );
+
+  const uploadHouse = useSelector(
+    (state: StoreReducerTypes) => state?.uploadHouse
+  );
+
+  useEffect(() => {
+    dispatch(getUserUploadedHouseAction({ token }) as any);
+  }, []);
+
+  useEffect(() => {
+    dispatch(getUserUploadedHouseAction({ token }) as any);
+  }, [uploadHouse]);
+
+  useEffect(() => {
+    setData(userUploads?.serverResponse?.mapArray);
+  }, [userUploads]);
+
   return (
     <div className=" md:px-[2rem] px-2">
       <section className="md:px-[1rem] mt-[24px] flex flex-1 gap-8">
@@ -59,42 +90,6 @@ const UserDashboard = (props: Props) => {
             </div>
           </div>
 
-          <div className="mt-[28px] flex justify-between items-center">
-            <div>
-              <h4 className="text-[16px] md:text-[28px] font-[500] text-[#333]">
-                Apartments in Akwa Ibom
-              </h4>
-              <p className="flex items-center gap-3 text-[#6B6F7B] font-[400]">
-                <span>1248 results</span>{' '}
-                <span className="block w-2 h-2 rounded-full bg-[#222]"></span>{' '}
-                <span>Jul 14 - 21</span>
-              </p>
-            </div>
-
-            {/* Roomates */}
-
-            <div className="flex items-center gap-2">
-              <span className="md:text-[20px] text-[14px] font-[400] text-[#333]">
-                Roomates{' '}
-              </span>
-              <div
-                onClick={() => setRememberMe((prev) => !prev)}
-                className={`${
-                  rememberMe
-                    ? 'bg-[#69B99D] justify-end'
-                    : 'bg-[#ECECEC] justify-start'
-                } w-[40px] h-[20px] border border-[#C9C9C9]  rounded-[36.5px] flex items-center cursor-pointer`}
-              >
-                {' '}
-                <p
-                  className={`${
-                    rememberMe ? 'bg-[#FFF]' : 'bg-[#757070]'
-                  } w-[1rem] h-[1rem] rounded-[50px] border `}
-                ></p>{' '}
-              </div>
-            </div>
-          </div>
-
           <SortableButton setSortString={setSortBy} sortString={sortBy} />
           <SortedHouses sortBy={sortBy} data={data} setData={setData} />
         </section>
@@ -129,8 +124,8 @@ const SortableButton = ({ setSortString, sortString }: SortButtonInterface) => {
   };
 
   return (
-    <div className="mt-[38px] flex flex-wrap justify-center md:justify-between ">
-      <div className="flex items-center justify-center md:gap-4 gap-2">
+    <div className="mt-[38px] flex flex-wrap gap-3 justify-center items-center md:justify-between ">
+      <div className="flex items-center justify-center md:gap-4 gap-2 flex-wrap">
         <div className="flex items-center  gap-1 border rounded-md md:px-3 px-2 py-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -323,9 +318,9 @@ const SortableButton = ({ setSortString, sortString }: SortButtonInterface) => {
         </div>
       </div>
 
-      <p className="mt-2 d:mt-0">
-        Sort by:{' '}
-        <span className="text-[20px] text-[#69B99D] font-[600]">
+      <p className="mt-2 d:mt-0  flex items-center">
+        Sort by :{' '}
+        <span className="md:text-[16px] text-[.8rem] text-[#69B99D] font-[600] tracking-wider">
           {sortString}
         </span>
       </p>
@@ -335,25 +330,23 @@ const SortableButton = ({ setSortString, sortString }: SortButtonInterface) => {
 
 interface SortInterface {
   sortBy: string;
-  data: FetchedHouseArrayType;
+  data: HouseUploadType;
   setData: (a: any) => void;
 }
 
 const SortedHouses = ({ sortBy, data, setData }: SortInterface) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentData, setCurrentData] = useState<FetchedHouseArrayType>([]);
-  const itemsPerPage = 2;
+  const [currentData, setCurrentData] = useState<HouseUploadType>([]);
+  const itemsPerPage = 3;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = data ? Math.ceil(data.length / itemsPerPage) : 0;
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-
-  // console.log(data);
 
   const pagination = () => {
     const pageButtons = [];
@@ -364,15 +357,17 @@ const SortedHouses = ({ sortBy, data, setData }: SortInterface) => {
           onClick={() => handlePageChange(i)}
           className={`${
             currentPage === i ? 'bg-[#69ffb2] text-[#fff]' : ''
-          } border border-[grey] mr-2 rounded-md shadow-xl font-semibold px-6 text-[#222]`}
+          } border border-[grey]  rounded-md shadow-xl font-semibold px-6 text-[#222] `}
         >
           {i}
         </button>
       );
     }
     return (
-      <div className="mt-4 flex justify-center md:justify-end">
-        {pageButtons}
+      <div className="overflow-x-auto">
+        <p className="mt-4 flex gap-2 justify-center flex-wrap md:justify-end w-full max-w-[570px] m-auto">
+          {pageButtons}
+        </p>
       </div>
     );
   };
@@ -387,7 +382,7 @@ const SortedHouses = ({ sortBy, data, setData }: SortInterface) => {
 
     if (sortBy === 'Apartment') {
       const sortedItems = [...data].sort((a, b) => {
-        return a?.city.localeCompare(b?.city);
+        return a?.state.localeCompare(b?.state);
       });
       setData(sortedItems);
     }
@@ -404,99 +399,8 @@ const SortedHouses = ({ sortBy, data, setData }: SortInterface) => {
   return (
     <div className="mb-2 m-auto  w-full max-w-[754px]   ">
       <section>
-        {currentData?.length > 0 ? (
-          currentData?.map(
-            (item: FetchedhouseResponseInterface, index: any) => {
-              return (
-                <div
-                  key={index}
-                  className="my-[38px] bg-[#fff] shadow-2xl  py-[20px]  px-2 rounded-xl"
-                >
-                  <section className=" flex gap-3 flex-wrap justify-center  ">
-                    <div className="w-full lg:w-[408px] h-[324px]  ">
-                      <img
-                        src={item?.front_image[0]?.url}
-                        alt={item?.address}
-                        className="w-full object-cover h-full"
-                      />
-                    </div>
-
-                    <section className="w-full xl:w-[40%] h-[324px] relative  ">
-                      <h2 className="text-[#222] capitalize font-bold text-center mb-3  text-[18px] ">
-                        {item?.house_type}
-                      </h2>
-                      <div className=" flex-1 flex items-center gap-2 justify-center lg:justify-start ">
-                        <div className="">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="12"
-                            height="16"
-                            viewBox="0 0 12 16"
-                            fill="none"
-                          >
-                            <path
-                              d="M5.99998 0C2.69154 0 0 2.69723 0 6.01258C0 11.3438 5.39888 15.5396 5.62874 15.7157L6.00002 16L6.37106 15.7157C6.60092 15.5396 12 11.3438 12 6.01258C12 2.69719 9.30846 0 5.99998 0ZM5.99954 14.4343C4.81703 13.4145 1.22249 9.98674 1.22249 6.01258C1.22249 3.37267 3.36536 1.22505 5.99998 1.22505C8.63413 1.22505 10.7775 3.37271 10.7775 6.01258C10.7775 9.97823 7.18154 13.4129 5.99954 14.4343Z"
-                              fill="#333333"
-                            />
-                            <path
-                              d="M6.10578 9.00037C4.46435 9.00037 3.12891 7.66509 3.12891 6.02375C3.12891 4.38232 4.46431 3.04688 6.10578 3.04688C7.74721 3.04688 9.08261 4.38228 9.08261 6.02375C9.08261 7.66509 7.74721 9.00037 6.10578 9.00037ZM6.10578 4.02315C5.00264 4.02315 4.10514 4.92065 4.10514 6.02379C4.10514 7.12681 5.00264 8.02418 6.10578 8.02418C7.20888 8.02418 8.10638 7.12681 8.10638 6.02379C8.10638 4.92061 7.20892 4.02315 6.10578 4.02315Z"
-                              fill="#333333"
-                            />
-                          </svg>
-                        </div>
-                        <div>
-                          <p className="capitalize">
-                            {item?.state}, {item?.city}{' '}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex justify-center lg:justify-start gap-3 flex-wrap my-2 italic text-[14px]">
-                        <span>K = {item?.totalNum_ofKitchen}</span>
-                        <span>T = {item?.totalNum_ofToilet}</span>
-                        <span>P = {item?.totalNum_ofParlor}</span>
-                        <span>R = {item?.totalNum_ofRooms}</span>
-                        <span>BTh = {item?.totalNum_ofBathroom}</span>
-                      </div>
-                      <div className=" mt-[1.5rem]">
-                        <h2 className="text-center font-bold text-[18px] tracking-wider">
-                          Poster
-                        </h2>
-                        <p>
-                          Name : <span>{item?.poster?.full_name}</span>
-                        </p>
-                        <p>
-                          Email : <span>{item?.email}</span>
-                        </p>
-                        <p>
-                          Address : <span>{item?.address}</span>
-                        </p>
-                      </div>
-                      <div className="flex justify-between items-end mt-3  lg:absolute bottom-0 right-0 left-0">
-                        <div>
-                          <h4 className="font-bold uppercase">
-                            Status : {item?.status}
-                          </h4>
-                        </div>
-                        <div>
-                          <p className="font-bold">
-                            <span>&#36;</span>{' '}
-                            <span>{Number(item?.price).toLocaleString()}</span>
-                          </p>
-                        </div>
-                      </div>
-                    </section>
-                  </section>
-                  <div className="flex gap-3 flex-wrap mt-2">
-                    <span>Kichen = K</span>
-                    <span>Toilet = T</span>
-                    <span>Parlor = P</span>
-                    <span>Room = R</span>
-                    <span>BathRoom = BTh</span>
-                  </div>
-                </div>
-              );
-            }
-          )
+        {currentData ? (
+          <ViewUploadedHouse data={currentData} />
         ) : (
           <>
             <section className="h-[8rem] mb-2  w-full max-w-[754px] border flex items-center justify-center m-auto ">
@@ -509,6 +413,157 @@ const SortedHouses = ({ sortBy, data, setData }: SortInterface) => {
 
         <p>{pagination()}</p>
       </section>
+    </div>
+  );
+};
+
+interface UploadedPropertyInterface {
+  data: HouseUploadType;
+}
+
+const ViewUploadedHouse = ({ data }: UploadedPropertyInterface) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [dataIndex, setDataIndex] = useState<number>(0);
+
+  const handleDelete = (index: number) => {};
+  let imageArrays;
+
+  const handleNext = (documentIndex: any) => {
+    setDataIndex((prev) => Number(prev) + 1);
+
+    let findData: any = data?.find((x) => x?._id === documentIndex);
+
+    if (findData) {
+      imageArrays = findData?.image;
+      let dataLastIndex: number = findData?.image?.length - 1;
+      if (dataIndex >= dataLastIndex) {
+        setDataIndex(0);
+      }
+
+      if (dataIndex < 0) {
+        setDataIndex(dataLastIndex);
+      }
+    }
+  };
+
+  return (
+    <div className="w-full max-w-[1130px] m-auto  md:px-0  rounded-md">
+      {data?.length > 0
+        ? data?.map((x: HouseUploadInterface, index: any) => {
+            return (
+              <div
+                key={index}
+                className="flex flex-wrap justify-center border my-4 rounded-lg py-2 gap-8"
+              >
+                <div className="flex gap-2 w-full max-w-[380px] flex-wrap justify-center my-3  rounded-lg relative">
+                  {/* {x?.image ? (
+                    x?.image.map((a: any, i: any) => {
+                      return (
+                        <div key={i} className="    ">
+                          <img
+                            src={a?.url}
+                            alt=""
+                            className={`${
+                              i === dataIndex ? 'block' : 'hidden'
+                            } w-full h-full object-contain`}
+                          />
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <p>No Image Uploaded</p>
+                  )} */}
+
+                  {x?.image[0]?.url ? (
+                    <img
+                      src={x?.image[0]?.url}
+                      alt=""
+                      className="w-full h-full  object-contain "
+                    />
+                  ) : (
+                    <p className="font-bold flex justify-center items-center text-[1rem]">
+                      No Image Uploaded
+                    </p>
+                  )}
+
+                  {/* <div className="flex justify-between items-center w-full absolute  top-[50%] bottom-[50%]">
+                    <div className="w-10 h-10 rounded-full border flex justify-center items-center cursor-pointer">
+                      <LiaLessThanSolid className="fill-[#fff]" />
+                    </div>
+                    <div
+                      className="w-10 h-10 rounded-full border flex justify-center items-center cursor-pointer"
+                      onClick={() => handleNext(x?._id)}
+                    >
+                      <LiaGreaterThanSolid className="fill-[#fff]" />
+                    </div>
+                  </div> */}
+                </div>
+
+                {/* HOUSE DETAILS */}
+                <div className=" w-full  max-w-[340px] border-2 rounded-lg pl-2 md:h-[360px] ">
+                  <h2 className="text-center text-[#000] max-w-max m-auto px-4 uppercase font-bold">
+                    {x?.status}
+                  </h2>
+                  <h2 className="font-normal">
+                    House Type :{' '}
+                    <span className="font-[600] capitalize">
+                      {x?.house_type}
+                    </span>
+                  </h2>
+                  <p className="font-normal">
+                    State :{' '}
+                    <span className="font-[600] capitalize">{x?.state}</span>,
+                    LGA :{' '}
+                    <span className="font-[600] capitalize">
+                      {x?.local_government}
+                    </span>{' '}
+                    , Town :{' '}
+                    <span className="font-[600] capitalize">{x?.town}</span>
+                  </p>
+                  <h2 className="text-center font-[600] my-3 border-b-2 border-[#4BA586] max-w-max m-auto uppercase">
+                    Interior Details
+                  </h2>
+                  <p className="flex gap-3 flex-wrap text-[.8rem]">
+                    <span>Kitchen = {x?.totalNum_ofKitchen}</span>
+                    <span>Parlor = {x?.totalNum_ofParlor}</span>
+                    <span>Toilet = {x?.totalNum_ofToilet}</span>
+                    <span>BathRoom = {x?.totalNum_ofBathroom}</span>
+                    <span>Rooms = {x?.totalNum_ofRooms}</span>
+                  </p>
+                  <div className="mt-3">
+                    <h2 className="text-center font-[600] my-3 border-b-2 border-[#4BA586] max-w-max m-auto uppercase">
+                      Agent
+                    </h2>
+                    <p className="font-[600]">
+                      Email:{' '}
+                      <span className="font-normal">
+                        nwankwoernest2020@gmail.com
+                      </span>
+                    </p>
+                    <p className="font-[600]">
+                      Phone Number:{' '}
+                      <span className="font-normal">09078987654</span>{' '}
+                    </p>
+                  </div>
+                  <p className="text-end font-bold pr-2">
+                    {' '}
+                    Price : #{Number(x?.price).toLocaleString()}
+                  </p>
+                </div>
+                <div className="w-full flex justify-center ">
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/dashboard/user/house/${x?._id}`)}
+                    className="w-[18rem] border rounded-md bg-[#4BA586] text-[#fff]"
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            );
+          })
+        : null}
     </div>
   );
 };

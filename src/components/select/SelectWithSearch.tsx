@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, ReactNode } from 'react';
+import React, { useState, ChangeEvent, ReactNode, useCallback } from 'react';
 import { ArrowDown } from '../../assets/icons';
 
 interface SelectOption {

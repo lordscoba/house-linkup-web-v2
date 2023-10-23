@@ -4,10 +4,12 @@ import { StoreReducerTypes } from '../../redux/store';
 import { ArrowDown } from '../../assets/icons';
 import { fecthAllRegionsAction } from '../../redux/actions/dashboard/location.action';
 import SelectWithSearch from '../select/SelectWithSearch';
-import { uploadHouseUserAction } from '../../redux/actions/dashboard/house.action';
-import { UPLOAD_HOUSE_RESET } from '../../redux/constants/dashboard/house.constants';
+// import { uploadHouseUserAction } from '../../redux/actions/dashboard/house.action';
+// import { UPLOAD_HOUSE_RESET } from '../../redux/constants/dashboard/house.constants';
 import { Loader } from '../loader';
 import Message from '../message/Message';
+import { uploadHouseUserAction } from '../../redux/actions/dashboard/house.action';
+import { UPLOAD_HOUSE_RESET } from '../../redux/constants/dashboard/house.constants';
 
 type Props = {
   setData: Function;
@@ -41,6 +43,7 @@ const UploadForm = ({ setData }: Props) => {
 
   const [selectedState, setSelectedState] = useState('');
   const [stateArray, setStateArry] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [selectedHomeType, setSelectedHomeType] = useState<string>('');
   const [showDropDown, setShowDropDown] = useState<Boolean>(false);
@@ -83,7 +86,7 @@ const UploadForm = ({ setData }: Props) => {
       address,
       house_type: selectedHomeType,
       state: selectedState,
-      lga: selectedLga,
+      local_government: selectedLga,
       town: selectedTown,
       totalNum_ofParlor: numOfParlor,
       totalNum_ofKitchen: numOfKitchen,
@@ -107,7 +110,7 @@ const UploadForm = ({ setData }: Props) => {
         full_Name: fullName,
         house_type: selectedHomeType,
         image,
-        lga: selectedLga,
+        local_government: selectedLga,
         price,
         state: selectedState,
         status,
@@ -121,27 +124,7 @@ const UploadForm = ({ setData }: Props) => {
       }) as any
     );
 
-    console.log({
-      // address,
-      // description,
-      // email,
-      // full_Name: fullName,
-      // house_type: selectedHomeType,
-      image,
-      // lga: selectedLga,
-      // price,
-      // state: selectedState,
-      // status,
-      // token,
-      // totalNum_ofParlor: numOfParlor,
-      // totalNum_ofKitchen: numOfKitchen,
-      // totalNum_ofRooms: numOfRooms,
-      // totalNum_ofToilet: numOfToilet,
-      // totalNum_ofBathroom: numOfBathRoom,
-      // town: selectedTown,
-    });
-
-    dispatch({ type: UPLOAD_HOUSE_RESET });
+    // dispatch({ type: UPLOAD_HOUSE_RESET });
   };
 
   // USEEFFECT
@@ -151,9 +134,28 @@ const UploadForm = ({ setData }: Props) => {
   }, []);
 
   useEffect(() => {
+    let timeOut: ReturnType<typeof setTimeout>;
+    if (uploadHouse?.success) {
+      timeOut = setTimeout(() => {
+        uploadHouse.serverResponse.message = '';
+        dispatch({ type: UPLOAD_HOUSE_RESET });
+      }, 5000);
+    }
+
+    if (uploadHouse?.error) {
+      timeOut = setTimeout(() => {
+        uploadHouse.serverError = '';
+        dispatch({ type: UPLOAD_HOUSE_RESET });
+      }, 3000);
+    }
+
+    return () => clearTimeout(timeOut);
+  }, [uploadHouse]);
+
+  useEffect(() => {
     const state = Region
       ? Region?.serverResponse[0]?.states?.map((x: any) => x?.state)
-      : null;
+      : [];
 
     if (state) {
       const lga = Region?.serverResponse[0]?.states?.map(
@@ -589,7 +591,7 @@ const HouseImages = ({ setImageArray, setImg }: HouseInterface) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event?.target?.files;
 
-    setImage(file);
+    // setImage(file);
     if (file) {
       const imageURL = URL.createObjectURL(file[0]);
       setImage(imageURL);
@@ -688,6 +690,12 @@ const HouseImages = ({ setImageArray, setImg }: HouseInterface) => {
           />
         </div>
       </div>
+      <section className="border text-center w-full max-w-[22rem] m-auto mt-6">
+        <h2 className="uppercase font-bold ">NOTE</h2>
+        <p className="uppercase font-medium ">
+          Front View of the house should be added first
+        </p>
+      </section>
     </section>
   );
 };

@@ -3,9 +3,9 @@ import {
   initialStateRequest,
 } from '../../../types/reduxResponse.types';
 import {
-  GET_USER_UPLOADED_HOUSE_FAIL,
-  GET_USER_UPLOADED_HOUSE_REQUEST,
-  GET_USER_UPLOADED_HOUSE_SUCCESS,
+  GET_USER_UPLOADED_FAIL,
+  GET_USER_UPLOADED_REQUEST,
+  GET_USER_UPLOADED_SUCCESS,
   UPLOAD_HOUSE_FAIL,
   UPLOAD_HOUSE_REQUEST,
   UPLOAD_HOUSE_RESET,
@@ -49,9 +49,9 @@ export const getUserUploadedHouseReducer = (
   action: any
 ) => {
   switch (action.type) {
-    case GET_USER_UPLOADED_HOUSE_REQUEST:
+    case GET_USER_UPLOADED_REQUEST:
       return { ...state, loading: true };
-    case GET_USER_UPLOADED_HOUSE_SUCCESS:
+    case GET_USER_UPLOADED_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -59,7 +59,7 @@ export const getUserUploadedHouseReducer = (
         serverResponse: action.payload,
       };
 
-    case GET_USER_UPLOADED_HOUSE_FAIL:
+    case GET_USER_UPLOADED_FAIL:
       return {
         ...state,
         loading: false,

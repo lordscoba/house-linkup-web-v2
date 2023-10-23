@@ -20,6 +20,8 @@ import {
 } from './screens/admin';
 import {
   ApplicationScreen,
+  SingleHouseScreen,
+  UpdateScreen,
   UserDashboardScreen,
 } from './screens/user-dashboard';
 
@@ -105,6 +107,16 @@ const App = createBrowserRouter([
   {
     path: '/dashboard/user/application',
     element: <ApplicationScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/dashboard/user/house/:id',
+    element: <SingleHouseScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/dashboard/user/update/:id',
+    element: <UpdateScreen />,
     errorElement: <ErrorScreen />,
   },
 ]);

@@ -4,14 +4,13 @@ import {
   HouseUploadType,
 } from '../../types/user-dashboard/user_dashboard_nav';
 import UploadForm from './UploadForm';
+import { useDispatch } from 'react-redux';
 
 type Props = {};
 
 const ApplicationComponent = (props: Props) => {
   const [show, setShow] = useState<boolean>(false);
   const [data, setData] = useState<HouseUploadType>([]);
-
-  console.log({ d: data });
 
   return (
     <div>
@@ -46,6 +45,8 @@ interface UploadedPropertyInterface {
 }
 
 export const GetUploadedHouse = ({ data }: UploadedPropertyInterface) => {
+  const dispatch = useDispatch();
+  const handleDelete = (index: number) => {};
   return (
     <div className="w-full max-w-[1130px] m-auto px-[22px] md:px-0 rounded-md">
       {data?.length > 0
@@ -80,8 +81,10 @@ export const GetUploadedHouse = ({ data }: UploadedPropertyInterface) => {
                     State :{' '}
                     <span className="font-[600] capitalize">{x?.state}</span>,
                     LGA :{' '}
-                    <span className="font-[600] capitalize">{x?.lga}</span> ,
-                    Town :{' '}
+                    <span className="font-[600] capitalize">
+                      {x?.local_government}
+                    </span>{' '}
+                    , Town :{' '}
                     <span className="font-[600] capitalize">{x?.town}</span>
                   </p>
                   <h2 className="text-center font-[600] my-3 border-b-2 border-[#4BA586] max-w-max m-auto uppercase">

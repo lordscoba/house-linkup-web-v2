@@ -4,7 +4,7 @@ export interface UploadHouseInterface {
   address: string;
   state: string;
   town: string;
-  lga: string;
+  local_government: string;
   house_type: string;
   price: number | any;
   status: string;
@@ -24,5 +24,5 @@ export interface UploadImageInterface {
 }
 
 export interface UserHouseUploadsInterface {
-  id: string;
+  token: string;
 }

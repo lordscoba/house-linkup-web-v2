@@ -8,6 +8,8 @@ import {
 import { RESET_DELETE_LOCAL_GOV } from '../redux/constants/dashboard/location.constants';
 
 type Props = {
+  _id?: string;
+  house_type?: string;
   country?: string;
   state?: string;
   local_gov_name?: string;
@@ -19,7 +21,7 @@ type Props = {
   localGovId?: string;
   setShow: (a: any) => void;
   deleteFunc?: (a: any) => void;
-  text: string;
+  text?: string;
   screen?: string;
   townId?: string;
 };
@@ -39,6 +41,8 @@ const DeleteModal = ({
   full_name,
   screen,
   townId,
+  _id,
+  house_type,
 }: Props) => {
   const dispatch = useDispatch();
 
@@ -91,6 +95,7 @@ const DeleteModal = ({
 
               <p className="py-6 text-center">
                 Are You sure you want to delete{' '}
+                {house_type ? `this house : ${house_type}` : ''}
                 <span className="font-bold">
                   {country ? (
                     <h4>

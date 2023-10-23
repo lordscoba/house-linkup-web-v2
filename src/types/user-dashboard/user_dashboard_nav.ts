@@ -30,11 +30,11 @@ export interface ImageInterface {
 }
 
 export interface HouseUploadInterface {
-  image: string[];
+  image: Array<ImageInterface>;
   house_type: string;
   state: string;
   town: string;
-  lga: string;
+  local_government: string;
   full_name: string;
   email: string;
   address: string;
@@ -45,6 +45,7 @@ export interface HouseUploadInterface {
   totalNum_ofKitchen: number;
   totalNum_ofBathroom: number;
   totalNum_ofParlor: number;
+  _id?: string;
 }
 
 export type HouseUploadType = Array<HouseUploadInterface>;

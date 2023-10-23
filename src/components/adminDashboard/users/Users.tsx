@@ -13,7 +13,7 @@ import {
 import Pagination from '../../Pagination';
 import { EditIcon, RedDeleteIcon } from '../../../assets/icons';
 import DeleteModal from '../../../modals/DeleteModal';
-import ViewUserDetailsModal from '../../../modals/ViewUserDetailsModal';
+import ViewUserDetailsModal from '../../../modals/View-user-details-modal';
 import EditUserProfile from '../../../modals/EditUserProfile';
 import RegistrationModal from '../../../modals/RegistrationModal';
 import FlexibleInput from '../../home/FlexibleInput';
@@ -237,7 +237,7 @@ const TableData = ({
   const handleDelete = () => {
     const filter = list?.filter((item, i) => i !== index);
     setList(filter);
-    const clickedUser: any = list[index];
+    const clickedUser = list[index];
     const _id = clickedUser?._id;
     dispatch(deleteUserAction({ _id }) as any);
     setDeleteUser((prev: boolean) => !prev);

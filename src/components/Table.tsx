@@ -136,69 +136,65 @@ const Table: React.FC<TableProps> = ({
           <table className=" w-full bg-[#fff] rounded-lg border ">
             <thead className="bg-[#fff] text-[#333] ">
               <tr className="flex gap-1  w-full">
-                {columns?.length > 0
-                  ? columns?.map((column, i) => (
-                      <th
-                        key={i}
-                        className="flex-1 py-2 text-[black]  whitespace-nowrap w-[15rem] border uppercase "
-                      >
-                        {column.label}{' '}
-                      </th>
-                    ))
-                  : null}
+                {columns?.map((column, i) => (
+                  <th
+                    key={i}
+                    className="flex-1 py-2 text-[black]  whitespace-nowrap w-[15rem] border uppercase "
+                  >
+                    {column.label}{' '}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {data?.length > 0
-                ? data?.map((item: any, index: any) => (
-                    <tr key={index} className="flex gap-1  w-full">
-                      <td
-                        className={`flex-1 px-4 py-2 text-[black]  whitespace-nowrap w-[15rem] text-center border capitalize font-[500]`}
-                      >
-                        {item}
-                      </td>
-                      {noView ? (
-                        ''
-                      ) : (
-                        <td
-                          onClick={() => view(index)}
-                          className={`flex-1 px-4 py-2 text-[black] cursor-pointer whitespace-nowrap w-[15rem] text-center border hover:bg-[#D9F4DD] hover:text-[green]`}
-                        >
-                          <button className="  rounded-sm w-full text-lg">
-                            View
-                          </button>
-                        </td>
-                      )}
+              {data?.map((item: any, index: any) => (
+                <tr key={index} className="flex gap-1  w-full">
+                  <td
+                    className={`flex-1 px-4 py-2 text-[black]  whitespace-nowrap w-[15rem] text-center border capitalize font-[500]`}
+                  >
+                    {item}
+                  </td>
+                  {noView ? (
+                    ''
+                  ) : (
+                    <td
+                      onClick={() => view(index)}
+                      className={`flex-1 px-4 py-2 text-[black] cursor-pointer whitespace-nowrap w-[15rem] text-center border hover:bg-[#D9F4DD] hover:text-[green]`}
+                    >
+                      <button className="  rounded-sm w-full text-lg">
+                        View
+                      </button>
+                    </td>
+                  )}
 
-                      <td
-                        onClick={() => onEditClick(item)}
-                        className={`flex-1 px-4 py-2 text-[black] cursor-pointer  whitespace-nowrap w-[15rem] text-center border hover:bg-[#D9F4DD] hover:text-[green]`}
-                      >
-                        <button>
-                          {' '}
-                          <img
-                            src={EditIcon}
-                            alt="Edit icon"
-                            className="w-6 h-6 cursor-pointer"
-                          />
-                        </button>
-                      </td>
-                      <td
-                        onClick={() => onDeleteClick(item)}
-                        className={` flex-1 px-4 py-2 text-[black]  whitespace-nowrap w-[15rem] text-center border`}
-                      >
-                        <button>
-                          {' '}
-                          <img
-                            src={RedDeleteIcon}
-                            alt="Red delete icon"
-                            className="w-6 h-6 cursor-pointer "
-                          />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                : null}
+                  <td
+                    onClick={() => onEditClick(item)}
+                    className={`flex-1 px-4 py-2 text-[black] cursor-pointer  whitespace-nowrap w-[15rem] text-center border hover:bg-[#D9F4DD] hover:text-[green]`}
+                  >
+                    <button>
+                      {' '}
+                      <img
+                        src={EditIcon}
+                        alt="Edit icon"
+                        className="w-6 h-6 cursor-pointer"
+                      />
+                    </button>
+                  </td>
+                  <td
+                    onClick={() => onDeleteClick(item)}
+                    className={` flex-1 px-4 py-2 text-[black]  whitespace-nowrap w-[15rem] text-center border`}
+                  >
+                    <button>
+                      {' '}
+                      <img
+                        src={RedDeleteIcon}
+                        alt="Red delete icon"
+                        className="w-6 h-6 cursor-pointer "
+                      />
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

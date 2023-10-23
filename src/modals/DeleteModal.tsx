@@ -1,11 +1,15 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteLocalGovAction,
   deleteStateAction,
   deleteTownAction,
 } from '../redux/actions/dashboard/location.action';
 import { RESET_DELETE_LOCAL_GOV } from '../redux/constants/dashboard/location.constants';
+import { deleteHouseAction } from '../redux/actions/dashboard/house.action';
+import { DELETE_HOUSE_RESET } from '../redux/constants/dashboard/house.constants';
+import { StoreReducerTypes } from '../redux/store';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   _id?: string;
@@ -24,6 +28,8 @@ type Props = {
   text?: string;
   screen?: string;
   townId?: string;
+  houseId?: string;
+  token?: string;
 };
 
 const DeleteModal = ({
@@ -43,8 +49,15 @@ const DeleteModal = ({
   townId,
   _id,
   house_type,
+  houseId,
+  token,
 }: Props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const deleteHouse = useSelector(
+    (state: StoreReducerTypes) => state?.deleteHouse
+  );
 
   const handleDelete = () => {
     if (screen === 'lga') {
@@ -72,8 +85,23 @@ const DeleteModal = ({
     if (screen === 'state') {
       dispatch(deleteStateAction({ documentId: countryId, stateId }) as any);
     }
+
+    if (screen === 'house_upload') {
+      const obj: any = { houseId, token };
+      dispatch(deleteHouseAction(obj) as any);
+      dispatch({ type: DELETE_HOUSE_RESET });
+    }
     setShow(false);
   };
+
+  useEffect(() => {
+    if (deleteHouse?.success) {
+      dispatch({ type: DELETE_HOUSE_RESET });
+      setShow(false);
+      navigate('/dashboard/user');
+    }
+  }, [deleteHouse]);
+
   return (
     <>
       {show ? (

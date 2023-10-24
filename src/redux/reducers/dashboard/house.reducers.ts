@@ -11,6 +11,10 @@ import {
   DELETE_HOUSE_REQUEST,
   DELETE_HOUSE_RESET,
   DELETE_HOUSE_SUCCESS,
+  FETCH_HOUSE_FAIL,
+  FETCH_HOUSE_REQUEST,
+  FETCH_HOUSE_RESET,
+  FETCH_HOUSE_SUCCESS,
   GET_USER_UPLOADED_FAIL,
   GET_USER_UPLOADED_REQUEST,
   GET_USER_UPLOADED_SUCCESS,
@@ -213,6 +217,38 @@ export const deleteHouseImageReducer = (
       };
 
     case DELETE_HOUSE_IMAGE_RESET:
+      return initialStateRequest;
+
+    default:
+      return state;
+  }
+};
+
+export const fetchHouseReducer = (
+  state: ResponseType = initialStateRequest,
+  action: any
+) => {
+  switch (action.type) {
+    case FETCH_HOUSE_REQUEST:
+      return { ...state, loading: true };
+    case FETCH_HOUSE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        serverResponse: action.payload,
+      };
+
+    case FETCH_HOUSE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        error: true,
+        serverError: action.payload,
+      };
+
+    case FETCH_HOUSE_RESET:
       return initialStateRequest;
 
     default:

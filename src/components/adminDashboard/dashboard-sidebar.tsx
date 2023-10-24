@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUsers } from 'react-icons/fa';
 import { MdHome, MdOutlineLocationOn } from 'react-icons/md';
+import { TbBuildingPavilion } from 'react-icons/tb';
 import { dropDown } from '../../assets/icons';
 import { Link } from 'react-router-dom';
 type Props = {
@@ -41,6 +42,13 @@ export const DashboardSideBar = ({ show, setShow }: Props) => {
               dropDownText="Location"
               link="/admin/dashboard/location"
             />
+            <TextAndDropDown
+              icon={<TbBuildingPavilion />}
+              icon_2={dropDown}
+              text="Houses"
+              dropDownText="Houses"
+              link="/admin/dashboard/houses"
+            />
           </>
         ) : (
           <>
@@ -58,6 +66,11 @@ export const DashboardSideBar = ({ show, setShow }: Props) => {
               text={'Dashboard'}
               link={'/admin/dashboard/location'}
               icon={<MdOutlineLocationOn />}
+            />
+            <SideBarIcon
+              text={'Houses'}
+              link={'/admin/dashboard/houses'}
+              icon={<TbBuildingPavilion />}
             />
           </>
         )}
@@ -85,6 +98,13 @@ export const DashboardSideBar = ({ show, setShow }: Props) => {
               text="Location"
               dropDownText="Location"
               link="/admin/dashboard/location"
+            />
+            <TextAndDropDown
+              icon={<TbBuildingPavilion />}
+              icon_2={dropDown}
+              text="Houses"
+              dropDownText="Houses"
+              link="/admin/dashboard/houses"
             />
           </>
         ) : null}

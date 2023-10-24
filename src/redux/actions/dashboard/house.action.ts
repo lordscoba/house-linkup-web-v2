@@ -7,6 +7,9 @@ import {
   DELETE_HOUSE_IMAGE_SUCCESS,
   DELETE_HOUSE_REQUEST,
   DELETE_HOUSE_SUCCESS,
+  FETCH_HOUSE_FAIL,
+  FETCH_HOUSE_REQUEST,
+  FETCH_HOUSE_SUCCESS,
   GET_USER_UPLOADED_FAIL,
   GET_USER_UPLOADED_REQUEST,
   GET_USER_UPLOADED_SUCCESS,
@@ -25,6 +28,7 @@ import { SERVER_URL } from '../../base-route/baseUrl';
 import {
   DeleteHouseImageInterface,
   DeleteHouseInterface,
+  FetchHouseInterface,
   UpdateHouseImageInterface,
   UpdateHouseInterface,
   UploadHouseInterface,
@@ -276,6 +280,34 @@ export const deleteHouseImageAction =
     } catch (error: any) {
       dispatch({
         type: DELETE_HOUSE_IMAGE_FAIL,
+        payload: error?.response && error?.response?.data?.message,
+      });
+    }
+  };
+
+export const fetchHouseAction =
+  ({ token }: FetchHouseInterface) =>
+  async (
+    dispatch: Dispatch,
+    getState: ({ fetchHouse }: StoreReducerTypes) => void
+  ) => {
+    try {
+      dispatch({ type: FETCH_HOUSE_REQUEST });
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `${SERVER_URL}/fetch-all-houses`,
+        config
+      );
+      dispatch({ type: FETCH_HOUSE_SUCCESS, payload: data });
+    } catch (error: any) {
+      dispatch({
+        type: FETCH_HOUSE_FAIL,
         payload: error?.response && error?.response?.data?.message,
       });
     }

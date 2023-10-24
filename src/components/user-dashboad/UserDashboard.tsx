@@ -454,9 +454,9 @@ const ViewUploadedHouse = ({ data }: UploadedPropertyInterface) => {
             return (
               <div
                 key={index}
-                className="flex flex-wrap justify-center border my-4 rounded-lg py-2 gap-8"
+                className="flex flex-wrap justify-center items-center border my-4 rounded-lg py-2 gap-8"
               >
-                <div className="flex gap-2 w-full max-w-[380px] flex-wrap justify-center my-3  rounded-lg relative">
+                <div className="flex gap-2 w-full max-w-[350px] md:w-[350px] md:h-[360px] flex-wrap justify-center my-3  rounded-lg relative">
                   {/* {x?.image ? (
                     x?.image.map((a: any, i: any) => {
                       return (
@@ -479,7 +479,7 @@ const ViewUploadedHouse = ({ data }: UploadedPropertyInterface) => {
                     <img
                       src={x?.image[0]?.url}
                       alt=""
-                      className="w-full h-full  object-contain "
+                      className="w-full h-full  object-cover "
                     />
                   ) : (
                     <p className="font-bold flex justify-center items-center text-[1rem]">

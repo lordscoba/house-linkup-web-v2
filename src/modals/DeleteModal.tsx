@@ -91,6 +91,12 @@ const DeleteModal = ({
       dispatch(deleteHouseAction(obj) as any);
       dispatch({ type: DELETE_HOUSE_RESET });
     }
+
+    if (screen === 'admin') {
+      const obj: any = { houseId, token };
+      dispatch(deleteHouseAction(obj) as any);
+      dispatch({ type: DELETE_HOUSE_RESET });
+    }
     setShow(false);
   };
 
@@ -98,7 +104,11 @@ const DeleteModal = ({
     if (deleteHouse?.success) {
       dispatch({ type: DELETE_HOUSE_RESET });
       setShow(false);
-      navigate('/dashboard/user');
+      if (screen === 'admin') {
+        navigate('/admin/dashboard/houses');
+      } else {
+        navigate('/dashboard/user');
+      }
     }
   }, [deleteHouse]);
 

@@ -10,6 +10,7 @@ import {
   deleteHouseImageReducer,
   deleteHouseReducer,
   editHouseImageReducer,
+  fetchHouseReducer,
   getUserUploadedHouseReducer,
   updateHouseReducer,
   uploadHouseReducer,
@@ -81,6 +82,9 @@ export type StoreReducerTypes = {
   editState: ReturnType<typeof editStateReducer>;
   editLocalGov: ReturnType<typeof editLgaReducer>;
   editTown: ReturnType<typeof editTownReducer>;
+
+  // HOUSE MANAGEMENT
+  fetchHouse: ReturnType<typeof fetchHouseReducer>;
   // users dashboard
   uploadHouse: ReturnType<typeof uploadHouseReducer>;
   getUserUploads: ReturnType<typeof getUserUploadedHouseReducer>;
@@ -120,6 +124,8 @@ const reducer: StoreReducerTypes = combineReducers({
   editState: editStateReducer,
   editLocalGov: editLgaReducer,
   editTown: editTownReducer,
+  // house management
+  fetchHouse: fetchHouseReducer,
   // users dashboard
   uploadHouse: uploadHouseReducer,
   getUserUploads: getUserUploadedHouseReducer,

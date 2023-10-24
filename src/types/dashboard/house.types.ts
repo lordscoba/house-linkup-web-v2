@@ -28,13 +28,12 @@ export interface UserHouseUploadsInterface {
 }
 
 export interface UpdateHouseInterface {
-  address: string;
   state: string;
   token: string;
   local_government: string;
   town: string;
   house_type: string;
-  price: string;
+  price: number;
   description: string;
   totalNum_ofToilet: number;
   totalNum_ofRooms: number;

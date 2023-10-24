@@ -139,7 +139,6 @@ export const updateHouseAction =
   ({
     token,
     houseId,
-    address,
     description,
     house_type,
     local_government,
@@ -168,7 +167,6 @@ export const updateHouseAction =
       const { data } = await axios.put(
         `${SERVER_URL}/update-house/${houseId}`,
         {
-          address,
           description,
           house_type,
           local_government,

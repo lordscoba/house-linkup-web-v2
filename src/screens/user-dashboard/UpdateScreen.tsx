@@ -5,10 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StoreReducerTypes } from '../../redux/store';
 import {
   getUserUploadedHouseAction,
+  updateHouseAction,
   uploadHouseUserAction,
 } from '../../redux/actions/dashboard/house.action';
 import { fecthAllRegionsAction } from '../../redux/actions/dashboard/location.action';
-import { UPLOAD_HOUSE_RESET } from '../../redux/constants/dashboard/house.constants';
+import {
+  UPDATE_HOUSE_RESET,
+  UPLOAD_HOUSE_RESET,
+} from '../../redux/constants/dashboard/house.constants';
 import { Loader } from '../../components/loader';
 import Message from '../../components/message/Message';
 import SelectWithSearch from '../../components/select/SelectWithSearch';
@@ -36,9 +40,6 @@ const UpdateComponent = () => {
   };
 
   const dispatch = useDispatch();
-  //   const [imageArray, setImageArray] = useState([]) as any;
-  //   const [image, setImage] = useState<string[]>([]) as any;
-
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
   const [numOfParlor, setNumOfParlor] = useState(0);
@@ -105,8 +106,8 @@ const UpdateComponent = () => {
   const Region = useSelector(
     (state: StoreReducerTypes) => state.fetchAllRegion
   );
-  const uploadHouse = useSelector(
-    (state: StoreReducerTypes) => state?.uploadHouse
+  const updateHouse = useSelector(
+    (state: StoreReducerTypes) => state?.updateHouse
   );
   const userUploads = useSelector(
     (state: StoreReducerTypes) => state?.getUserUploads
@@ -115,52 +116,28 @@ const UpdateComponent = () => {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    //   const arrays = {
-    //     image: imageArray,
-    //     full_name: fullName,
-    //     poster_email: email,
-    //     address,
-    //     house_type: selectedHomeType,
-    //     state: selectedState,
-    //     local_government: selectedLga,
-    //     town: selectedTown,
-    //     totalNum_ofParlor: numOfParlor,
-    //     totalNum_ofKitchen: numOfKitchen,
-    //     totalNum_ofRooms: numOfRooms,
-    //     totalNum_ofToilet: numOfToilet,
-    //     totalNum_ofBathroom: numOfBathRoom,
-    //     status,
-    //     price,
-    //   };
-    //   setData([arrays]);
     window.scrollTo({
-      top: 26,
+      top: 0,
       behavior: 'smooth',
     });
 
-    // dispatch(
-    //   uploadHouseUserAction({
-    //     address,
-    //     description,
-    //     email,
-    //     full_Name: fullName,
-    //     house_type: selectedHomeType,
-    //     image,
-    //     local_government: selectedLga,
-    //     price,
-    //     state: selectedState,
-    //     status,
-    //     token,
-    //     totalNum_ofParlor: numOfParlor,
-    //     totalNum_ofKitchen: numOfKitchen,
-    //     totalNum_ofRooms: numOfRooms,
-    //     totalNum_ofToilet: numOfToilet,
-    //     totalNum_ofBathroom: numOfBathRoom,
-    //     town: selectedTown,
-    //   }) as any
-    // );
-
-    // dispatch({ type: UPLOAD_HOUSE_RESET });
+    dispatch(
+      updateHouseAction({
+        description,
+        house_type: selectedHomeType ? selectedHomeType : houseType,
+        houseId: id,
+        local_government: selectedLga ? selectedLga : lga,
+        price,
+        state: selectedState ? selectedState : state,
+        token,
+        totalNum_ofBathroom: numOfBathRoom,
+        totalNum_ofKitchen: numOfKitchen,
+        totalNum_ofParlor: numOfParlor,
+        totalNum_ofRooms: numOfRooms,
+        totalNum_ofToilet: numOfToilet,
+        town: selectedTown ? selectedTown : town,
+      }) as any
+    );
   };
 
   // USEEFFECT
@@ -168,6 +145,10 @@ const UpdateComponent = () => {
   useEffect(() => {
     dispatch(getUserUploadedHouseAction({ token }) as any);
   }, []);
+
+  useEffect(() => {
+    dispatch(getUserUploadedHouseAction({ token }) as any);
+  }, [updateHouse]);
 
   useEffect(() => {
     const findData = userUploads?.serverResponse?.mapArray?.find(
@@ -189,8 +170,6 @@ const UpdateComponent = () => {
       setNumOfToilet(findData?.totalNum_ofToilet);
       setDescription(findData?.description);
     }
-
-    console.log({ id: findData });
   }, [userUploads]);
 
   useEffect(() => {
@@ -199,22 +178,22 @@ const UpdateComponent = () => {
 
   useEffect(() => {
     let timeOut: ReturnType<typeof setTimeout>;
-    if (uploadHouse?.success) {
+    if (updateHouse?.success) {
       timeOut = setTimeout(() => {
-        uploadHouse.serverResponse.message = '';
-        dispatch({ type: UPLOAD_HOUSE_RESET });
+        updateHouse.serverResponse.message = '';
+        dispatch({ type: UPDATE_HOUSE_RESET });
       }, 5000);
     }
 
-    if (uploadHouse?.error) {
+    if (updateHouse?.error) {
       timeOut = setTimeout(() => {
-        uploadHouse.serverError = '';
-        dispatch({ type: UPLOAD_HOUSE_RESET });
+        updateHouse.serverError = '';
+        dispatch({ type: UPDATE_HOUSE_RESET });
       }, 3000);
     }
 
     return () => clearTimeout(timeOut);
-  }, [uploadHouse]);
+  }, [updateHouse]);
 
   useEffect(() => {
     const state = Region
@@ -241,12 +220,12 @@ const UpdateComponent = () => {
 
   return (
     <section className="w-full max-w-[1130px] py-[23px] m-auto xl:px-0 hide-scrollbar">
-      {uploadHouse?.loading ? <Loader variant="circular" /> : null}
-      {uploadHouse?.success ? (
-        <Message type="success">{uploadHouse?.serverResponse?.message}</Message>
+      {updateHouse?.loading ? <Loader variant="circular" /> : null}
+      {updateHouse?.success ? (
+        <Message type="success">{updateHouse?.serverResponse?.message}</Message>
       ) : null}
-      {uploadHouse?.error ? (
-        <Message type="danger"> {uploadHouse?.serverError}</Message>
+      {updateHouse?.error ? (
+        <Message type="danger"> {updateHouse?.serverError}</Message>
       ) : null}
       <form
         onSubmit={handleFormSubmit}

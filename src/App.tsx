@@ -13,10 +13,14 @@ import {
 import ErrorScreen from './screens/ErrorScreen';
 import {
   AdminDashboardScreen,
+  HouseScreen,
   LocalGovernmentScreen,
   LocationScreen,
   TownScreen,
+  UpdateHouseScreen,
+  UploadHouseScreen,
   UsersScreen,
+  ViewHouseDetailsScreen,
 } from './screens/admin';
 import {
   ApplicationScreen,
@@ -96,6 +100,26 @@ const App = createBrowserRouter([
   {
     path: '/admin/dashboard/town/:id/:index',
     element: <TownScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/admin/dashboard/houses',
+    element: <HouseScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/admin/dashboard/upload-house',
+    element: <UploadHouseScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/admin/dashboard/view-house-details/:id',
+    element: <ViewHouseDetailsScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/admin/dashboard/update-house/:id',
+    element: <UpdateHouseScreen />,
     errorElement: <ErrorScreen />,
   },
   // USER DASHBOARD LINKS

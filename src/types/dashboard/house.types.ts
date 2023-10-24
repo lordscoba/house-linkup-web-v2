@@ -60,3 +60,45 @@ export interface DeleteHouseImageInterface {
   imageId: string;
   houseId: string;
 }
+
+export interface FetchHouseInterface {
+  token: string;
+}
+
+export interface ImageInterface {
+  url: string;
+  _id: string;
+}
+
+export interface PosterInterface {
+  createdAt: string;
+  email: string;
+  image: Array<ImageInterface>;
+  _id: string;
+  full_name: string;
+  phone_number: string;
+}
+export interface FetchHouseServerResponseInterface {
+  address: string;
+  createdAt: string;
+  description: string;
+  house_type: string;
+  image: Array<ImageInterface>;
+  local_government: string;
+  poster: PosterInterface;
+  poster_email: string;
+  price: number;
+  state: string;
+  status: string;
+  totalNum_ofBathroom: number;
+  totalNum_ofKitchen: number;
+  totalNum_ofParlor: number;
+  totalNum_ofRooms: number;
+  totalNum_ofToilet: number;
+  town: number;
+  updatedAt: number;
+  __v: number;
+  _id: string;
+}
+
+export type FetchedHouseArray = Array<FetchHouseServerResponseInterface>;

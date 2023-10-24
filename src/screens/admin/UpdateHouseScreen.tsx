@@ -1,44 +1,49 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import UserDashboardNav from '../../components/user-dashboad/UserDashboardNav';
+import React, { useState, useCallback, useEffect } from 'react';
+import { DashboardNavbar } from '../../components/adminDashboard/dashboard-navbar';
+import { DashboardSideBar } from '../../components/adminDashboard/dashboard-sidebar';
 import { Footer } from '../../components/layout';
+import { UpdateComponent } from '../user-dashboard/UpdateScreen';
+import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreReducerTypes } from '../../redux/store';
 import {
-  getUserUploadedHouseAction,
+  fetchHouseAction,
   updateHouseAction,
-  uploadHouseUserAction,
 } from '../../redux/actions/dashboard/house.action';
 import { fecthAllRegionsAction } from '../../redux/actions/dashboard/location.action';
-import {
-  UPDATE_HOUSE_RESET,
-  UPLOAD_HOUSE_RESET,
-} from '../../redux/constants/dashboard/house.constants';
+import { UPDATE_HOUSE_RESET } from '../../redux/constants/dashboard/house.constants';
+import FlexibleInput from '../../components/home/FlexibleInput';
+import SelectWithSearch from '../../components/select/SelectWithSearch';
 import { Loader } from '../../components/loader';
 import Message from '../../components/message/Message';
-import SelectWithSearch from '../../components/select/SelectWithSearch';
 import { ArrowDown } from '../../assets/icons';
-import { useLocation } from 'react-router-dom';
-import FlexibleInput from '../../components/home/FlexibleInput';
 
 type Props = {};
 
-const UpdateScreen = (props: Props) => {
+const UpdateHouseScreen = (props: Props) => {
+  const [show, setShow] = useState<boolean>(false);
+
   return (
     <div>
-      <UserDashboardNav />
-      <UpdateComponent />
+      <DashboardNavbar setShow={setShow} />
+      <section className="flex  ">
+        <DashboardSideBar show={show} setShow={setShow} />
+        <div
+          className={`${
+            show ? 'md:pl-[15rem]' : 'md:pl-[5rem]'
+          } flex-1   pt-[6rem]  bg-[#F3F4F6] text-[#333] px-2 overflow-x-hidden`}
+        >
+          <Update />
+        </div>
+      </section>
       <Footer />
     </div>
   );
 };
 
-export default UpdateScreen;
+export default UpdateHouseScreen;
 
-export const UpdateComponent = () => {
-  type Props = {
-    setData: Function;
-  };
-
+const Update = () => {
   const dispatch = useDispatch();
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
@@ -109,8 +114,8 @@ export const UpdateComponent = () => {
   const updateHouse = useSelector(
     (state: StoreReducerTypes) => state?.updateHouse
   );
-  const userUploads = useSelector(
-    (state: StoreReducerTypes) => state?.getUserUploads
+  const fetchedHouses = useSelector(
+    (state: StoreReducerTypes) => state?.fetchHouse
   );
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -143,15 +148,15 @@ export const UpdateComponent = () => {
   // USEEFFECT
 
   useEffect(() => {
-    dispatch(getUserUploadedHouseAction({ token }) as any);
+    dispatch(fetchHouseAction({ token }) as any);
   }, []);
 
   useEffect(() => {
-    dispatch(getUserUploadedHouseAction({ token }) as any);
+    dispatch(fetchHouseAction({ token }) as any);
   }, [updateHouse]);
 
   useEffect(() => {
-    const findData = userUploads?.serverResponse?.mapArray?.find(
+    const findData = fetchedHouses?.serverResponse?.Houses?.find(
       (x: any) => x?._id === id
     );
 
@@ -170,7 +175,7 @@ export const UpdateComponent = () => {
       setNumOfToilet(findData?.totalNum_ofToilet);
       setDescription(findData?.description);
     }
-  }, [userUploads]);
+  }, [fetchedHouses]);
 
   useEffect(() => {
     dispatch(fecthAllRegionsAction() as any);
@@ -232,66 +237,6 @@ export const UpdateComponent = () => {
         className="w-full xl:w-[1130px] m-auto bg-[#fff] rounded-lg lg:px-[63px] px-2  py-[42px]    mb-[5rem] border"
       >
         <section className="">
-          {/* <section>
-            <h2 className="text-center text-[16px] lg:text-[22px] font-semibold mb-3">
-              {' '}
-              Poster's Details
-            </h2>
-
-            <section className="flex gap-[20px] flex-wrap ">
-              <div className="lg:w-[318px] w-full mb-4">
-                <label htmlFor="fullName" className="text-[17px] font-[600]">
-                  {' '}
-                  Full Name <span className="text-[red] text-[1.2rem] ">*</span>
-                </label>
-                <div>
-                  <input
-                    type="text"
-                    name="fullName"
-                    id="Fullname"
-                    value={fullName}
-                    onChange={(e: any) => setFullname(e.target.value)}
-                    placeholder="Enter Full Name"
-                    className="w-full border py-2 px-4 rounded-md"
-                  />
-                </div>
-              </div>
-              <div className="lg:w-[318px] w-full mb-4">
-                <label htmlFor="email" className="text-[17px] font-[600]">
-                  Email <span className="text-[red] text-[1.2rem] ">*</span>
-                </label>
-                <div>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    value={email}
-                    onChange={(e: any) => setEmail(e.target.value)}
-                    placeholder="email"
-                    className="w-full border py-2 px-4 rounded-md"
-                  />
-                </div>
-              </div>
-              <div className="lg:w-[318px] w-full mb-4">
-                <label htmlFor="address" className="text-[17px] font-[600]">
-                  Address <span className="text-[red] text-[1.2rem] ">*</span>
-                </label>
-                <div>
-                  <input
-                    type="text"
-                    name="address"
-                    id="address"
-                    value={address}
-                    onChange={(e: any) => setaddress(e.target.value)}
-                    placeholder="email"
-                    className="w-full border py-2 px-4 rounded-md"
-                  />
-                </div>
-              </div>
-            </section>
-          </section>
-          <br /> */}
-
           <section>
             <h2 className="text-center text-[16px] lg:text-[22px] font-semibold mb-3">
               {' '}

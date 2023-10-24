@@ -1,35 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import UserDashboardNav from '../../components/user-dashboad/UserDashboardNav';
+import { DashboardNavbar } from '../../components/adminDashboard/dashboard-navbar';
+import { DashboardSideBar } from '../../components/adminDashboard/dashboard-sidebar';
 import { Footer } from '../../components/layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserUploadedHouseAction } from '../../redux/actions/dashboard/house.action';
 import { StoreReducerTypes } from '../../redux/store';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   HouseUploadInterface,
   HouseUploadType,
-  ImageInterface,
 } from '../../types/user-dashboard/user_dashboard_nav';
-import DeleteModal from '../../modals/DeleteModal';
+import {
+  fetchHouseAction,
+  getUserUploadedHouseAction,
+} from '../../redux/actions/dashboard/house.action';
+import { ImageInterface } from '../../types/dashboard/users.types';
 import DeleteHouseImageModal from '../../modals/DeleteHouseImageModal';
 import EditHouseImageModal from '../../modals/EditHouseImageModal';
+import DeleteModal from '../../modals/DeleteModal';
 
 type Props = {};
 
-const SingleHouseScreen = (props: Props) => {
+const ViewHouseDetailsScreen = (props: Props) => {
+  const [show, setShow] = useState<boolean>(false);
   return (
     <div>
-      <UserDashboardNav />
-
-      <SingleHouseDetails />
+      <DashboardNavbar setShow={setShow} />
+      <section className="flex  ">
+        <DashboardSideBar show={show} setShow={setShow} />
+        <div
+          className={`${
+            show ? 'md:pl-[15rem]' : 'md:pl-[5rem]'
+          } flex-1   pt-[6rem]  bg-[#F3F4F6] text-[#333] px-2 overflow-x-hidden`}
+        >
+          <HouseDetails />
+        </div>
+      </section>
       <Footer />
     </div>
   );
 };
 
-export default SingleHouseScreen;
+export default ViewHouseDetailsScreen;
 
-const SingleHouseDetails = () => {
+const HouseDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -50,8 +63,8 @@ const SingleHouseDetails = () => {
     : null;
 
   const token = storedData?.token;
-  const userUploads = useSelector(
-    (state: StoreReducerTypes) => state?.getUserUploads
+  const fetchedHouses = useSelector(
+    (state: StoreReducerTypes) => state?.fetchHouse
   );
 
   const editHouseImage = useSelector(
@@ -84,22 +97,20 @@ const SingleHouseDetails = () => {
   };
 
   useEffect(() => {
-    dispatch(getUserUploadedHouseAction({ token }) as any);
+    dispatch(fetchHouseAction({ token }) as any);
   }, []);
 
   useEffect(() => {
-    const findData = userUploads?.serverResponse?.mapArray?.find(
+    const findData = fetchedHouses?.serverResponse?.Houses?.find(
       (x: any) => x?._id === id
     );
 
     setHouseData([findData]);
-    // console.log({ id: findData?.image });
-  }, [userUploads]);
+  }, [fetchedHouses]);
 
   useEffect(() => {
-    dispatch(getUserUploadedHouseAction({ token }) as any);
+    dispatch(fetchHouseAction({ token }) as any);
   }, [editHouseImage, deleteHouseImage, deleteHouse]);
-
   return (
     <div className="w-full max-w-[1200px] m-auto ">
       {houseData?.length > 0
@@ -115,7 +126,7 @@ const SingleHouseDetails = () => {
                       <img
                         src={x?.image[0]?.url}
                         alt=""
-                        className="w-full h-full  object-cover "
+                        className="w-full h-full  object-contain "
                       />
                     ) : (
                       <p className="font-bold flex justify-center items-center text-[1rem]">
@@ -141,7 +152,7 @@ const SingleHouseDetails = () => {
                                 <img
                                   src={a?.url}
                                   alt=""
-                                  className={` w-full h-full object-cover `}
+                                  className={` w-full h-full object-contain `}
                                 />
 
                                 {hoveredIndex === i ? (
@@ -259,7 +270,7 @@ const SingleHouseDetails = () => {
                     <button
                       type="button"
                       onClick={() => {
-                        navigate(`/dashboard/user/update/${x?._id}`);
+                        navigate(`/admin/dashboard/update-house/${x?._id}`);
                         window.scrollTo({
                           top: 26,
                           behavior: 'smooth',
@@ -284,7 +295,7 @@ const SingleHouseDetails = () => {
                   show={showDelModal}
                   houseId={x?._id}
                   house_type={x?.house_type}
-                  screen="house_upload"
+                  screen="admin"
                   token={token}
                 />
               </>

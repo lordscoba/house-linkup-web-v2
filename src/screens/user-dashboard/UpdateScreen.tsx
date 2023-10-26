@@ -229,7 +229,7 @@ export const UpdateComponent = () => {
       ) : null}
       <form
         onSubmit={handleFormSubmit}
-        className="w-full xl:w-[1130px] m-auto bg-[#fff] rounded-lg lg:px-[63px] px-2  py-[42px]    mb-[5rem] border"
+        className="w-full xl:w-[1130px] m-auto bg-[#fff] rounded-lg lg:px-[63px] px-2  py-[42px]    mb-[5rem] "
       >
         <section className="">
           {/* <section>
@@ -299,7 +299,7 @@ export const UpdateComponent = () => {
             </h2>
 
             <section className="flex gap-[20px] flex-wrap">
-              <div className="lg:w-[318px] w-full mb-4">
+              <div className="lg:w-[318px] w-full md:mb-4 mb-2">
                 {!editState ? (
                   <div className="lg:w-[318px] w-full mb-4">
                     <label
@@ -334,7 +334,7 @@ export const UpdateComponent = () => {
                 )}
               </div>
 
-              <div className="lg:w-[318px] w-full mb-4">
+              <div className="lg:w-[318px] w-full md:mb-4 mb-2">
                 <div className="lg:w-[318px] w-full mb-4">
                   {!editLga ? (
                     <div className="lg:w-[318px] w-full mb-4">
@@ -371,10 +371,10 @@ export const UpdateComponent = () => {
                 </div>
               </div>
 
-              <div className="lg:w-[318px] w-full mb-4">
-                <div className="lg:w-[318px] w-full mb-4">
+              <div className="lg:w-[318px] w-full md:mb-4 mb-2">
+                <div>
                   {!editTown ? (
-                    <div className="lg:w-[318px] w-full mb-4">
+                    <div className="lg:w-[318px] w-full md:mb-4 mb-2">
                       <label
                         htmlFor="house-type"
                         className="text-[17px] font-[600]"
@@ -410,7 +410,7 @@ export const UpdateComponent = () => {
               </div>
               {/* HOME TYPE */}
 
-              <div className="lg:w-[318px] w-full mb-4">
+              <div className="lg:w-[318px] w-full md:mb-4 mb-2">
                 {editHouseType ? (
                   <div>
                     {' '}
@@ -563,7 +563,7 @@ export const UpdateComponent = () => {
                 )}
               </div>
 
-              <div className="lg:w-[318px] w-full mb-4">
+              <div className="lg:w-[318px] w-full md:mb-4 mb-2">
                 <label htmlFor="price" className="text-[17px] font-[600]">
                   {' '}
                   Price <span className="text-[red] text-[1.2rem] ">*</span>
@@ -583,7 +583,7 @@ export const UpdateComponent = () => {
 
               <div>
                 {editHouseStatus ? (
-                  <div className="lg:w-[318px] w-full mb-4">
+                  <div className="lg:w-[318px] w-full md:mb-4 mb-2">
                     <label htmlFor="status" className="text-[17px] font-[600]">
                       {' '}
                       Status
@@ -633,7 +633,7 @@ export const UpdateComponent = () => {
                 )}
               </div>
 
-              <div className="lg:w-[318px] w-full mb-4">
+              <div className="lg:w-[318px] w-full md:mb-4 mb-2">
                 <label htmlFor="NumOfParlor" className="text-[17px] font-[600]">
                   {' '}
                   No Of parlor{' '}
@@ -652,7 +652,7 @@ export const UpdateComponent = () => {
                 </div>
               </div>
 
-              <div className="lg:w-[318px] w-full mb-4">
+              <div className="lg:w-[318px] w-full md:mb-4 mb-2">
                 <label
                   htmlFor="NumOfKitchen"
                   className="text-[17px] font-[600]"
@@ -674,7 +674,7 @@ export const UpdateComponent = () => {
                 </div>
               </div>
 
-              <div className="lg:w-[318px] w-full mb-4">
+              <div className="lg:w-[318px] w-full md:mb-4 mb-2">
                 <label htmlFor="NumOfToilet" className="text-[17px] font-[600]">
                   {' '}
                   No Of Toilet{' '}
@@ -693,7 +693,7 @@ export const UpdateComponent = () => {
                 </div>
               </div>
 
-              <div className="lg:w-[318px] w-full mb-4">
+              <div className="lg:w-[318px] w-full md:mb-4 mb-2">
                 <label htmlFor="NumOfRooms" className="text-[17px] font-[600]">
                   {' '}
                   No Of Rooms{' '}
@@ -712,7 +712,7 @@ export const UpdateComponent = () => {
                 </div>
               </div>
 
-              <div className="lg:w-[318px] w-full mb-4">
+              <div className="lg:w-[318px] w-full md:mb-4 mb-2">
                 <label
                   htmlFor="NumOfBathRoom"
                   className="text-[17px] font-[600]"

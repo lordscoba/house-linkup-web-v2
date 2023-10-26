@@ -51,10 +51,6 @@ const EditUserProfile = ({
   );
   const updatedImage = profile_picture?.serverResponse?.User?.image[0]?.url;
 
-  const userDetails = useSelector(
-    (state: StoreReducerTypes) => state?.userDetails
-  );
-
   const update_profile = useSelector(
     (state: StoreReducerTypes) => state?.updateProfile
   );
@@ -79,20 +75,11 @@ const EditUserProfile = ({
         username,
       }) as any
     );
-    dispatch({ type: UPDATE_PROFILE_RESET });
   };
 
   const handleCloseModal = () => {
     setOpen(false);
   };
-
-  useEffect(() => {
-    dispatch(userDetailsAction({ _id: userId }) as any);
-  }, [update_profile, update_profile]);
-
-  useEffect(() => {
-    dispatch(userDetailsAction({ _id: userId }) as any);
-  }, []);
 
   useEffect(() => {
     dispatch(changeProfilePictureAction({ image, userId }) as any);
@@ -134,9 +121,9 @@ const EditUserProfile = ({
                           ? imageUrl[0]?.url
                           : updatedImage
                           ? updatedImage
-                          : userDetails
-                          ? userDetails?.serverResponse?.image?.[0]?.url
-                          : ''
+                          : // : userDetails
+                            // ? userDetails?.serverResponse?.image?.[0]?.url
+                            ''
                       }
                       alt=""
                       className="w-full h-full object-cover rounded-full"

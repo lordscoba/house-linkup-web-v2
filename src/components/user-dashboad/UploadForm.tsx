@@ -139,14 +139,14 @@ const UploadForm = ({ setData }: Props) => {
       timeOut = setTimeout(() => {
         uploadHouse.serverResponse.message = '';
         dispatch({ type: UPLOAD_HOUSE_RESET });
-      }, 5000);
+      }, 2000);
     }
 
     if (uploadHouse?.error) {
       timeOut = setTimeout(() => {
         uploadHouse.serverError = '';
         dispatch({ type: UPLOAD_HOUSE_RESET });
-      }, 3000);
+      }, 2000);
     }
 
     return () => clearTimeout(timeOut);

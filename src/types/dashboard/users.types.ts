@@ -24,7 +24,7 @@ export interface TableInterface {
   role: string;
   phone_number?: string | any;
   username?: string | any;
-  _id: string;
+  _id: any;
 }
 
 export type TableArrays = Array<TableInterface>;
@@ -44,7 +44,7 @@ export interface TableDataInterface {
   isAdmin?: boolean;
   role: string;
   setList: (a: any) => void;
-  _id: string;
+  _id: any;
   username: string;
   phone_number: string;
 }

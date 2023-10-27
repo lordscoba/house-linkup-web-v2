@@ -50,7 +50,7 @@ export const updateProfileAction =
   ({ email, location, phone_number, username, id }: UpdateProfileInterface) =>
   async (
     dispatch: Dispatch,
-    getState: ({ changeProfilePicture }: StoreReducerTypes) => void
+    getState: ({ updateProfile }: StoreReducerTypes) => void
   ) => {
     try {
       dispatch({ type: UPDATE_PROFILE_REQUEST });
@@ -83,7 +83,7 @@ export const changeProfilePictureAction =
   ({ image, userId }: ChangeProfileInterface) =>
   async (
     dispatch: Dispatch,
-    getState: ({ updateProfile }: StoreReducerTypes) => void
+    getState: ({ changeProfilePicture }: StoreReducerTypes) => void
   ) => {
     try {
       dispatch({ type: CHANGE_PROFILE_PICTURE_REQUEST });
@@ -124,7 +124,7 @@ export const userDetailsAction =
     try {
       dispatch({ type: USER_DETAILS_REQUEST });
 
-      const { data } = await axios.get(`${SERVER_URL}/user-details/${_id}`);
+      const { data } = await axios.get(`${SERVER_URL}/user-details?id=${_id}`);
 
       dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
     } catch (error: any) {

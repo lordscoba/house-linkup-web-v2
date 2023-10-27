@@ -14,7 +14,7 @@ import Pagination from '../../Pagination';
 import { EditIcon, RedDeleteIcon } from '../../../assets/icons';
 import DeleteModal from '../../../modals/DeleteModal';
 import ViewUserDetailsModal from '../../../modals/View-user-details-modal';
-import EditUserProfile from '../../../modals/EditUserProfile';
+import EditUserProfile from '../../../modals/EditUserProfileModal';
 import RegistrationModal from '../../../modals/RegistrationModal';
 import FlexibleInput from '../../home/FlexibleInput';
 
@@ -228,9 +228,9 @@ const TableData = ({
     useState<boolean>(false);
   const [showEditUserProfile, setShowEditUserProfile] =
     useState<boolean>(false);
+  const [userId, setUserId] = useState('');
 
   const openDeleteUser = () => {
-    const user = list[index];
     setDeleteUser(true);
   };
 
@@ -246,13 +246,20 @@ const TableData = ({
   };
 
   const openViewUserDetails = () => {
-    const user = list[index];
+    const findUser = list?.find((x) => x?._id === _id);
+    if (findUser) {
+      setUserId(findUser?._id);
+    }
     setShowViewUserDetails(true);
   };
 
   const openEditUserModal = () => {
+    const findUser = list?.find((x) => x?._id === _id);
+    if (findUser) {
+      setUserId(findUser?._id);
+    }
+
     setShowEditUserProfile(true);
-    const user = list[index];
   };
 
   return (
@@ -355,7 +362,7 @@ const TableData = ({
         role={role}
         setOpen={setShowViewUserDetails}
         userEmail={email}
-        userId={_id}
+        userId={userId}
         userName={username}
         user_fullName={full_name}
         user_location={location}
@@ -367,7 +374,7 @@ const TableData = ({
         open={showEditUserProfile}
         setOpen={setShowEditUserProfile}
         userEmail={email}
-        userId={_id}
+        userId={userId}
         userName={username}
         user_fullName={full_name}
         user_location={location}

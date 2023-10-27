@@ -87,7 +87,7 @@ const UserDashboardNav = (props: Props) => {
       <section
         className={`${
           showNav ? 'block' : 'hidden'
-        }   xl:flex flex-1  items-center gap-[42px] xl:mt-0 mt-3 `}
+        }   xl:flex flex-1  items-center gap-[42px] xl:mt-0 mt-3 px-2 `}
         //   className="block xl:flex gap-[42px]   flex-1"
       >
         <div className="block xl:flex  items-center   gap-[48px]">
@@ -103,7 +103,7 @@ const UserDashboardNav = (props: Props) => {
                           pathname === item?.link
                             ? 'text-[#4BA586]'
                             : 'text-[#222]'
-                        } text-[18px] md:text-[1rem] `}
+                        } text-[18px] md:text-[1rem] capitalize `}
                       >
                         {item?.text}
                       </Link>
@@ -172,7 +172,7 @@ const UserDashboardNav = (props: Props) => {
             )}
           </div>
           <div className="">
-            <h4 className="text-[1rem] font-bold relative">
+            <h4 className="text-[1rem] font-bold relative capitalize">
               {userFromstorage?.userDoc?.full_name}
             </h4>
             <p className="text-[#2B67F6] font-[400]">Renter</p>
@@ -186,7 +186,7 @@ const UserDashboardNav = (props: Props) => {
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              className="w-6 h-6 cursor-pointer "
+              className="w-4 h-4 cursor-pointer "
             >
               <path
                 stroke-linecap="round"

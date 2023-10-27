@@ -5,10 +5,12 @@ import {
   ForgotPasswordScreen,
   HomeScreen,
   LoginScreen,
+  ProfileScreen,
   PropertyScreen,
   RegisterScreen,
   ResetPasswordScreen,
   ServiceScreen,
+  UpdateProfileScreen,
 } from './screens';
 import ErrorScreen from './screens/ErrorScreen';
 import {
@@ -73,6 +75,16 @@ const App = createBrowserRouter([
   {
     path: '/reset-password/:id',
     element: <ResetPasswordScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/profile',
+    element: <ProfileScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/update-profile/:id',
+    element: <UpdateProfileScreen />,
     errorElement: <ErrorScreen />,
   },
 

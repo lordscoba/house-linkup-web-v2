@@ -286,7 +286,7 @@ export const deleteHouseImageAction =
   };
 
 export const fetchHouseAction =
-  ({ token }: FetchHouseInterface) =>
+  () =>
   async (
     dispatch: Dispatch,
     getState: ({ fetchHouse }: StoreReducerTypes) => void
@@ -294,16 +294,13 @@ export const fetchHouseAction =
     try {
       dispatch({ type: FETCH_HOUSE_REQUEST });
 
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // const config = {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // };
 
-      const { data } = await axios.get(
-        `${SERVER_URL}/fetch-all-houses`,
-        config
-      );
+      const { data } = await axios.get(`${SERVER_URL}/fetch-all-houses`);
       dispatch({ type: FETCH_HOUSE_SUCCESS, payload: data });
     } catch (error: any) {
       dispatch({

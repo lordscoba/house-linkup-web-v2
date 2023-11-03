@@ -148,11 +148,11 @@ const Update = () => {
   // USEEFFECT
 
   useEffect(() => {
-    dispatch(fetchHouseAction({ token }) as any);
+    dispatch(fetchHouseAction() as any);
   }, []);
 
   useEffect(() => {
-    dispatch(fetchHouseAction({ token }) as any);
+    dispatch(fetchHouseAction() as any);
   }, [updateHouse]);
 
   useEffect(() => {

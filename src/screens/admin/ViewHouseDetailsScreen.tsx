@@ -97,7 +97,7 @@ const HouseDetails = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchHouseAction({ token }) as any);
+    dispatch(fetchHouseAction() as any);
   }, []);
 
   useEffect(() => {
@@ -109,7 +109,7 @@ const HouseDetails = () => {
   }, [fetchedHouses]);
 
   useEffect(() => {
-    dispatch(fetchHouseAction({ token }) as any);
+    dispatch(fetchHouseAction() as any);
   }, [editHouseImage, deleteHouseImage, deleteHouse]);
   return (
     <div className="w-full max-w-[1200px] m-auto ">
@@ -152,7 +152,7 @@ const HouseDetails = () => {
                                 <img
                                   src={a?.url}
                                   alt=""
-                                  className={` w-full h-full object-contain `}
+                                  className={` w-full h-full object-cover `}
                                 />
 
                                 {hoveredIndex === i ? (

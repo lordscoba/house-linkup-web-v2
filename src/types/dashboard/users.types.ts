@@ -4,6 +4,7 @@ export interface PageInterface {
 
 export interface DeleteUserInterface {
   _id: string;
+  token: string | any;
 }
 
 export interface ImageInterface {
@@ -47,8 +48,39 @@ export interface TableDataInterface {
   _id: any;
   username: string;
   phone_number: string;
+  token?: string;
 }
+
+export type TableDataArray = Array<TableDataInterface>;
 
 export interface IdInterface {
   id: string;
+  // token: string;
 }
+
+export interface StringAndTokenInterface {
+  userId: string;
+  token: string;
+}
+
+export interface UploaderUserDetailsInterface {
+  active: boolean;
+  blocked: boolean;
+  de_activated: boolean;
+  email: string;
+  full_name: string;
+  image: Array<ImageInterface>;
+  isAdmin: boolean;
+  role: string;
+  username: string;
+  _id: string;
+  location: string;
+}
+
+export interface UploaderDetailsInterface {
+  _id: string;
+  count: number;
+  userDetails: UploaderUserDetailsInterface;
+}
+
+export type UploaderDetailsArray = Array<UploaderDetailsInterface>;

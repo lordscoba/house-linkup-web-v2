@@ -39,11 +39,11 @@ const Houses = (props: Props) => {
   );
 
   useEffect(() => {
-    dispatch(fetchHouseAction({ token }) as any);
+    dispatch(fetchHouseAction() as any);
   }, []);
 
   useEffect(() => {
-    dispatch(fetchHouseAction({ token }) as any);
+    dispatch(fetchHouseAction() as any);
   }, [uploadHouse]);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const Houses = (props: Props) => {
     const houses = fetchedHouses?.serverResponse?.Houses;
     setHouseArray(houses);
     setTotalUploads(totalUploadedHouse);
-    console.log({ houses });
+    // console.log({ houses });
   }, [fetchedHouses]);
 
   return (
@@ -88,7 +88,8 @@ const Houses = (props: Props) => {
 
       <div>
         <p className="text-[grey] text-[1rem] text-center">
-          Note: You can filter by status(eg: buy, rent) or by poster name
+          Note: You can filter by status(eg: buy, rent) or by poster name or by
+          ID
         </p>
       </div>
       <div className="mt-4 flex justify-end pr-6  ">
@@ -150,7 +151,12 @@ const ServerResponse = ({ data, searchTerm }: ServerResponseInterface) => {
             (item?.status?.toLocaleLowerCase() &&
               item?.status
                 ?.toLocaleLowerCase()
-                ?.includes(searchTerm?.toLocaleLowerCase()))
+                ?.includes(searchTerm?.toLocaleLowerCase())) ||
+            (item?._id?.toLocaleLowerCase() &&
+              item?._id
+                ?.toLocaleLowerCase()
+                .trim()
+                ?.includes(searchTerm?.toLocaleLowerCase().trim()))
           );
         })
         .map((x: FetchHouseServerResponseInterface, index: any) => {
@@ -170,7 +176,7 @@ const ServerResponse = ({ data, searchTerm }: ServerResponseInterface) => {
                     <img
                       src={x?.poster?.image[0]?.url}
                       alt=""
-                      className="w-[60px] h-[60px]"
+                      className="w-[60px] h-[60px] object-cover rounded-full"
                     />
                   ) : (
                     <svg

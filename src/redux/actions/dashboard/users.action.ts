@@ -42,15 +42,26 @@ export const getAllUsersAction =
   };
 
 export const deleteUserAction =
-  ({ _id }: DeleteUserInterface) =>
+  ({ _id, token }: DeleteUserInterface) =>
   async (
     dispatch: Dispatch,
     getState: ({ deleteUser }: StoreReducerTypes) => void
   ) => {
     try {
       dispatch({ type: DELETE_USER_REQUEST });
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
 
-      const { data } = await axios.delete(`${SERVER_URL}/delete-user/${_id}`);
+          //   'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      const { data } = await axios.delete(
+        `${SERVER_URL}/delete-user/${_id}`,
+        config
+      );
 
       // console.log({ delete: data });
       dispatch({ type: DELETE_USER_SUCCESS, payload: data });

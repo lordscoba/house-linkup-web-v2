@@ -11,6 +11,7 @@ import { StoreReducerTypes } from '../redux/store';
 import { useNavigate } from 'react-router-dom';
 import { Loader } from '../components/loader';
 import Message from '../components/message/Message';
+import { CHANGE_PROFILE_PICTURE_RESET } from '../redux/constants/user-profile/userProfile.constants';
 
 type Props = {};
 
@@ -51,6 +52,10 @@ const UpdateProfile = () => {
 
   const updateProfile = useSelector(
     (state: StoreReducerTypes) => state.updateProfile
+  );
+
+  const profile_picture = useSelector(
+    (state: StoreReducerTypes) => state?.changeProfilePicture
   );
 
   // console.log({ r: updateProfile?.serverResponse?.getUser?.image[0]?.url });
@@ -119,6 +124,11 @@ const UpdateProfile = () => {
 
     return () => clearTimeout(timeOut);
   }, [updateProfile]);
+
+  useEffect(() => {
+    setImage('');
+    dispatch({ type: CHANGE_PROFILE_PICTURE_RESET });
+  }, [profile_picture]);
 
   return (
     <div className="flex flex-col items-center justify-center pt-[4rem]">

@@ -26,6 +26,9 @@ import {
   CHANGE_PROFILE_PICTURE_FAIL,
   CHANGE_PROFILE_PICTURE_REQUEST,
   CHANGE_PROFILE_PICTURE_SUCCESS,
+  DEMOTE_POSTER_TO_USER_FAIL,
+  DEMOTE_POSTER_TO_USER_REQUEST,
+  DEMOTE_POSTER_TO_USER_SUCCESS,
   DEMOTE_USER_FAIL,
   DEMOTE_USER_REQUEST,
   DEMOTE_USER_SUCCESS,
@@ -35,10 +38,14 @@ import {
   PROMOTE_USER_FAIL,
   PROMOTE_USER_REQUEST,
   PROMOTE_USER_SUCCESS,
+  PROMOTE_USER_TO_POSTER_FAIL,
+  PROMOTE_USER_TO_POSTER_REQUEST,
+  PROMOTE_USER_TO_POSTER_SUCCESS,
 } from '../../constants/user-profile/userProfile.constants';
 import {
   DeleteUserInterface,
   IdInterface,
+  StringAndTokenInterface,
 } from '../../../types/dashboard/users.types';
 import {
   DELETE_USER_FAIL,
@@ -136,7 +143,7 @@ export const userDetailsAction =
   };
 
 export const deleteUserAction =
-  ({ _id }: DeleteUserInterface) =>
+  ({ _id, token }: DeleteUserInterface) =>
   async (
     dispatch: Dispatch,
     getState: ({ deleteUser }: StoreReducerTypes) => void
@@ -144,7 +151,19 @@ export const deleteUserAction =
     try {
       dispatch({ type: DELETE_USER_REQUEST });
 
-      const { data } = await axios.delete(`${SERVER_URL}/delete-user/${_id}`);
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+
+          //   'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      const { data } = await axios.delete(
+        `${SERVER_URL}/delete-user/${_id}`,
+        config
+      );
 
       // console.log({ delete: data });
       dispatch({ type: DELETE_USER_SUCCESS, payload: data });
@@ -168,6 +187,8 @@ export const activateUserAction =
       const config = {
         headers: {
           'Content-Type': 'application/json',
+          // Authorization: `Bearer ${token}`,
+
           //   'Content-Type': 'multipart/form-data',
         },
       };
@@ -200,6 +221,7 @@ export const deActivateuserAction =
       const config = {
         headers: {
           'Content-Type': 'application/json',
+          // Authorization: `Bearer ${token}`,
         },
       };
 
@@ -231,6 +253,7 @@ export const blockuserAction =
       const config = {
         headers: {
           'Content-Type': 'application/json',
+          // Authorization: `Bearer ${token}`,
         },
       };
 
@@ -262,6 +285,7 @@ export const promoteUserAction =
       const config = {
         headers: {
           'Content-Type': 'application/json',
+          // Authorization: `Bearer ${token}`,
         },
       };
 
@@ -293,6 +317,7 @@ export const demoteUserAction =
       const config = {
         headers: {
           'Content-Type': 'application/json',
+          // Authorization: `Bearer ${token}`,
         },
       };
 
@@ -307,6 +332,72 @@ export const demoteUserAction =
     } catch (error: any) {
       dispatch({
         type: DEMOTE_USER_FAIL,
+        payload: error?.response && error?.response?.data?.message,
+      });
+    }
+  };
+
+export const promoteUserToPosterAction =
+  ({ userId, token }: StringAndTokenInterface) =>
+  async (
+    dispatch: Dispatch,
+    getState: ({ promoteUserToPoster }: StoreReducerTypes) => void
+  ) => {
+    try {
+      dispatch({ type: PROMOTE_USER_TO_POSTER_REQUEST });
+
+      const config = {
+        headers: {
+          // 'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${SERVER_URL}/promote-user-to-poster`,
+        { userId },
+        config
+      );
+
+      // console.log({ promoteUser: data });
+
+      dispatch({ type: PROMOTE_USER_TO_POSTER_SUCCESS, payload: data });
+    } catch (error: any) {
+      dispatch({
+        type: PROMOTE_USER_TO_POSTER_FAIL,
+        payload: error?.response && error?.response?.data?.message,
+      });
+    }
+  };
+
+export const demotePosterToUserAction =
+  ({ userId, token }: StringAndTokenInterface) =>
+  async (
+    dispatch: Dispatch,
+    getState: ({ demotePosterToUser }: StoreReducerTypes) => void
+  ) => {
+    try {
+      dispatch({ type: DEMOTE_POSTER_TO_USER_REQUEST });
+
+      const config = {
+        headers: {
+          // 'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${SERVER_URL}/demote-poster-to-user`,
+        { userId },
+        config
+      );
+
+      // console.log({ promoteUser: data });
+
+      dispatch({ type: DEMOTE_POSTER_TO_USER_SUCCESS, payload: data });
+    } catch (error: any) {
+      dispatch({
+        type: DEMOTE_POSTER_TO_USER_FAIL,
         payload: error?.response && error?.response?.data?.message,
       });
     }

@@ -12,7 +12,7 @@ type Props = {};
 const Footer = (props: Props) => {
   const { pathname } = useLocation();
   const domain = pathname.split('/')[1];
-  console.log(domain);
+
   return (
     <>
       {pathname === '/sign-up' || pathname === '/login' ? (

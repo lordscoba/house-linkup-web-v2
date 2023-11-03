@@ -17,11 +17,11 @@ export const userDashboardNavValues: Array<UserDashboardInterface> = [
     name: 'application',
     text: 'application',
   },
-  {
-    link: '/dashboard/user/favourite',
-    name: 'favourite',
-    text: 'favourite',
-  },
+  // {
+  //   link: '/dashboard/user/favourite',
+  //   name: 'favourite',
+  //   text: 'favourite',
+  // },
 ];
 
 export const userDashboardDataValues: Array<UserDashboardDataInterface> = [

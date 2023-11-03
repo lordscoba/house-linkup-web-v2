@@ -11,6 +11,7 @@ import { StoreReducerTypes } from '../redux/store';
 import { UPDATE_PROFILE_RESET } from '../redux/constants/auth/auth.constants';
 import Message from '../components/message/Message';
 import { Loader } from '../components/loader';
+import { CHANGE_PROFILE_PICTURE_RESET } from '../redux/constants/user-profile/userProfile.constants';
 
 type Props = {
   open: boolean;
@@ -84,6 +85,11 @@ const EditUserProfile = ({
   useEffect(() => {
     dispatch(changeProfilePictureAction({ image, userId }) as any);
   }, [image]);
+
+  useEffect(() => {
+    setImage('');
+    dispatch({ type: CHANGE_PROFILE_PICTURE_RESET });
+  }, [profile_picture]);
 
   return (
     <>

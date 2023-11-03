@@ -24,6 +24,7 @@ type Props = {
   isBlock: boolean;
   role: string;
   imageUrl: Array<ImageInterface>;
+  token: string | any;
   // data: UserInterface;
 };
 
@@ -41,6 +42,7 @@ const ViewUserDetailsModal = ({
   isDeActivate,
   role,
   imageUrl,
+  token,
 }: Props) => {
   const dispatch = useDispatch();
 
@@ -90,7 +92,7 @@ const ViewUserDetailsModal = ({
     dispatch(promoteUserAction({ id }) as any);
   };
 
-  const demoteUserFunc = ({ id }: IdInterface) => {
+  const demoteUserFunc = (id: any) => {
     dispatch(demoteUserAction({ id }) as any);
   };
 

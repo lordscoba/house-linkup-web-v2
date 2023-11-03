@@ -1,67 +1,73 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { DashboardNavbar } from '../../components/adminDashboard/dashboard-navbar';
+import { DashboardSideBar } from '../../components/adminDashboard/dashboard-sidebar';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { HouseUploadType } from '../../types/user-dashboard/user_dashboard_nav';
+import { fetchHouseAction } from '../../redux/actions/dashboard/house.action';
+import { StoreReducerTypes } from '../../redux/store';
+import { MdSearch } from 'react-icons/md';
+import FlexibleInput from '../../components/home/FlexibleInput';
 import {
   FetchHouseServerResponseInterface,
   FetchedHouseArray,
 } from '../../types/dashboard/house.types';
-import { StoreReducerTypes } from '../../redux/store';
-import { fetchHouseAction } from '../../redux/actions/dashboard/house.action';
-import { MdSearch } from 'react-icons/md';
-import FlexibleInput from '../home/FlexibleInput';
 
 type Props = {};
 
-const Property = (props: Props) => {
+const UploadersPropertyScreen = (props: Props) => {
+  const [show, setShow] = useState<boolean>(false);
+
+  return (
+    <div>
+      <DashboardNavbar setShow={setShow} />
+      <section className="flex   ">
+        <DashboardSideBar show={show} setShow={setShow} />
+        <div
+          className={`${
+            show ? 'md:pl-[15rem]' : 'md:pl-[5rem]'
+          } flex-1   pt-[6rem]  bg-[#F3F4F6] text-[#333] px-2 overflow-x-hidden`}
+        >
+          <UserUploads />
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default UploadersPropertyScreen;
+
+const UserUploads = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const [totalUploads, setTotalUploads] = useState<number>(0);
-  const [totalUploaders, setTotalUploaders] = useState<number>(0);
-
+  const [houseData, setHouseData] = useState<HouseUploadType>([]);
   const [houseArray, setHouseArray] = useState<FetchedHouseArray>([]);
 
-  const storedData = localStorage.getItem('loginUser')
-    ? JSON.parse(localStorage.getItem('loginUser') as any)
-    : null;
-
-  const token = storedData?.token;
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const fetchedHouses = useSelector(
     (state: StoreReducerTypes) => state?.fetchHouse
   );
 
-  const uploadHouse = useSelector(
-    (state: StoreReducerTypes) => state?.uploadHouse
-  );
+  const id = useLocation()?.pathname?.split('/')[4];
 
   useEffect(() => {
     dispatch(fetchHouseAction() as any);
   }, []);
 
   useEffect(() => {
-    dispatch(fetchHouseAction() as any);
-  }, [uploadHouse]);
-
-  useEffect(() => {
-    const totalUploadedHouse = fetchedHouses?.serverResponse?.total_uploads;
-    const totalUploaders = fetchedHouses?.serverResponse;
-
-    if (totalUploaders) {
-      const num = fetchedHouses?.serverResponse.uploaders?.length;
-      setTotalUploaders(num);
-    }
     const houses = fetchedHouses?.serverResponse?.Houses;
-    setHouseArray(houses);
-    setTotalUploads(totalUploadedHouse);
-    // console.log({ houses });
+    if (houses) {
+      const findData = fetchedHouses?.serverResponse?.Houses?.filter(
+        (x: any) => x?.poster?._id === id
+      );
+
+      setHouseArray(findData);
+    }
   }, [fetchedHouses]);
   return (
-    <section className="hide-scrollbar bg-[#f7f5f5] py-6">
-      <div className="w-full max-w-[33rem] m-auto  flex justify-center items-center gap-4 ">
-        <h2>Total Properties : {totalUploads}</h2>
-      </div>
+    <div>
       <div className="  border rounded-[50px] pl-2 w-full  max-w-[26rem] flex items-center m-auto gap-2 bg-[#fff] my-8">
         <span className="text-2xl">
           <MdSearch />
@@ -75,27 +81,27 @@ const Property = (props: Props) => {
           className="flex-1 py-2 pl-2 rounded-[50px] text-[#222] outline-none"
         />
       </div>
-
       <div>
         <p className="text-[grey] text-[1rem] text-center">
           Note: You can filter by status(eg: buy, rent) or by poster name
         </p>
       </div>
-
       <ServerResponse data={houseArray} searchTerm={searchQuery} />
-    </section>
+    </div>
   );
 };
 
-export default Property;
-
-export interface ServerResponseInterface {
+interface ServerResponseInterface {
   data: FetchedHouseArray;
   searchTerm: string;
 }
 
 const ServerResponse = ({ data, searchTerm }: ServerResponseInterface) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log({ fit: data });
+  }, [data]);
   return (
     <div className="w-full max-w-[1200px] m-auto  flex flex-wrap justify-center items-center gap-3 px-2  my-4">
       {data
@@ -117,13 +123,12 @@ const ServerResponse = ({ data, searchTerm }: ServerResponseInterface) => {
             <div key={index} className="border ">
               <div className="w-full max-w-[24rem] md:w-[24rem]  h-[16rem] ">
                 <img
-                  src={x?.image[0]?.url}
+                  src={x?.image?.[0]?.url}
                   alt=""
                   className="border w-full h-full object-cover"
                 />
               </div>
-              <p className="uppercase my-2 font-bold px-2"> {x?.status}</p>
-              <p className="font-bold ">ID : {x?._id}</p>
+              <p className="uppercase my-2 font-bold px-2">{x?.status}</p>
               <section className="flex items-center gap-3">
                 <div className="my-3 px-2">
                   {x?.poster?.image?.length !== 0 ? (
@@ -157,7 +162,9 @@ const ServerResponse = ({ data, searchTerm }: ServerResponseInterface) => {
               </section>
               <div className="text-right pr-2 py-2">
                 <button
-                  onClick={() => navigate(`/property-details/${x?._id}`)}
+                  onClick={() =>
+                    navigate(`/admin/dashboard/view-house-details/${x?._id}`)
+                  }
                   className="border md:px-8 py-2 px-3 bg-[#6726A8] text-[#fff]"
                 >
                   view details

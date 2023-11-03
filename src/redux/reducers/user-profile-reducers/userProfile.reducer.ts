@@ -27,6 +27,9 @@ import {
   CHANGE_PROFILE_PICTURE_REQUEST,
   CHANGE_PROFILE_PICTURE_RESET,
   CHANGE_PROFILE_PICTURE_SUCCESS,
+  DEMOTE_POSTER_TO_USER_FAIL,
+  DEMOTE_POSTER_TO_USER_REQUEST,
+  DEMOTE_POSTER_TO_USER_SUCCESS,
   DEMOTE_USER_FAIL,
   DEMOTE_USER_REQUEST,
   DEMOTE_USER_SUCCESS,
@@ -36,12 +39,17 @@ import {
   PROMOTE_USER_FAIL,
   PROMOTE_USER_REQUEST,
   PROMOTE_USER_SUCCESS,
+  PROMOTE_USER_TO_POSTER_FAIL,
+  PROMOTE_USER_TO_POSTER_REQUEST,
+  PROMOTE_USER_TO_POSTER_SUCCESS,
   RESET_ACTIVATE_USER,
   RESET_BLOCK_USER,
   RESET_DELETE_USER,
+  RESET_DEMOTE_POSTER_TO_USER,
   RESET_DEMOTE_USER,
   RESET_DE_ACTIVATE_USER,
   RESET_PROMOTE_USER,
+  RESET_PROMOTE_USER_TO_POSTER,
   RESET_USER_DETAILS,
 } from '../../constants/user-profile/userProfile.constants';
 
@@ -328,6 +336,70 @@ export const demoteUserReducer = (
       };
 
     case RESET_DEMOTE_USER:
+      return initialStateRequest;
+
+    default:
+      return state;
+  }
+};
+
+export const promoteUserToPosterReducer = (
+  state: ResponseType = initialStateRequest,
+  action: any
+) => {
+  switch (action.type) {
+    case PROMOTE_USER_TO_POSTER_REQUEST:
+      return { ...state, loading: true };
+    case PROMOTE_USER_TO_POSTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        serverResponse: action.payload,
+      };
+
+    case PROMOTE_USER_TO_POSTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        error: true,
+        serverError: action.payload,
+      };
+
+    case RESET_PROMOTE_USER_TO_POSTER:
+      return initialStateRequest;
+
+    default:
+      return state;
+  }
+};
+
+export const demotePosterToUserReducer = (
+  state: ResponseType = initialStateRequest,
+  action: any
+) => {
+  switch (action.type) {
+    case DEMOTE_POSTER_TO_USER_REQUEST:
+      return { ...state, loading: true };
+    case DEMOTE_POSTER_TO_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        serverResponse: action.payload,
+      };
+
+    case DEMOTE_POSTER_TO_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        error: true,
+        serverError: action.payload,
+      };
+
+    case RESET_DEMOTE_POSTER_TO_USER:
       return initialStateRequest;
 
     default:

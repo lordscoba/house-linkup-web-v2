@@ -21,6 +21,7 @@ import {
   TownScreen,
   UpdateHouseScreen,
   UploadHouseScreen,
+  UploadersPropertyScreen,
   UsersScreen,
   ViewHouseDetailsScreen,
 } from './screens/admin';
@@ -30,6 +31,7 @@ import {
   UpdateScreen,
   UserDashboardScreen,
 } from './screens/user-dashboard';
+import ViewPropertyScreen from './screens/ViewPropertyScreen';
 
 const App = createBrowserRouter([
   {
@@ -87,11 +89,21 @@ const App = createBrowserRouter([
     element: <UpdateProfileScreen />,
     errorElement: <ErrorScreen />,
   },
+  {
+    path: '/property-details/:id',
+    element: <ViewPropertyScreen />,
+    errorElement: <ErrorScreen />,
+  },
 
   // Admin Links
   {
     path: '/admin/dashboard',
     element: <AdminDashboardScreen />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/admin/dashboard/uploaders-uploads/:id',
+    element: <UploadersPropertyScreen />,
     errorElement: <ErrorScreen />,
   },
   {

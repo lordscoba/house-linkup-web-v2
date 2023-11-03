@@ -10,3 +10,4 @@ export { default as ForgotPasswordScreen } from './ForgotPasswordScreen';
 export { default as ResetPasswordScreen } from './ResetPasswordScreen';
 export { default as ProfileScreen } from './ProfileScreen';
 export { default as UpdateProfileScreen } from './UpdateProfileScreen';
+export { default as PropertyDetailsScreen } from './ViewPropertyScreen';

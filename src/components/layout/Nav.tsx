@@ -116,30 +116,30 @@ const NavBar = (props: Props) => {
               }   xl:flex  items-center gap-[4rem] xl:mt-0 mt-3 `}
             >
               <div className="block xl:flex  items-center flex-1  gap-[48px]">
-                {links?.length > 0
-                  ? links?.map((item: NavTypes, index: any) => {
-                      return (
-                        <div key={index}>
-                          <section className=" flex xl:block items-center gap-4 max-w-max xl:mb-0 mb-2">
-                            <Link
-                              onClick={() => setShowNav(false)}
-                              to={item?.link}
-                              className={` ${
-                                pathname === item?.link
-                                  ? 'text-[#4BA586]'
-                                  : 'text-[#222]'
-                              } text-[18px] `}
-                            >
-                              {item?.text}
-                            </Link>
-                            {'/' + route === item?.link ? (
-                              <p className="w-2 h-2 rounded-full bg-[#4BA586] m-auto mt-[8px]"></p>
-                            ) : null}
-                          </section>
-                        </div>
-                      );
-                    })
-                  : null}
+                {links?.map((item: NavTypes, index: any) => {
+                  return (
+                    <div key={index}>
+                      <section
+                        onClick={() => setShowNav(false)}
+                        className=" flex xl:block items-center gap-4 max-w-max xl:mb-0 mb-2"
+                      >
+                        <Link
+                          to={item?.link}
+                          className={` ${
+                            pathname === item?.link
+                              ? 'text-[#4BA586]'
+                              : 'text-[#222]'
+                          } text-[18px] `}
+                        >
+                          {item?.text}
+                        </Link>
+                        {'/' + route === item?.link ? (
+                          <p className="w-2 h-2 rounded-full bg-[#4BA586] m-auto mt-[8px]"></p>
+                        ) : null}
+                      </section>
+                    </div>
+                  );
+                })}
               </div>
               {isLoggedIn || LoginSuccess ? (
                 <div className=" ">
@@ -233,25 +233,20 @@ const LogoutAndProfile = ({ setShow, logOut }: LinkInterface) => {
   const isSuperAdminFromStorage =
     userFromstorage?.userDoc?.role === 'SuperAdmin';
   const isAdminFromStorage = userFromstorage?.userDoc?.role === 'Admin';
+  const isPoster = userFromstorage?.userDoc?.role === 'Poster';
+  const isUser = userFromstorage?.userDoc?.role === 'User';
 
   return (
     <div
       className="bg-[grey] px-2 text-[#fff] py-2"
       onClick={() => setShow(false)}
     >
-      {/* <Link to={`/profile`} className="cursor-pointer block">
-        Profile
-      </Link> */}
-      <Link
-        to={
-          isAdminFromStorage || isSuperAdminFromStorage
-            ? '/admin/dashboard'
-            : '/dashboard/user'
-        }
-        className="cursor-pointer block"
-      >
-        DashBoard
-      </Link>
+      {isAdminFromStorage && <Link to={'/admin/dashboard'}>DashBoard</Link>}
+      {isSuperAdminFromStorage && (
+        <Link to={'/admin/dashboard'}>DashBoard</Link>
+      )}
+      {isPoster && <Link to={'/dashboard/user'}>DashBoard</Link>}
+      {isUser && <Link to={`/profile`}>Profile</Link>}
       <button type="button" onClick={logOut}>
         Log out
       </button>

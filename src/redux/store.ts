@@ -39,8 +39,10 @@ import {
   blockUserReducer,
   changeProfilePictureReducer,
   deActivateuserReducer,
+  demotePosterToUserReducer,
   demoteUserReducer,
   promoteUserReducer,
+  promoteUserToPosterReducer,
 } from './reducers/user-profile-reducers/userProfile.reducer';
 
 const {
@@ -69,6 +71,7 @@ export type StoreReducerTypes = {
   blockUser: ReturnType<typeof blockUserReducer>;
   promoteUser: ReturnType<typeof promoteUserReducer>;
   demoteUser: ReturnType<typeof demoteUserReducer>;
+  promoteUserToPoster: ReturnType<typeof promoteUserToPosterReducer>;
   // LOCATION MANAGEMENT
   createNewRegion: ReturnType<typeof createRegionReducer>;
   fetchAllRegion: ReturnType<typeof fetchAllRegionReducer>;
@@ -92,6 +95,7 @@ export type StoreReducerTypes = {
   deleteHouse: ReturnType<typeof deleteHouseReducer>;
   editHouseImage: ReturnType<typeof editHouseImageReducer>;
   deleteHouseImage: ReturnType<typeof deleteHouseImageReducer>;
+  demotePosterToUser: ReturnType<typeof demotePosterToUserReducer>;
 };
 
 const reducer: StoreReducerTypes = combineReducers({
@@ -111,6 +115,9 @@ const reducer: StoreReducerTypes = combineReducers({
   blockUser: blockUserReducer,
   promoteUser: promoteUserReducer,
   demoteUser: demoteUserReducer,
+  promoteUserToPoster: promoteUserToPosterReducer,
+  demotePosterToUser: demotePosterToUserReducer,
+
   // LOCATION MANAGEMENT
   createNewRegion: createRegionReducer,
   fetchAllRegion: fetchAllRegionReducer,

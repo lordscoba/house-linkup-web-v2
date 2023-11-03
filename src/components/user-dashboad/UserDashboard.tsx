@@ -8,6 +8,7 @@ import { getUserUploadedHouseAction } from '../../redux/actions/dashboard/house.
 import { StoreReducerTypes } from '../../redux/store';
 import { LiaGreaterThanSolid, LiaLessThanSolid } from 'react-icons/lia';
 import { useNavigate } from 'react-router-dom';
+import CustomPagination from '../pagination/Pagination-3';
 
 type Props = {};
 
@@ -17,6 +18,9 @@ const UserDashboard = (props: Props) => {
   const [data, setData] = useState<HouseUploadType>([]);
   const [posterId, setPosterId] = useState('');
 
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [pages, setPages] = useState(0) as any;
+
   const [sortBy, setSortBy] = useState('Price');
 
   const storedData = localStorage.getItem('loginUser')
@@ -24,6 +28,10 @@ const UserDashboard = (props: Props) => {
     : null;
 
   const token = storedData?.token;
+
+  const handlePageChange = (page: number) => {
+    setPageNumber(page);
+  };
 
   const userUploads = useSelector(
     (state: StoreReducerTypes) => state?.getUserUploads
@@ -44,6 +52,27 @@ const UserDashboard = (props: Props) => {
   useEffect(() => {
     setData(userUploads?.serverResponse?.mapArray);
   }, [userUploads]);
+
+  useEffect(() => {
+    const totalUploadedHouse = userUploads?.serverResponse?.mapArray;
+    // const totalUploaders = fetchedHouses?.serverResponse;
+
+    if (totalUploadedHouse) {
+      const num = userUploads?.serverResponse?.mapArray?.length;
+      // pagination
+      const itemsPerPage = 5;
+      const indexOfLastItem = pageNumber * itemsPerPage;
+      const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+      const currentItems = totalUploadedHouse?.slice(
+        indexOfFirstItem,
+        indexOfLastItem
+      );
+      const totalPages = Math.floor(num / itemsPerPage);
+
+      setPages(totalPages);
+      setData(currentItems);
+    }
+  }, [userUploads, pageNumber]);
 
   return (
     <div className=" md:px-[2rem] px-2">
@@ -92,6 +121,11 @@ const UserDashboard = (props: Props) => {
 
           <SortableButton setSortString={setSortBy} sortString={sortBy} />
           <SortedHouses sortBy={sortBy} data={data} setData={setData} />
+          <CustomPagination
+            totalPages={pages}
+            onChangePage={handlePageChange}
+            currentPage={pageNumber}
+          />
         </section>
         {/* MAP SECTION */}
         <section className="hidden lg:block border-2 w-[43%] h-[45rem]">
@@ -410,8 +444,6 @@ const SortedHouses = ({ sortBy, data, setData }: SortInterface) => {
             </section>
           </>
         )}
-
-        <p>{pagination()}</p>
       </section>
     </div>
   );

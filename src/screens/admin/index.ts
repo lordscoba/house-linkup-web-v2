@@ -7,3 +7,4 @@ export { default as HouseScreen } from './HouseScreen';
 export { default as UploadHouseScreen } from './UploadHouseScreen';
 export { default as ViewHouseDetailsScreen } from './ViewHouseDetailsScreen';
 export { default as UpdateHouseScreen } from './UpdateHouseScreen';
+export { default as UploadersPropertyScreen } from './UploadersPropertyScreen';

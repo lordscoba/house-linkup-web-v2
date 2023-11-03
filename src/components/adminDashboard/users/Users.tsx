@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MdSearch } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  deleteUserAction,
+  // deleteUserAction,
   getAllUsersAction,
 } from '../../../redux/actions/dashboard/users.action';
 import { StoreReducerTypes } from '../../../redux/store';
@@ -10,13 +10,16 @@ import {
   TableDataInterface,
   TableInterface,
 } from '../../../types/dashboard/users.types';
-import Pagination from '../../Pagination';
+import Pagination from '../../pagination/Pagination';
 import { EditIcon, RedDeleteIcon } from '../../../assets/icons';
 import DeleteModal from '../../../modals/DeleteModal';
 import ViewUserDetailsModal from '../../../modals/View-user-details-modal';
 import EditUserProfile from '../../../modals/EditUserProfileModal';
 import RegistrationModal from '../../../modals/RegistrationModal';
 import FlexibleInput from '../../home/FlexibleInput';
+import Pagination2 from '../../pagination/Pagination-2';
+import CustomPagination from '../../pagination/Pagination-3';
+import { deleteUserAction } from '../../../redux/actions/user-profile/userProfile.actions';
 
 type Props = {};
 
@@ -36,6 +39,12 @@ const Users = (props: Props) => {
   const all_users = useSelector((state: StoreReducerTypes) => state?.allUsers);
   const serverResponse = all_users?.serverResponse?.Users;
   const totalPages = all_users?.serverResponse?.totalPages;
+
+  const storedData = localStorage.getItem('loginUser')
+    ? JSON.parse(localStorage.getItem('loginUser') as any)
+    : null;
+
+  const token = storedData?.token;
 
   const handlePageChange = (page: number) => {
     setPageNumber(page);
@@ -190,12 +199,23 @@ const Users = (props: Props) => {
                       _id={item?._id}
                       username={item?.username}
                       phone_number={item?.phone_number}
+                      token={token}
                     />
                   );
                 })}
             </table>
           </div>
-          <Pagination totalPages={pages} onPageChange={handlePageChange} />
+          {/* <Pagination totalPages={pages} onPageChange={handlePageChange} /> */}
+          {/* <Pagination2
+            totalPages={pages}
+            onPageChange={handlePageChange}
+            currentPage={pageNumber}
+          /> */}
+          <CustomPagination
+            totalPages={pages}
+            onChangePage={handlePageChange}
+            currentPage={pageNumber}
+          />
         </section>
       </div>
       <RegistrationModal setShow={setShow} show={show} />
@@ -221,6 +241,7 @@ const TableData = ({
   username,
   phone_number,
   setList,
+  token,
 }: TableDataInterface) => {
   const dispatch = useDispatch();
   const [deleteUser, setDeleteUser] = useState<boolean>(false);
@@ -239,7 +260,7 @@ const TableData = ({
     setList(filter);
     const clickedUser = list[index];
     const _id = clickedUser?._id;
-    dispatch(deleteUserAction({ _id }) as any);
+    dispatch(deleteUserAction({ _id, token }) as any);
     setDeleteUser((prev: boolean) => !prev);
 
     // console.log({ index, _id, clickedUser });
@@ -367,6 +388,7 @@ const TableData = ({
         user_fullName={full_name}
         user_location={location}
         user_number={phone_number}
+        token={token}
       />
 
       <EditUserProfile

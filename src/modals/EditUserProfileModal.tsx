@@ -83,13 +83,34 @@ const EditUserProfile = ({
   };
 
   useEffect(() => {
-    dispatch(changeProfilePictureAction({ image, userId }) as any);
+    if (image !== '') {
+      dispatch(changeProfilePictureAction({ image, userId }) as any);
+    }
   }, [image]);
 
   useEffect(() => {
     setImage('');
     dispatch({ type: CHANGE_PROFILE_PICTURE_RESET });
   }, [profile_picture]);
+
+  useEffect(() => {
+    let timeOut: ReturnType<typeof setTimeout>;
+    if (update_profile?.success) {
+      timeOut = setTimeout(() => {
+        update_profile.serverResponse.message = '';
+        dispatch({ type: UPDATE_PROFILE_RESET });
+      }, 800);
+    }
+
+    if (update_profile?.error) {
+      timeOut = setTimeout(() => {
+        update_profile.serverError = '';
+        dispatch({ type: UPDATE_PROFILE_RESET });
+      }, 800);
+    }
+
+    return () => clearTimeout(timeOut);
+  }, [update_profile]);
 
   return (
     <>

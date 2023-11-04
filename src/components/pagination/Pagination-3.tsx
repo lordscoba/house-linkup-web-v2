@@ -11,7 +11,7 @@ const CustomPagination: React.FC<PaginationProps> = ({
   totalPages,
   onChangePage,
 }) => {
-  const visiblePages = 5; // Adjust the number of visible pages as needed
+  const visiblePages = 5;
   const pages: number[] = [];
 
   // Calculate the range of page numbers to display
@@ -49,7 +49,7 @@ const CustomPagination: React.FC<PaginationProps> = ({
               key={page}
               onClick={() => handlePageChange(page)}
               className={`${
-                currentPage === page ? 'active' : ''
+                currentPage === page ? 'active bg-[#61d892] text-[#fff]' : ''
               } border border-[grey] mr-2 rounded-md font-semibold px-6 text-[#222]`}
             >
               {`(${page})`}

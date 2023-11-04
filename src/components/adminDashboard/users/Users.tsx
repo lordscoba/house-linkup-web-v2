@@ -48,7 +48,6 @@ const Users = (props: Props) => {
 
   const handlePageChange = (page: number) => {
     setPageNumber(page);
-    dispatch(getAllUsersAction({ pageNumber }) as any);
   };
 
   const update_profile = useSelector(
@@ -81,16 +80,13 @@ const Users = (props: Props) => {
   const showRegisterModal = () => {
     setShow(true);
   };
-  useEffect(() => {
-    dispatch(getAllUsersAction({ pageNumber }) as any);
-  }, [pageNumber]);
 
   useEffect(() => {
-    dispatch(getAllUsersAction({ pageNumber }) as any);
+    dispatch(getAllUsersAction() as any);
   }, []);
 
   useEffect(() => {
-    dispatch(getAllUsersAction({ pageNumber }) as any);
+    dispatch(getAllUsersAction() as any);
   }, [
     profile_picture,
     update_profile,
@@ -104,9 +100,42 @@ const Users = (props: Props) => {
   ]);
 
   useEffect(() => {
-    setTableList(serverResponse);
-    setPages(Number(totalPages));
-  }, [all_users]);
+    const serverResponse = all_users?.serverResponse?.Users;
+
+    if (serverResponse) {
+      const countUsers = all_users?.serverResponse?.totalUsers;
+      const itemsPerPage = 20;
+      const indexOfLastItem = pageNumber * itemsPerPage;
+      const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+      const totalPages = Math.floor(countUsers / itemsPerPage);
+      const currentItems = serverResponse?.slice(
+        indexOfFirstItem,
+        indexOfLastItem
+      );
+
+      setTableList(currentItems);
+      setPages(totalPages);
+    }
+  }, [all_users, pageNumber]);
+
+  // useEffect(() => {
+  //   let timeOut: ReturnType<typeof setTimeout>;
+  //   if (updateProfile?.success) {
+  //     timeOut = setTimeout(() => {
+  //       updateProfile.serverResponse.message = '';
+  //       dispatch({ type: UPDATE_PROFILE_RESET });
+  //     }, 2000);
+  //   }
+
+  //   if (updateProfile?.error) {
+  //     timeOut = setTimeout(() => {
+  //       updateProfile.serverError = '';
+  //       dispatch({ type: UPDATE_PROFILE_RESET });
+  //     }, 2000);
+  //   }
+
+  //   return () => clearTimeout(timeOut);
+  // }, [updateProfile]);
 
   return (
     <>
@@ -205,12 +234,7 @@ const Users = (props: Props) => {
                 })}
             </table>
           </div>
-          {/* <Pagination totalPages={pages} onPageChange={handlePageChange} /> */}
-          {/* <Pagination2
-            totalPages={pages}
-            onPageChange={handlePageChange}
-            currentPage={pageNumber}
-          /> */}
+
           <CustomPagination
             totalPages={pages}
             onChangePage={handlePageChange}

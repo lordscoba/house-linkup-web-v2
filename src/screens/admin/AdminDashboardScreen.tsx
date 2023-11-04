@@ -54,7 +54,6 @@ const AdminDashboardScreen = () => {
   );
 
   const all_users = useSelector((state: StoreReducerTypes) => state?.allUsers);
-  const serverResponse = all_users?.serverResponse?.Users;
   const totalPages = all_users?.serverResponse?.totalPages;
 
   const storedData = localStorage.getItem('loginUser')
@@ -65,7 +64,6 @@ const AdminDashboardScreen = () => {
 
   const handlePageChange = (page: number) => {
     setPageNumber(page);
-    dispatch(getAllUsersAction({ pageNumber }) as any);
   };
   const handleUploaderPageChange = (page: number) => {
     setCurrentPageNumber(page);
@@ -114,16 +112,13 @@ const AdminDashboardScreen = () => {
   const showRegisterModal = () => {
     setShow(true);
   };
-  useEffect(() => {
-    dispatch(getAllUsersAction({ pageNumber }) as any);
-  }, [pageNumber]);
 
   useEffect(() => {
-    dispatch(getAllUsersAction({ pageNumber }) as any);
+    dispatch(getAllUsersAction() as any);
   }, []);
 
   useEffect(() => {
-    dispatch(getAllUsersAction({ pageNumber }) as any);
+    dispatch(getAllUsersAction() as any);
   }, [
     profile_picture,
     update_profile,
@@ -139,13 +134,24 @@ const AdminDashboardScreen = () => {
   ]);
 
   useEffect(() => {
+    const serverResponse = all_users?.serverResponse?.Users;
+
     if (serverResponse) {
       const countUsers = all_users?.serverResponse?.totalUsers;
+      const itemsPerPage = 20;
+      const indexOfLastItem = pageNumber * itemsPerPage;
+      const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+      const totalPages = Math.floor(countUsers / itemsPerPage);
+      const currentItems = serverResponse?.slice(
+        indexOfFirstItem,
+        indexOfLastItem
+      );
+
       setTotalRegisteredUsers(countUsers);
+      setTableList(currentItems);
+      setPages(totalPages);
     }
-    setTableList(serverResponse);
-    setPages(Number(totalPages));
-  }, [all_users]);
+  }, [all_users, pageNumber]);
 
   useEffect(() => {
     dispatch(fetchHouseAction() as any);

@@ -49,6 +49,7 @@ const UpdateProfile = () => {
   const [location, setLocation] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [username, setUsername] = useState('');
+  const [isImage, setIsImage] = useState<boolean>(false);
 
   const updateProfile = useSelector(
     (state: StoreReducerTypes) => state.updateProfile
@@ -62,7 +63,10 @@ const UpdateProfile = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event?.target?.files?.[0];
-    setImage(file);
+    if (file) {
+      setImage(file);
+      setIsImage(true);
+    }
   };
 
   const handleLabelClick = () => {
@@ -100,11 +104,14 @@ const UpdateProfile = () => {
 
   useEffect(() => {
     dispatch(userDetailsAction({ _id: userId }) as any);
-  }, [updateProfile]);
+  }, [updateProfile, updateProfile]);
 
   useEffect(() => {
-    dispatch(changeProfilePictureAction({ image, userId }) as any);
-  }, [image]);
+    if (isImage) {
+      console.log({ ima: 'dispatching' });
+      dispatch(changeProfilePictureAction({ image, userId }) as any);
+    }
+  }, [isImage]);
 
   useEffect(() => {
     let timeOut: ReturnType<typeof setTimeout>;
@@ -127,8 +134,9 @@ const UpdateProfile = () => {
 
   useEffect(() => {
     setImage('');
+    setIsImage(false);
     dispatch({ type: CHANGE_PROFILE_PICTURE_RESET });
-  }, [profile_picture]);
+  }, [profile_picture?.success]);
 
   return (
     <div className="flex flex-col items-center justify-center pt-[4rem]">

@@ -19,7 +19,7 @@ import {
 } from '../../../types/dashboard/users.types';
 
 export const getAllUsersAction =
-  ({ pageNumber }: PageInterface) =>
+  () =>
   async (
     dispatch: Dispatch,
     getState: ({ allUsers }: StoreReducerTypes) => void
@@ -27,9 +27,7 @@ export const getAllUsersAction =
     try {
       dispatch({ type: GET_ALL_USERS_REQUEST });
 
-      const { data } = await axios.get(
-        `${SERVER_URL}/all-users?page=${pageNumber}`
-      );
+      const { data } = await axios.get(`${SERVER_URL}/all-users`);
 
       // console.log({ allusers: data });
       dispatch({ type: GET_ALL_USERS_SUCCESS, payload: data });

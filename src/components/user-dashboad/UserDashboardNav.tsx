@@ -142,15 +142,15 @@ const UserDashboardNav = (props: Props) => {
 
         <div className="flex items-center gap-4">
           <div>
-            {userFromstorage?.userDoc?.image?.length > 0 ? (
+            {userDetails?.serverResponse?.image?.length > 0 ? (
               <img
-                src={userFromstorage?.userDoc?.image?.[0]?.url}
+                src={userDetails?.serverResponse?.image?.[0]?.url}
                 alt=""
                 className="w-[50px] h-[50px] object-cover rounded-full"
               />
-            ) : userDetails?.serverResponse?.image?.length > 0 ? (
+            ) : userFromstorage?.userDoc?.image?.length > 0 ? (
               <img
-                src={userDetails?.serverResponse?.image?.[0]?.url}
+                src={userFromstorage?.userDoc?.image?.[0]?.url}
                 alt=""
                 className="w-[50px] h-[50px] object-cover rounded-full"
               />

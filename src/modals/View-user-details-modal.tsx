@@ -76,24 +76,24 @@ const ViewUserDetailsModal = ({
     setCheckbox2Checked(false);
   };
 
-  const activateUserFunc = ({ id }: IdInterface) => {
-    dispatch(activateUserAction({ id }) as any);
+  const activateUserFunc = () => {
+    dispatch(activateUserAction({ id: userId }) as any);
   };
 
-  const deActivateUserFunc = ({ id }: IdInterface) => {
-    dispatch(deActivateuserAction({ id }) as any);
+  const deActivateUserFunc = () => {
+    dispatch(deActivateuserAction({ id: userId }) as any);
   };
 
-  const blockUserFunc = ({ id }: IdInterface) => {
-    dispatch(blockuserAction({ id }) as any);
+  const blockUserFunc = () => {
+    dispatch(blockuserAction({ id: userId }) as any);
   };
 
-  const promoteUserFunc = ({ id }: IdInterface) => {
-    dispatch(promoteUserAction({ id }) as any);
+  const promoteUserFunc = () => {
+    dispatch(promoteUserAction({ id: userId }) as any);
   };
 
-  const demoteUserFunc = (id: any) => {
-    dispatch(demoteUserAction({ id }) as any);
+  const demoteUserFunc = () => {
+    dispatch(demoteUserAction({ id: userId }) as any);
   };
 
   useEffect(() => {
@@ -236,7 +236,7 @@ const ViewUserDetailsModal = ({
                 {checkbox1Checked ? (
                   <button
                     type="button"
-                    onClick={() => demoteUserFunc({ id: userId })}
+                    onClick={demoteUserFunc}
                     className="bg-[#69B99D] text-[#fff] border rounded-lg py-2 w-[8rem]"
                   >
                     Demote User
@@ -248,7 +248,7 @@ const ViewUserDetailsModal = ({
                 {checkbox2Checked ? (
                   <button
                     type="button"
-                    onClick={() => promoteUserFunc({ id: userId })}
+                    onClick={promoteUserFunc}
                     className=" bg-[#69B99D] text-[#fff] border rounded-lg py-2 w-[8rem]"
                   >
                     Promote User
@@ -259,7 +259,7 @@ const ViewUserDetailsModal = ({
               <div className="text-[#69B99D] mt-8 flex flex-wrap justify-center gap-2">
                 <button
                   type="button"
-                  onClick={() => activateUserFunc({ id: userId })}
+                  onClick={activateUserFunc}
                   disabled={isActive}
                   className={` ${
                     isActive ? 'text-[#909090]' : 'text-[#69B99D]'
@@ -269,7 +269,7 @@ const ViewUserDetailsModal = ({
                 </button>
                 <button
                   type="button"
-                  onClick={() => blockUserFunc({ id: userId })}
+                  onClick={blockUserFunc}
                   disabled={isBlocked}
                   className={`${
                     isBlocked ? 'text-[#909090]' : 'text-[#69B99D]'
@@ -279,7 +279,7 @@ const ViewUserDetailsModal = ({
                 </button>
                 <button
                   type="button"
-                  onClick={() => deActivateUserFunc({ id: userId })}
+                  onClick={deActivateUserFunc}
                   disabled={isDeActivated}
                   className={`${
                     isDeActivated ? 'text-[#909090]' : 'text-[#69B99D]'

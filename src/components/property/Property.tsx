@@ -9,6 +9,7 @@ import { StoreReducerTypes } from '../../redux/store';
 import { fetchHouseAction } from '../../redux/actions/dashboard/house.action';
 import { MdSearch } from 'react-icons/md';
 import FlexibleInput from '../home/FlexibleInput';
+import CustomPagination from '../pagination/Pagination-3';
 
 type Props = {};
 
@@ -16,11 +17,17 @@ const Property = (props: Props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [pages, setPages] = useState(0) as any;
 
   const [totalUploads, setTotalUploads] = useState<number>(0);
   const [totalUploaders, setTotalUploaders] = useState<number>(0);
 
   const [houseArray, setHouseArray] = useState<FetchedHouseArray>([]);
+
+  const handlePageChange = (page: number) => {
+    setPageNumber(page);
+  };
 
   const storedData = localStorage.getItem('loginUser')
     ? JSON.parse(localStorage.getItem('loginUser') as any)
@@ -57,6 +64,19 @@ const Property = (props: Props) => {
     setTotalUploads(totalUploadedHouse);
     // console.log({ houses });
   }, [fetchedHouses]);
+
+  useEffect(() => {
+    const h = fetchedHouses?.serverResponse?.Houses;
+    if (h) {
+      const itemPerPage = 10;
+      const indexOfLastItem = itemPerPage * pageNumber;
+      const indexOfFirstItem = indexOfLastItem - itemPerPage;
+      const d = h.slice(indexOfFirstItem, indexOfLastItem);
+      const totalPages = Math.floor(h?.length / itemPerPage);
+      setHouseArray(d);
+      setPages(totalPages);
+    }
+  }, [fetchedHouses, pageNumber]);
   return (
     <section className="hide-scrollbar bg-[#f7f5f5] py-6">
       <div className="w-full max-w-[33rem] m-auto  flex justify-center items-center gap-4 ">
@@ -83,6 +103,11 @@ const Property = (props: Props) => {
       </div>
 
       <ServerResponse data={houseArray} searchTerm={searchQuery} />
+      <CustomPagination
+        totalPages={pages}
+        onChangePage={handlePageChange}
+        currentPage={pageNumber}
+      />
     </section>
   );
 };
